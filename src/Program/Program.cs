@@ -188,6 +188,7 @@ namespace Bankbot
                     return new Income(nameItem,coinObjective,new Money(coinObjective,objectiveValue));
             }
         }
+
         static void Main(string[] args)
         {
             //Habria que poner estos métodos en los constructores?
