@@ -5,9 +5,9 @@ namespace Bankbot
 {
      public enum Coin
     {
-    USS,
-    URU,
-    ARG,
+    USS=0,
+    URU=1,
+    ARG=2,
     }
     
     public class Money

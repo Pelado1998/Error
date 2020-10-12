@@ -5,9 +5,9 @@ namespace Bankbot
 {
     public enum AccountType 
     {
-    CuentaDeAhorro,
-    Debito,
-    Credito
+    CuentaDeAhorro=1,
+    Debito=2,
+    Credito=3
     }
     public class Account: IObservable
     {
@@ -78,7 +78,7 @@ namespace Bankbot
         {
             if(this.ItemExists(item))
             {
-                System.Console.WriteLine("Item already exists.");   
+                System.Console.WriteLine("El item ya existe.");   
             }
             else 
             {
@@ -109,7 +109,7 @@ namespace Bankbot
             }
             else 
             {
-                System.Console.WriteLine("Item does not exists.");
+                System.Console.WriteLine("El item no existe.");
             }
         }
         public void ChangeObjective(Money newObjective)
@@ -128,7 +128,7 @@ namespace Bankbot
             }
             else
             {
-                status+=new String(' ', (status.Length-1)/4)+"This account is empty.\n";
+                status+=new String(' ', (status.Length-1)/4)+"Esta cuenta está vacía.\n";
                 status += "----------------------------" + new String('-', this.name.Length);
                 System.Console.WriteLine(status);
                 return;
@@ -145,7 +145,7 @@ namespace Bankbot
                 status += "----------------------------" + new String('-', this.name.Length);
                 System.Console.WriteLine(status);
         }
-        private bool ItemExists(IItems item)
+        public bool ItemExists(IItems item)
         {
             return this.items.Contains( item);
         }
