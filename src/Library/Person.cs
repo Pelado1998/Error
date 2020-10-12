@@ -165,5 +165,96 @@ namespace Bankbot
                 Console.ReadKey();
             }
         }
+        public void Acredit()
+        {   
+            System.Console.WriteLine("Seleccione:\n1 - Ingreso\n2 - Gasto\n");
+            string optionType = (Console.ReadKey()).KeyChar.ToString();
+            if (optionType!= "1" ||optionType!= "2")
+            {
+                System.Console.WriteLine("Opción incorrecta");
+                return;
+            }
+            System.Console.Clear();
+            System.Console.WriteLine("Seleccione una Moneda\n");
+            string coins = "";
+            List<Coin> coinList = new List<Coin> ((Coin[])Enum.GetValues(typeof(Coin)));
+            foreach (Coin coin in coinList)
+            {
+                coins += coinList.IndexOf(coin) +" - "+ coin.ToString()+"\n";
+            }
+            System.Console.WriteLine(coins);
+            string optionCoin = (Console.ReadKey()).KeyChar.ToString();
+            System.Console.Clear();
+            Coin coinObjective;
+            switch (optionCoin)
+            {
+                case "0":
+                    coinObjective = (Coin)0;
+                break;
+                case "1":
+                    coinObjective = (Coin)1;
+                break;
+                case "2":
+                    coinObjective = (Coin)2;
+                break;
+                default:
+                    coinObjective = (Coin)0;
+                break;
+            }
+            System.Console.WriteLine("Seleccione valor para el gasto o ingreso\n");
+            Double objectiveValue = Convert.ToDouble(System.Console.ReadLine());
+            System.Console.Clear();
+            System.Console.WriteLine("Seleccione una cuenta para agregar un gasto o ingreso\n");
+            ShowAccounts();
+            string option = (Console.ReadKey()).KeyChar.ToString();
+            Account accountChoice = null;
+            foreach (Account account in this.acounts)
+            {
+                if (account == this.acounts[Int32.Parse(option)])
+                {
+                    if (this.acounts[Int32.Parse(option)].coin==account.coin)
+                    {
+                        accountChoice = account;
+                    }
+                    else
+                    {
+                        System.Console.Clear();
+                        System.Console.WriteLine("El valor debe ser de la misma moneda que la cuenta");
+                        Console.ReadKey();
+                    }
+                }
+            }
+            if(this.acounts[Int32.Parse(option)].coin==accountChoice.coin)
+            {
+                System.Console.Clear();
+                System.Console.WriteLine("No se encontró una cuentas para agregar el gasto");
+                Console.ReadKey();
+            }
+            System.Console.WriteLine("Seleccione una Item\n");
+            string items = string.Empty;
+            List<IItems> itemList = accountChoice.items;
+            foreach (IItems item in itemList)
+            {
+                items += itemList.IndexOf(item) +" - "+ item.ToString()+"\n";
+            }
+            System.Console.WriteLine(items);
+            string optionItem = (Console.ReadKey()).KeyChar.ToString();
+            System.Console.Clear();
+            IItems itemOption;
+            itemOption = itemList[Convert.ToInt32(optionItem)];         //TODO: ver fuera de rango
+            switch (optionType)
+            {
+                case "1":
+                    this.acounts[this.acounts.IndexOf(accountChoice)].Accredit(new Money(coinObjective,objectiveValue),itemOption);
+                break;
+                case "2":
+                    this.acounts[this.acounts.IndexOf(accountChoice)].Debit(new Money(coinObjective,objectiveValue),itemOption);
+                break;
+
+                default:
+                    this.acounts[this.acounts.IndexOf(accountChoice)].Accredit(new Money(coinObjective,objectiveValue),itemOption);
+                break;
+            }
+        }
     }
 }
