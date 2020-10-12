@@ -207,11 +207,12 @@ namespace Bankbot
             while(run)
             {
                 System.Console.Clear();
-                System.Console.WriteLine("Elija Una opción\n"); 
-                System.Console.WriteLine("1 - Crear una Persona");
-                System.Console.WriteLine("2 - Crear una Cuenta");
-                System.Console.WriteLine("3 - Crear un Item");
-                System.Console.WriteLine("4 - Ver Status\n");
+                System.Console.WriteLine("💰 Elija Una opción  💰\n"); 
+                System.Console.WriteLine("1 - Crear una Persona 🙋🏻‍♀️ 🙋🏻‍♂️");
+                System.Console.WriteLine("2 - Crear una Cuenta 👛");
+                System.Console.WriteLine("3 - Crear un Item 🎁");
+                System.Console.WriteLine("4 - Ver Status 📈");
+                System.Console.WriteLine("5 - Agregar transacción 💲 💲 \n");
                 System.Console.Write("\n\n❌ Escape para cerrar  ");
                 ConsoleKeyInfo i= Console.ReadKey(true);
                 string option=string.Empty;
@@ -226,7 +227,26 @@ namespace Bankbot
                 switch (option)
                 {
                     case "1":
-                            user = CreateUser();
+                            if (user.name!=null)
+                            {
+                                System.Console.WriteLine("Ya existe un usuario llamado "+user.name+".\nDesea sobreescribirlo?\n");
+                                System.Console.WriteLine("Si/No");
+                                string overwrite =Console.ReadLine();
+                                if (overwrite.ToLower() == "si")
+                                {
+                                    user = CreateUser();
+                                }
+                                else
+                                {
+                                    break;
+                                }
+
+                            }
+                            else
+                            {
+                                user = CreateUser();
+                            }
+                            
                         break;
                     case "2":
                             if (user.name==null)
@@ -275,6 +295,18 @@ namespace Bankbot
                                 System.Console.WriteLine("\nDebes crear una persona y una cuenta primero\n");
                                 Console.ReadKey();
                             }
+                        break;
+                        case "5":
+                            if(user.name!=null && user.acounts!=null)
+                            {
+                                user.Transaction();
+                            }
+                            else
+                            {
+                                System.Console.Clear();
+                                System.Console.WriteLine("\nDebes crear una persona y una cuenta primero\n");
+                                Console.ReadKey();
+                            }
                             
                         break;
                     default:
@@ -282,29 +314,6 @@ namespace Bankbot
                         break;
                 }
             }
-            
-            /*
-            SecureString password = new NetworkCredential("", "Password").SecurePassword;
-            Person person = new Person("Rafael Rodriguez", 123456789,password,Channel.Whatsapp);
-            Account accountUCU = new Account("CuentaUCU",AccountType.Debito,Coin.URU,new Money(Coin.URU,3000));
-            Account accountSantander = new Account("CuentaSatander",AccountType.Credito,Coin.URU,new Money(Coin.URU,35000));
-            person.AddAcount(accountUCU);
-            person.AddAcount(accountSantander);
-            //System.Console.WriteLine(person.acounts[0].name +'\t'+ person.acounts[1].name);
-            IItems item1 = new Income("Sueldo",Coin.URU,new Money(Coin.URU,15000),new Money(Coin.URU,13000));
-            IItems item2 = new Outcome("Impuestos",Coin.URU,new Money(Coin.URU,6000),new Money(Coin.URU,10000));
-            person.acounts[0].AddItem(item1);
-            person.acounts[0].AddItem(item2);
-            double show = (person.acounts[0].items[0].amount.amount);
-            System.Console.WriteLine(show);
-            person.acounts[0].Status();
-            person.acounts[1].Status();
-            person.acounts[0].items[0].Status();
-            person.acounts[0].items[1].Status();
-            person.ShowAccounts();
-            person.Status();
-            //show password>> System.Console.WriteLine(System.Net.NetworkCredential(string.Empty, person.password).Password);
-            */
         }
     }
 }

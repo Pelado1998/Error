@@ -165,13 +165,15 @@ namespace Bankbot
                 Console.ReadKey();
             }
         }
-        public void Acredit()
+        public void Transaction()
         {   
-            System.Console.WriteLine("Seleccione:\n1 - Ingreso\n2 - Gasto\n");
+            System.Console.Clear();
+            System.Console.WriteLine("Seleccione:\n\n1 - Ingreso\n2 - Gasto\n");
             string optionType = (Console.ReadKey()).KeyChar.ToString();
-            if (optionType!= "1" ||optionType!= "2")
+            if (optionType!= "1" && optionType!= "2")
             {
                 System.Console.WriteLine("Opción incorrecta");
+                Console.ReadKey();
                 return;
             }
             System.Console.Clear();
@@ -224,18 +226,20 @@ namespace Bankbot
                     }
                 }
             }
-            if(this.acounts[Int32.Parse(option)].coin==accountChoice.coin)
+            if(this.acounts[Int32.Parse(option)].coin!=accountChoice.coin)
             {
                 System.Console.Clear();
                 System.Console.WriteLine("No se encontró una cuentas para agregar el gasto");
                 Console.ReadKey();
+                return;
             }
+            System.Console.Clear();
             System.Console.WriteLine("Seleccione una Item\n");
             string items = string.Empty;
             List<IItems> itemList = accountChoice.items;
             foreach (IItems item in itemList)
             {
-                items += itemList.IndexOf(item) +" - "+ item.ToString()+"\n";
+                items += itemList.IndexOf(item).ToString() +" - "+ item.name.ToString()+"\n";
             }
             System.Console.WriteLine(items);
             string optionItem = (Console.ReadKey()).KeyChar.ToString();
