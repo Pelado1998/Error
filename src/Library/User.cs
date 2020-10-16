@@ -1,6 +1,7 @@
 using System;
+using System.Text;
 using System.Collections.Generic;
-using System.Security;
+
 
 namespace Bankbot
 {
@@ -9,9 +10,9 @@ namespace Bankbot
         public string UserName { get; set; }
         public string Password { get; set; }
         private Guid Id { get; set; }
-        private List<Account> Accounts { get; set; }
+        public List<Account> Accounts { get; set; }
         private long ChatId { get; set; }
-        // List<Channel> Channels { get; set; }
+        public Account SelectedAccount { get; set; }
 
         public User(string userName, string password, long telegramId)
         {
@@ -20,8 +21,8 @@ namespace Bankbot
             this.Id = Guid.NewGuid();
             this.Accounts = new List<Account> { };
             this.ChatId = telegramId;
+            this.SelectedAccount = null;
         }
-
 
 
         /// <summary>
@@ -94,21 +95,22 @@ namespace Bankbot
         /// <summary>
         /// Muestra todas las cuentas disponibles en consola de forma indexada
         /// </summary>
-        public void ShowAccounts()
+        public StringBuilder ShowAccounts()
         {
-            string accounts = "";
+            StringBuilder accounts = new StringBuilder();
             if (this.Accounts.Count == 0)
             {
-                accounts = "No hay cuentas";
+                accounts.Append("No hay cuentas asociadas a este usuario.");
             }
             else
             {
                 foreach (Account account in this.Accounts)
                 {
-                    accounts += (this.Accounts.IndexOf(account)) + " - " + account.Name + "\n";
+                    accounts.Append($"{this.Accounts.IndexOf(account) + 1} - {account.Name}\n");
                 }
             }
             System.Console.WriteLine(accounts);
+            return accounts;
         }
     }
 }

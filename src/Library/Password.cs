@@ -1,9 +1,5 @@
 using System;
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
 using System.Security.Cryptography;
-
 
 namespace Bankbot
 {
@@ -13,14 +9,12 @@ namespace Bankbot
         /// <summary>
         /// Clase que utilizando la funcion de derivacion clave PBKDF2 genera una contraseña cifrada y es capaz de descifrarla
         /// </summary>
-
         private const int SaltByteSize = 24;
         private const int HashByteSize = 20;
         private const int Pbkdf2Iterations = 1000;
         private const int IterationIndex = 0;
         private const int SaltIndex = 1;
         private const int Pbkdf2Index = 2;
-
 
         /// <summary>
         /// Recibiendo un string por parametro este metodo se encarga de generar un Salt, para luego por medio del metodo GetPbkdf2Bytes recibir un hash

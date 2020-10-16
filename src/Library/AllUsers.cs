@@ -6,8 +6,9 @@ namespace Bankbot
     public class AllUsers
     {
         public List<User> UserList { get; set; }
-        private static AllUsers instance;
 
+        public User SelectedUser { get; set; }
+        private static AllUsers instance;
         public static AllUsers Instance
         {
             get

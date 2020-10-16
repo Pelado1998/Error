@@ -3,19 +3,27 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
+    public enum CurrencyType
+    {
+        USS = 1,
+        URU = 2,
+        ARG = 3,
+        Null = 4,
+        // Este valor null lo estoy usando para probar!!!
+    }
 
-    public class Money
+    public class Currency
     {
         // public static Money operator +(Money a, Money b) => new Money(a.coin, a.amount + (Converter(a.coin, b)).amount);
         // public static Money operator -(Money a, Money b) => new Money(a.coin, a.amount - (Converter(a.coin, b)).amount);
-        public Enums.Coin coin { get; set; }
-        public double amount { get; set; }
-        public Money() { }
-        public Money(Enums.Coin coin, double amount)
-        {
-            this.coin = coin;
-            this.amount = amount;
-        }
+        // public Currency Currency { get; set; }
+        // public double amount { get; set; }
+        // public Money() { }
+        // public Money(Currency coin, double amount)
+        // {
+        //     this.Currency = coin;
+        //     this.amount = amount;
+        // }
 
 
         /// <summary>
@@ -25,34 +33,34 @@ namespace Bankbot
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public static double Converter(double amount, Enums.Coin from, Enums.Coin to)
+        public static double Converter(double amount, CurrencyType from, CurrencyType to)
         {
             switch (to)
             {
-                case Enums.Coin.USS:
+                case CurrencyType.USS:
                     switch (from)
                     {
-                        case Enums.Coin.URU:
+                        case CurrencyType.URU:
                             return amount * 0.025;
-                        case Enums.Coin.ARG:
+                        case CurrencyType.ARG:
                             return amount * 5;
                     }
                     break;
-                case Enums.Coin.URU:
+                case CurrencyType.URU:
                     switch (from)
                     {
-                        case Enums.Coin.USS:
+                        case CurrencyType.USS:
                             return amount * 40;
-                        case Enums.Coin.ARG:
+                        case CurrencyType.ARG:
                             return amount * 500;
                     }
                     break;
-                case Enums.Coin.ARG:
+                case CurrencyType.ARG:
                     switch (from)
                     {
-                        case Enums.Coin.URU:
+                        case CurrencyType.URU:
                             return amount * 0.2;
-                        case Enums.Coin.USS:
+                        case CurrencyType.USS:
                             return amount * 0.04;
                     }
                     break;
