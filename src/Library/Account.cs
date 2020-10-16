@@ -1,153 +1,120 @@
 using System;
+using System.Text;
 using System.Collections.Generic;
 
 namespace Bankbot
 {
-    public enum AccountType 
+    public enum AccountType
     {
-    CuentaDeAhorro=1,
-    Debito=2,
-    Credito=3
+        CuentaDeAhorro = 1,
+        Debito = 2,
+        Credito = 3
     }
-    public class Account: IObservable
+    public class Account : IObservable
     {
-        public Account(string name, string history, AccountType accountType, Coin coin, Money objective)
+        public string Name { get; set; }
+        public List<Transaction> History { get; set; }
+        public AccountType AccountType { get; set; }
+        public CurrencyType CurrencyType { get; set; }
+        public double Amount { get; set; }
+        public double Objective { get; set; }
+
+        public Account(string name, AccountType type, CurrencyType currencyType, double amount, double objective)
         {
-            this.name = name;
-            this.history = history;
-            this.accountType = accountType;
-            this.coin = coin;
-            this.amount = new Money(coin,0);
-            this.objective = objective;
-            this.items = new List<IItems>{};
+            this.Name = name;
+            this.History = new List<Transaction>();
+            this.AccountType = type;
+            this.CurrencyType = currencyType;
+            this.Amount = amount;
+            this.Objective = objective;
         }
-        public Account(string name, AccountType accountType, Coin coin, Money objective)
+
+
+        /// <summary>
+        /// Metodo para probar por consola creacion de cuentas
+        /// </summary>
+        /// <returns></returns>
+        public static Account CreateAccount()
         {
-            this.name = name;
-            this.history = history;
-            this.accountType = accountType;
-            this.coin = coin;
-            this.amount = new Money(coin,0);
-            this.objective = objective;
-            this.items = new List<IItems>{};
+            System.Console.WriteLine("Ingresa un nombre de cuenta: \n");
+            var user = System.Console.ReadLine();
+            System.Console.WriteLine("Ingresa un tipo de cuenta 1 2 3: \n");
+            var type = System.Console.ReadLine();
+            System.Console.WriteLine("Ingresa un tipo de moneda 1 2 3: \n");
+            var coin = System.Console.ReadLine();
+            System.Console.WriteLine("Ingresa un valor: \n");
+            var amount = Convert.ToDouble(System.Console.ReadLine());
+            System.Console.WriteLine("Ingresa un objetivo: \n");
+            var objective = Convert.ToDouble(System.Console.ReadLine());
+            return new Account(user, AccountType.CuentaDeAhorro, CurrencyType.URU, amount, objective);
         }
-        public Account(string name, AccountType accountType, Coin coin)
+        public string MakeTransaction(double amount, CurrencyType currencyType, TransactionType transactionType)
         {
-            this.name = name;
-            this.history = history;
-            this.accountType = accountType;
-            this.coin = coin;
-            this.amount = new Money(coin,0);
-            this.objective = new Money(coin,0);
-            this.items = new List<IItems>{};
-        }
-        public string name {get;set;}
-        public string history {get;set;}
-        public AccountType accountType {get;set;}
-        public Coin coin {get;set;}
-        public Money amount {get;set;}
-        public Money objective {get;set;}
-        public List<IItems> items {get;set;}
-        public void Accredit(Money money, IItems item)
-        {
-            if(this.ItemExists(item))
+            if (transactionType == TransactionType.Outcome && amount > this.Amount)
             {
-                this.amount = this.amount + money; 
-                (this.items[this.items.IndexOf(item)]).Acredit(money);
-                //TODO: REGISTRAR EN EL HISTORIAL
+                return "Saldo insuficiente.";
             }
-            else 
+            else if (amount > 0)
             {
-                System.Console.WriteLine("Item does not exists.");
-            }
-        }
-        public void Debit(Money money, IItems item)
-        {
-            if(this.ItemExists(item))
-            {
-                this.amount = this.amount - money; 
-                (this.items[this.items.IndexOf(item)]).Debit(money);
-                //TODO: REGISTRAR EN EL HISTORIAL  
-            }
-            else 
-            {
-                System.Console.WriteLine("Item does not exists.");
-            }
-        }
-        public void AddItem(IItems item)
-        {
-            if(this.ItemExists(item))
-            {
-                System.Console.WriteLine("El item ya existe.");   
-            }
-            else 
-            {
-                this.items.Add(item);
-                if(item.amount.amount != 0 && typeof(Income)==item.GetType())
+                var transaction = Transaction.MakeTransaction(amount, currencyType, DateTime.Now, this.AccountType, transactionType);
+                var convertedAmount = Currency.Converter(amount, currencyType, this.CurrencyType);
+                if (transaction != null)
                 {
-                    this.amount+=item.amount;
+                    if (transactionType == TransactionType.Income)
+                    {
+                        this.Amount += convertedAmount;
+                    }
+                    else
+                    {
+                        this.Amount -= convertedAmount;
+                    }
+                    this.History.Add(transaction);
                 }
-                else
-                {
-                   this.amount-=item.amount; 
-                }
+                return "Trasferencia existosa.";
+            }
+            else
+            {
+                return "Valor inválido.";
             }
         }
-        public void RemoveItem(IItems item)
+        public void ChangeObjective(double newObjective)
         {
-            if(this.ItemExists(item))
-            {
-                   this.items.Remove(item);
-                   if(item.amount.amount != 0 && typeof(Income)==item.GetType())
-                {
-                    this.amount-=amount;
-                }
-                else
-                {
-                   this.amount+=amount; 
-                }
-            }
-            else 
-            {
-                System.Console.WriteLine("El item no existe.");
-            }
+            this.Objective = newObjective;
         }
-        public void ChangeObjective(Money newObjective)
+        public string ShowHistory()
         {
-            this.objective = newObjective;
-        }
-        public void Status()
-        {
-            string status = "--- Status de la cuenta " + this.name +" ---\n";
-            if (this.items.Count !=0)
+            StringBuilder status = new StringBuilder();
+            status.Append("--- Historial de la cuenta " + this.Name + " ---\n");
+            if (this.History.Count != 0)
             {
-                foreach (IItems item in this.items)
+                foreach (Transaction transaction in this.History)
                 {
-                    status +=item.name+": "+ (item.amount.amount).ToString()+" $"+item.coin.ToString()+"\n";
+                    System.Console.WriteLine(transaction.Type);
+                    var type = transaction.Type == TransactionType.Income ? "Ingreso" : "Egreso";
+                    status.Append($"{type}: {transaction.CurrencyType} {transaction.Amount} {transaction.Date.ToString("dd/MM/yyyy H:mm")} \n");
                 }
             }
             else
             {
-                status+=new String(' ', (status.Length-1)/4)+"Esta cuenta está vacía.\n";
-                status += "----------------------------" + new String('-', this.name.Length);
+                status.Append("Esta cuenta está vacía.\n");
                 System.Console.WriteLine(status);
-                return;
+                // status += new String(' ', (status.Length - 1) / 4) + "Esta cuenta está vacía.\n";
+                // status += "----------------------------" + new String('-', this.Name.Length);
+                // System.Console.WriteLine(status);
+                // return;
             }
-                status += "Total: " + (this.amount.amount).ToString()+"/"+(this.objective.amount).ToString();
-                if (this.amount.amount >= this.objective.amount)
-                    {
-                        status += " ➕ 😁"+"\n";
-                    }
-                    else
-                    {
-                        status += " ➖ 🥺"+"\n";
-                    }
-                status += "----------------------------" + new String('-', this.name.Length);
-                System.Console.WriteLine(status);
-        }
-        public bool ItemExists(IItems item)
-        {
-            return this.items.Contains( item);
+            status.Append($"Total: {this.Amount} / {this.Objective}");
+            if (this.Amount >= this.Objective)
+            {
+                status.Append("'😁'\n");
+            }
+            else
+            {
+                status.Append("'🥺'\n");
+            }
+            status.Append("-----------------------------------------");
+            System.Console.WriteLine(status);
+            return status.ToString();
         }
     }
 }
