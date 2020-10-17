@@ -15,20 +15,20 @@ namespace Bankbot
         public string Name { get; set; }
         public List<Transaction> History { get; set; }
         public AccountType AccountType { get; set; }
-        public CurrencyType CurrencyType { get; set; }
+        public Currency Currency { get; set; }
         public double Amount { get; set; }
         public double Objective { get; set; }
-        public Account(string name, AccountType type, CurrencyType currencyType, double amount, double objective)
+        public Account(string name, AccountType type, Currency currency, double amount, double objective)
         {
             this.Name = name;
             this.History = new List<Transaction>();
             this.AccountType = type;
-            this.CurrencyType = currencyType;
+            this.Currency = currency;
             this.Amount = amount;
             this.Objective = objective;
         }
 
-        public string MakeTransaction(double amount, CurrencyType currencyType, TransactionType transactionType, String item)
+        public string MakeTransaction(double amount, Currency currency, TransactionType transactionType, String item)
         {
             if (transactionType == TransactionType.Outcome && amount > this.Amount)
             {
@@ -36,8 +36,8 @@ namespace Bankbot
             }
             else if (amount > 0)
             {
-                var transaction = new Transaction(amount, currencyType, DateTime.Now, this.AccountType, transactionType, item);
-                var convertedAmount = Currency.Converter(amount, currencyType, this.CurrencyType);
+                var transaction = new Transaction(amount, currency, DateTime.Now, this.AccountType, transactionType, item);
+                var convertedAmount = Currency.Converter(amount, currency, this.Currency);
                 if (transaction != null)
                 {
                     if (transactionType == TransactionType.Income)
@@ -71,7 +71,7 @@ namespace Bankbot
                 {
                     System.Console.WriteLine(transaction.Type);
                     var type = transaction.Type == TransactionType.Income ? "Ingreso" : "Egreso";
-                    status.Append($"{type}: {transaction.CurrencyType} {transaction.Amount} {transaction.Date.ToString("dd/MM/yyyy H:mm")} \n");
+                    status.Append($"{type}: {transaction.Currency} {transaction.Amount} {transaction.Date.ToString("dd/MM/yyyy H:mm")} \n");
                 }
             }
             else

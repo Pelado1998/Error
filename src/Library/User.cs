@@ -11,8 +11,8 @@ namespace Bankbot
         public string Password { get; set; }
         private Guid Id { get; set; }
         public List<Account> Accounts { get; set; }
-        public List<String> IncomeList {get; set;}
-        public List<String> OutcomeList {get; set;}
+        public List<String> IncomeList { get; set; }
+        public List<String> OutcomeList { get; set; }
         private long ChatId { get; set; }
         public Account SelectedAccount { get; set; }
 
@@ -24,8 +24,8 @@ namespace Bankbot
             this.Accounts = new List<Account> { };
             this.ChatId = telegramId;
             this.SelectedAccount = null;
-            this.IncomeList = new List<String> {"Salario","Regalo"};
-            this.OutcomeList = new List<String> {"Comida","Transporte","Ocio","Alquiler","Impuestos"};
+            this.IncomeList = new List<String> { "Salario", "Regalo" };
+            this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
 
 
@@ -116,15 +116,15 @@ namespace Bankbot
             System.Console.WriteLine(accounts);
             return accounts;
         }
-        public void AddItem(string name,string option)
+        public void AddItem(string name, string option)
         {
             //Income
-            if (option=="1" && !this.OutcomeList.Contains(name))
+            if (option == "1" && !this.OutcomeList.Contains(name))
             {
                 this.IncomeList.Add(name);
             }
             //Outcome
-            else if(option=="2" && !this.IncomeList.Contains(name)) 
+            else if (option == "2" && !this.IncomeList.Contains(name))
             {
                 this.OutcomeList.Add(name);
             }
@@ -160,12 +160,12 @@ namespace Bankbot
             res.Append("Income:\n\n");
             foreach (String item in this.IncomeList)
             {
-                res.Append((this.IncomeList.IndexOf(item)+1).ToString()+" - "+item+"\n");
+                res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
             }
             res.Append("Outcome:\n\n");
             foreach (string item in this.OutcomeList)
             {
-                res.Append((this.IncomeList.IndexOf(item)+1).ToString()+" - "+item+"\n");
+                res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
             }
         }
 
@@ -189,7 +189,13 @@ namespace Bankbot
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        protected static string Cypher(string password)
+
+        public bool Login(string password)
+        {
+            return Decrypt(password, this.Password);
+        }
+
+        private string Cypher(string password)
         {
             var cryptoProvider = new RNGCryptoServiceProvider();
             byte[] salt = new byte[SaltByteSize];
@@ -201,14 +207,14 @@ namespace Bankbot
                    Convert.ToBase64String(hash);
         }
 
-
         /// <summary>
         /// Recibe un string y una contraseña cifrada, reevierte el proceso de Cypher y devuelve un bool comparando ambas contraseñas
         /// </summary>
         /// <param name="password"></param>
         /// <param name="correctHash"></param>
         /// <returns></returns>
-        public static bool Decrypt(string password, string correctHash)
+
+        private bool Decrypt(string password, string correctHash)
         {
             char[] delimiter = { ':' };
             var split = correctHash.Split(delimiter);
@@ -220,14 +226,14 @@ namespace Bankbot
             return SlowEquals(hash, testHash);
         }
 
-
         /// <summary>
         /// Compara ambas contraseñas provistas
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        private static bool SlowEquals(byte[] a, byte[] b)
+
+        private bool SlowEquals(byte[] a, byte[] b)
         {
             var diff = (uint)a.Length ^ (uint)b.Length;
             for (int i = 0; i < a.Length && i < b.Length; i++)
@@ -237,7 +243,6 @@ namespace Bankbot
             return diff == 0;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -246,15 +251,12 @@ namespace Bankbot
         /// <param name="iterations"></param>
         /// <param name="outputBytes"></param>
         /// <returns></returns>
-        private static byte[] GetPbkdf2Bytes(string password, byte[] salt, int iterations, int outputBytes)
+
+        private byte[] GetPbkdf2Bytes(string password, byte[] salt, int iterations, int outputBytes)
         {
             var pbkdf2 = new Rfc2898DeriveBytes(password, salt);
             pbkdf2.IterationCount = iterations;
             return pbkdf2.GetBytes(outputBytes);
         }
-
-
-
-
     }
 }

@@ -5,12 +5,12 @@ namespace Bankbot
 {
     public class Currency
     {
-        public string CodeISO {get;set;}
-        public string Symbol {get;set;}
+        public string CodeISO { get; set; }
+        public string Symbol { get; set; }
         public Currency(string codeISO, string symbol)
         {
             this.CodeISO = codeISO;
-            this.Symbol  = symbol;
+            this.Symbol = symbol;
         }
 
         // public static Money operator +(Money a, Money b) => new Money(a.coin, a.amount + (Converter(a.coin, b)).amount);
@@ -32,34 +32,34 @@ namespace Bankbot
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public static double Converter(double amount, CurrencyType from, CurrencyType to)
+        public static double Converter(double amount, Currency from, Currency to)
         {
-            switch (to)
+            switch (to.CodeISO)
             {
-                case CurrencyType.USS:
-                    switch (from)
+                case "USD":
+                    switch (from.CodeISO)
                     {
-                        case CurrencyType.URU:
+                        case "UYU":
                             return amount * 0.025;
-                        case CurrencyType.ARG:
+                        case "ARS":
                             return amount * 5;
                     }
                     break;
-                case CurrencyType.URU:
-                    switch (from)
+                case "UYU":
+                    switch (from.CodeISO)
                     {
-                        case CurrencyType.USS:
+                        case "USD":
                             return amount * 40;
-                        case CurrencyType.ARG:
+                        case "ARS":
                             return amount * 500;
                     }
                     break;
-                case CurrencyType.ARG:
-                    switch (from)
+                case "ARS":
+                    switch (from.CodeISO)
                     {
-                        case CurrencyType.URU:
+                        case "UYU":
                             return amount * 0.2;
-                        case CurrencyType.USS:
+                        case "USD":
                             return amount * 0.04;
                     }
                     break;
