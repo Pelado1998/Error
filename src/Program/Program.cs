@@ -192,17 +192,12 @@ namespace Bankbot
 
         static void Main(string[] args)
         {
-            var user1 = new User("cristian", "algo", 1111);
-            var user2 = new User("a", "a", 1111);
-            var account1 = new Account("Ahorro", AccountType.CuentaDeAhorro, CurrencyType.URU, 100000, 10000);
-            var account2 = new Account("Credito", AccountType.Credito, CurrencyType.URU, 50000, 10000);
-            var account3 = new Account("Debito", AccountType.Credito, CurrencyType.USS, 6543, 10000);
-            user2.AddAcount(account1);
-            user2.AddAcount(account2);
-            user2.AddAcount(account3);
-            AllUsers.Instance.UserList.Add(user1);
-            AllUsers.Instance.UserList.Add(user2);
-            BotHandler.BotStarter();
+            var currency1 = new Currency("UYU", "$");
+            var currency2 = new Currency("USD", "$");
+            var currency3 = new Currency("ARS", "$");
+            Bank.Instance.AddCurrency(currency1);
+            Bank.Instance.AddCurrency(currency2);
+            Bank.Instance.AddCurrency(currency3);
 
             // //Habria que poner estos métodos en los constructores?
             // Console.OutputEncoding = Encoding.Unicode;
