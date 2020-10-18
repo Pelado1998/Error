@@ -42,6 +42,42 @@ namespace Bankbot
                 System.Console.WriteLine("Esta moneda no existe");
             }
         }
-        public void Convert(){} //Se implementara cuando se tenga la API
-    }
+        public static double Convert(double amount, Currency from, Currency to)
+        {
+            switch (to.CodeISO)
+            {
+                case "USD":
+                    switch (from.CodeISO)
+                    {
+                        case "UYU":
+                            return amount * 0.025;
+                        case "ARS":
+                            return amount * 5;
+                    }
+                    break;
+                case "UYU":
+                    switch (from.CodeISO)
+                    {
+                        case "USD":
+                            return amount * 40;
+                        case "ARS":
+                            return amount * 500;
+                    }
+                    break;
+                case "ARS":
+                    switch (from.CodeISO)
+                    {
+                        case "UYU":
+                            return amount * 0.2;
+                        case "USD":
+                            return amount * 0.04;
+                    }
+                    break;
+                default:
+                    return amount;
+
+            }
+            return amount;
+        }        
+   }
 }

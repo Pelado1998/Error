@@ -14,7 +14,6 @@ namespace Bankbot
         public List<String> IncomeList { get; set; }
         public List<String> OutcomeList { get; set; }
         private long ChatId { get; set; }
-        public Account SelectedAccount { get; set; }
 
         public User(string userName, string password, long telegramId)
         {
@@ -23,7 +22,6 @@ namespace Bankbot
             this.Id = Guid.NewGuid();
             this.Accounts = new List<Account> { };
             this.ChatId = telegramId;
-            this.SelectedAccount = null;
             this.IncomeList = new List<String> { "Salario", "Regalo" };
             this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
@@ -168,7 +166,26 @@ namespace Bankbot
                 res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
             }
         }
-
+        public string MakeTransaction(double amount, Currency currency, String item, Account account)
+        {
+            if (this.OutcomeList.Contains(item) && amount >account.Amount)
+            {
+                return "Saldo insuficiente.";
+            }
+            else if (amount > 0 && (this.IncomeList.Contains(item) || this.OutcomeList.Contains(item)))
+            {
+                double convertedAmount = Bank.Convert(amount, currency, account.Currency);
+                convertedAmount = this.IncomeList.Contains(item) ? convertedAmount : (-1)*convertedAmount;
+                Transaction transaction = new Transaction(convertedAmount, account.Currency, DateTime.Now,item);
+                this.Accounts[this.Accounts.IndexOf(account)].Amount += convertedAmount;
+                this.Accounts[this.Accounts.IndexOf(account)].History.Add(transaction);
+                return "Trasferencia existosa.";
+            }
+            else
+            {
+                return "Valor inválido.";
+            }
+        }
 
 
         //PasswordCode
@@ -258,5 +275,6 @@ namespace Bankbot
             pbkdf2.IterationCount = iterations;
             return pbkdf2.GetBytes(outputBytes);
         }
+
     }
 }
