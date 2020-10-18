@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Transaction
     {
         public double Amount { get; set; }

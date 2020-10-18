@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
+     /// <summary>
+    /// Currency cumple con el patron expert ya que esta clase es la experta en esta información y tiene las herramientas 
+    /// necesarias para cunplir con las responsabilidades de la misma.
+    /// </summary>
     public class Currency
     {
         public string CodeISO { get; set; }

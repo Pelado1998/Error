@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
+    /// <summary>
+    /// Esta clase implementa el patrón de diseño Singletone, ya que en la esta desamos
+    /// que se cree una unica instancia de la misma y si se desea agregar un nuevo tipo de moneda.
+    /// Dicha clase también cumple con el principio OCP abierto a extensión y cerrado a modificación.
+    /// </summary>
     public class Bank
     {
         public List<Currency> CurrencyList { get; set; }
