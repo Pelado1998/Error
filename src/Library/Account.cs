@@ -5,6 +5,10 @@ using static System.Math;
 
 namespace Bankbot
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    
     public enum AccountType
     {
         CuentaDeAhorro = 1,
@@ -33,6 +37,34 @@ namespace Bankbot
         {
             this.Objective = newObjective;
         }
+        /// <summary>
+        /// El método MakeTransaction cumple con el patrón creator.Tiene la información necesaria para la
+        /// creación del objeto transaction.
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="currency"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public string MakeTransaction(double amount, Currency currency, String item)
+        {
+            if (amount+this.Amount<0)
+            {
+                return "Saldo insuficiente.";
+            }
+            else if (amount+this.Amount>0)
+            {
+                double convertedAmount = Bank.Convert(amount, currency, this.Currency);
+                Transaction transaction = new Transaction(convertedAmount,this.Currency, DateTime.Now,item);
+                this.Amount+=convertedAmount;
+                this.History.Add(transaction);
+                return "Trasferencia existosa.";
+            }
+            else
+            {
+                return "Valor inválido.";
+            }
+        }
+
         public string ShowHistory()
         {
             StringBuilder status = new StringBuilder();

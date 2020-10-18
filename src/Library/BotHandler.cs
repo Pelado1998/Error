@@ -7,6 +7,10 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
+    /// <summary>
+    /// Esta clase implementa el patron controlador ya que implementa la interfaz IAlert y sus algoritmos
+    /// correspondientes.
+    /// </summary>
     public class BotHandler:IAlert
     {
 

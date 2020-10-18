@@ -5,6 +5,9 @@ using System.Security.Cryptography;
 
 namespace Bankbot
 {
+    /// <summary>
+    /// Cumple el patrón SRP(Responsabilidad Única).
+    /// </summary>
     public class User
     {
         public string UserName { get; set; }
@@ -15,6 +18,9 @@ namespace Bankbot
         public List<String> OutcomeList { get; set; }
         private long ChatId { get; set; }
 
+        /// <summary>
+        /// User cuenta con la información necesaria para ser el experto de crear al objeto usuario.
+        /// </summary>
         public User(string userName, string password, long telegramId)
         {
             this.UserName = userName;
@@ -166,27 +172,7 @@ namespace Bankbot
                 res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
             }
         }
-        public string MakeTransaction(double amount, Currency currency, String item, Account account)
-        {
-            if (this.OutcomeList.Contains(item) && amount >account.Amount)
-            {
-                return "Saldo insuficiente.";
-            }
-            else if (amount > 0 && (this.IncomeList.Contains(item) || this.OutcomeList.Contains(item)))
-            {
-                double convertedAmount = Bank.Convert(amount, currency, account.Currency);
-                convertedAmount = this.IncomeList.Contains(item) ? convertedAmount : (-1)*convertedAmount;
-                Transaction transaction = new Transaction(convertedAmount, account.Currency, DateTime.Now,item);
-                this.Accounts[this.Accounts.IndexOf(account)].Amount += convertedAmount;
-                this.Accounts[this.Accounts.IndexOf(account)].History.Add(transaction);
-                return "Trasferencia existosa.";
-            }
-            else
-            {
-                return "Valor inválido.";
-            }
-        }
-
+        
 
         //PasswordCode
 
