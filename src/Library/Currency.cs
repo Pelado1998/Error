@@ -32,43 +32,45 @@ namespace Bankbot
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public static double Converter(double amount, Currency from, Currency to)
-        {
-            switch (to.CodeISO)
-            {
-                case "USD":
-                    switch (from.CodeISO)
-                    {
-                        case "UYU":
-                            return amount * 0.025;
-                        case "ARS":
-                            return amount * 5;
-                    }
-                    break;
-                case "UYU":
-                    switch (from.CodeISO)
-                    {
-                        case "USD":
-                            return amount * 40;
-                        case "ARS":
-                            return amount * 500;
-                    }
-                    break;
-                case "ARS":
-                    switch (from.CodeISO)
-                    {
-                        case "UYU":
-                            return amount * 0.2;
-                        case "USD":
-                            return amount * 0.04;
-                    }
-                    break;
-                default:
-                    return amount;
+//
+//        public static double Converter(double amount, Currency from, Currency to)
+//        {
+//            switch (to.CodeISO)
+//            {
+//                case "USD":
+//                    switch (from.CodeISO)
+//                    {
+//                        case "UYU":
+//                            return amount * 0.025;
+//                        case "ARS":
+//                            return amount * 5;
+//                    }
+//                    break;
+//                case "UYU":
+//                    switch (from.CodeISO)
+//                    {
+//                        case "USD":
+//                            return amount * 40;
+//                        case "ARS":
+//                            return amount * 500;
+//                    }
+//                    break;
+//                case "ARS":
+//                    switch (from.CodeISO)
+//                    {
+//                        case "UYU":
+//                            return amount * 0.2;
+//                        case "USD":
+//                            return amount * 0.04;
+//                    }
+//                    break;
+//                default:
+//                    return amount;
+//
+//            }
+//            return amount;
+//        }
 
-            }
-            return amount;
-        }
         // public static Money Convert(Coin coin, Money money)      //Ver cual es la mejor forma de implementarlo  ---- Se puede intentar usar api de cambio
         // {
         //     switch (coin)

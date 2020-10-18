@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using static System.Math;
 
 namespace Bankbot
 {
@@ -28,35 +29,6 @@ namespace Bankbot
             this.Objective = objective;
         }
 
-        public string MakeTransaction(double amount, Currency currency, TransactionType transactionType, String item)
-        {
-            if (transactionType == TransactionType.Outcome && amount > this.Amount)
-            {
-                return "Saldo insuficiente.";
-            }
-            else if (amount > 0)
-            {
-                var transaction = new Transaction(amount, currency, DateTime.Now, this.AccountType, transactionType, item);
-                var convertedAmount = Currency.Converter(amount, currency, this.Currency);
-                if (transaction != null)
-                {
-                    if (transactionType == TransactionType.Income)
-                    {
-                        this.Amount += convertedAmount;
-                    }
-                    else
-                    {
-                        this.Amount -= convertedAmount;
-                    }
-                    this.History.Add(transaction);
-                }
-                return "Trasferencia existosa.";
-            }
-            else
-            {
-                return "Valor inválido.";
-            }
-        }
         public void ChangeObjective(double newObjective)
         {
             this.Objective = newObjective;
@@ -69,8 +41,7 @@ namespace Bankbot
             {
                 foreach (Transaction transaction in this.History)
                 {
-                    System.Console.WriteLine(transaction.Type);
-                    var type = transaction.Type == TransactionType.Income ? "Ingreso" : "Egreso";
+                    var type = Sign(transaction.Amount) == 1 ? "Ingreso" : "Egreso";
                     status.Append($"{type}: {transaction.Currency} {transaction.Amount} {transaction.Date.ToString("dd/MM/yyyy H:mm")} \n");
                 }
             }
@@ -96,5 +67,6 @@ namespace Bankbot
             System.Console.WriteLine(status);
             return status.ToString();
         }
+        
     }
 }
