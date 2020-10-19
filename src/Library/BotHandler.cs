@@ -8,10 +8,12 @@ using System.Collections.Generic;
 namespace Bankbot
 {
     /// <summary>
-    /// Esta clase implementa el patron controlador ya que implementa la interfaz IAlert y sus algoritmos
-    /// correspondientes.
+    /// La calse BotHandler será la encargada de procesar la comunicación entre el usuario y el bot,
+    /// se encargará de recibir mensajes y responder acorde a los mismos, como tambien llamar a los métodos
+    /// correspondientes, por esta razón cumple con el patrón Controler de los principios GRASP.
+    /// A su vez implementa la interfaz IAlert y sus algoritmos correspondientes.
     /// </summary>
-    public class BotHandler:IAlert
+    public class BotHandler : IAlert
     {
 
         //public static bool creatingUser = false;
@@ -26,7 +28,7 @@ namespace Bankbot
         //public static TransactionType transactionType = TransactionType.Null;
         //public static CurrencyType transactionCurrency = CurrencyType.Null;
         //public static double transactionAmount = -1;
-        public static List<User> userList = new List<User>(){};
+        public static List<User> userList = new List<User>() { };
         public static ITelegramBotClient Bot = TelegramBot.TelegramBot.Bot();
 
         public IObservable Obvservables { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

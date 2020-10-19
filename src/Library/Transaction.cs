@@ -3,16 +3,13 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class Transaction
     {
         public double Amount { get; set; }
         public Currency Currency { get; set; }
         public DateTime Date { get; set; }
         public String Item { get; set; }
-        public String Description {get; set;}
+        public String Description { get; set; }
         public Transaction(double amount, Currency currency, DateTime date, String item)
         {
             this.Amount = amount;

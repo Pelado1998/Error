@@ -1,0 +1,155 @@
+[
+  {
+    "name": "User",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Conoce el Nombre de Usuario",
+      "Conoce la contraseña",
+      "Conoce el Id",
+      "Conoce las cuentas",
+      "Conoce la lista de rubros de Ingresos",
+      "Conoce la lista de rubros de Gastos",
+      "Conoce el Id del chat",
+      "Conoce las variables necesarias para encriptar y desencriptar la contraseña",
+      "Crear el usuario",
+      "Cambiar nombre del usuario",
+      "Cambiar contraseña del usuario",
+      "Mostrar cuentas del usuario",
+      "Añadir una cuenta al usuario",
+      "Remover una cuenta del usuario",
+      "Agregar rubros",
+      "Borrar rubros",
+      "Mostrar rubros",
+      "Encriptar contraseña"
+    ],
+    "collaborators": [
+      "Account"
+    ]
+  },
+  {
+    "name": "Transaction",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Conoce la cuenta",
+      "Conoce la divisa",
+      "Conoce la fecha",
+      "Conoce el rubro",
+      "Tiene o no una descripción"
+    ],
+    "collaborators": [
+      "Currency"
+    ]
+  },
+  {
+    "name": "Currency",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Conoce el símbolo de la divisa",
+      "Conoce el código ISO de la divisa"
+    ],
+    "collaborators": [
+      "Account",
+      "Bank"
+    ]
+  },
+  {
+    "name": "Bank",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Conoce la lista de divisas",
+      "Puede agregar divisas",
+      "Puede eliminar divisas",
+      "Puede convertir entre divisas",
+      ""
+    ],
+    "collaborators": [
+      "Currency"
+    ]
+  },
+  {
+    "name": "Account",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Conoce el nombre de la cuenta",
+      "Conoce el historial de transacciones de la cuenta",
+      "Conoce el tipo de cuenta",
+      "Conoce la divisa de la cuenta",
+      "Conoce el monto total de la cuenta",
+      "Conoce el objetivo de la cuenta",
+      "Puede cambiar el objetivo de la cuenta",
+      "Puede mostrar el historial de transacciones de la cuenta",
+      "Puede realizar una transacción"
+    ],
+    "collaborators": [
+      "Currency",
+      "IObservable"
+    ]
+  },
+  {
+    "name": "IObservable",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 3,
+    "responsibilities": [
+      "Conoce la cantidad",
+      "Conoce el objetivo"
+    ],
+    "collaborators": [
+      ""
+    ]
+  },
+  {
+    "name": "IAlert",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 3,
+    "responsibilities": [
+      "Conoce un observable",
+      "Puede mandar una alerta"
+    ],
+    "collaborators": [
+      ""
+    ]
+  },
+  {
+    "name": "BotHandler",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Conoce la lista de usuarios",
+      "Conoce el bot",
+      "Realiza la conversación con el usuario",
+      "Puede ejecutar comandos recibidos"
+    ],
+    "collaborators": [
+      "IAlert",
+      "User",
+      "TelegramBot"
+    ]
+  },
+  {
+    "name": "TelegramBot",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Conoce el Token de Telegram",
+      "Puede mandar mensajes",
+      "Puede recibir comandos"
+    ],
+    "collaborators": [
+      ""
+    ]
+  }
+]

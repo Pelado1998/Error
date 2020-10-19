@@ -8,7 +8,7 @@ namespace Bankbot
     /// <summary>
     /// 
     /// </summary>
-    
+
     public enum AccountType
     {
         CuentaDeAhorro = 1,
@@ -16,6 +16,16 @@ namespace Bankbot
         Credito = 3
     }
     public class Account : IObservable
+    /// <summary>
+    /// Esta clase cumple con el principio de asignacion de responsabilidades GRASP, experto en información. 
+    /// Cumple con el patrón Creator el cual identifica quien debe ser responsable de la creación de nuevos objetos.
+    /// Este patrón nos dice que esta nueva clase debe ser creada por otra, quien tendra toda la información necesaria para la creación del
+    /// objeto, tambien esta clase debe ser la que utiliza de forma directa las instancias creadas del objeto o almacena las mismas, por último, tambien
+    /// puede ser responsable de contener o agregar el objeto creado.
+    /// En nuestro caso, el método MakeTransaction es parte de la clase Account ya que es el encargado de crear instancias del objeto Transaction,
+    /// el cual, una vez creado se almacenara en una List<Transaction> formando asi el Historial de transacciones de la cuenta.
+    /// A su vez cumple con el patrón OCP (Open - Closed Principle) de los principios SOLID, ya que es una clase que se encuentra abierta a la extensión,
+    /// pero cerrada a la modificación
     {
         public string Name { get; set; }
         public List<Transaction> History { get; set; }
@@ -37,25 +47,18 @@ namespace Bankbot
         {
             this.Objective = newObjective;
         }
-        /// <summary>
-        /// El método MakeTransaction cumple con el patrón creator.Tiene la información necesaria para la
-        /// creación del objeto transaction.
-        /// </summary>
-        /// <param name="amount"></param>
-        /// <param name="currency"></param>
-        /// <param name="item"></param>
-        /// <returns></returns>
+
         public string MakeTransaction(double amount, Currency currency, String item)
         {
-            if (amount+this.Amount<0)
+            if (amount + this.Amount < 0)
             {
                 return "Saldo insuficiente.";
             }
-            else if (amount+this.Amount>0)
+            else if (amount + this.Amount > 0)
             {
                 double convertedAmount = Bank.Convert(amount, currency, this.Currency);
-                Transaction transaction = new Transaction(convertedAmount,this.Currency, DateTime.Now,item);
-                this.Amount+=convertedAmount;
+                Transaction transaction = new Transaction(convertedAmount, this.Currency, DateTime.Now, item);
+                this.Amount += convertedAmount;
                 this.History.Add(transaction);
                 return "Trasferencia existosa.";
             }
@@ -81,10 +84,6 @@ namespace Bankbot
             {
                 status.Append("Esta cuenta está vacía.\n");
                 System.Console.WriteLine(status);
-                // status += new String(' ', (status.Length - 1) / 4) + "Esta cuenta está vacía.\n";
-                // status += "----------------------------" + new String('-', this.Name.Length);
-                // System.Console.WriteLine(status);
-                // return;
             }
             status.Append($"Total: {this.Amount} / {this.Objective}");
             if (this.Amount >= this.Objective)
@@ -99,6 +98,6 @@ namespace Bankbot
             System.Console.WriteLine(status);
             return status.ToString();
         }
-        
+
     }
 }
