@@ -1,8 +1,9 @@
-using System;
-using System.Collections.Generic;
-
 namespace Bankbot
 {
+    /// <summary>
+    /// Esta clase cumple con el patrón Expert del principio GRASP ya que es la que contiene toda la información
+    /// sobre Currency, pero tambien con el patrón SRP por tener una unica razón de cambio.
+    /// </summary>
     public class Currency
     {
         public string CodeISO { get; set; }
