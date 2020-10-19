@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
-
 namespace Bankbot
 {
     /// <summary>
-    /// 
+    /// Esta clase cumple con el patrón Expert del principio GRASP ya que es la que contiene toda la información
+    /// sobre Transaction, pero tambien con el patrón SRP por tener una unica razón de cambio.
     /// </summary>
     public class Transaction
     {
@@ -12,7 +11,7 @@ namespace Bankbot
         public Currency Currency { get; set; }
         public DateTime Date { get; set; }
         public String Item { get; set; }
-        public String Description {get; set;}
+        public String Description { get; set; }
         public Transaction(double amount, Currency currency, DateTime date, String item)
         {
             this.Amount = amount;

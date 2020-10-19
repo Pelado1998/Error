@@ -6,7 +6,11 @@ using System.Security.Cryptography;
 namespace Bankbot
 {
     /// <summary>
-    /// Cumple el patrón SRP(Responsabilidad Única).
+    /// Esta clase cumple con los principios GRAPS, ya que es experta en información sobre los usuarios, se encarga de 
+    /// crear instancias de la clase Account para luego almacenarlos. Por esta razón cumple con los patrones Expert
+    /// y Creator dentro de estos principios.
+    /// Por otro lado cumple con el patrón OCP al ser una clase abierta a la extensión y cerrada a la modificación.
+    /// 
     /// </summary>
     public class User
     {
@@ -18,9 +22,6 @@ namespace Bankbot
         public List<String> OutcomeList { get; set; }
         private long ChatId { get; set; }
 
-        /// <summary>
-        /// User cuenta con la información necesaria para ser el experto de crear al objeto usuario.
-        /// </summary>
         public User(string userName, string password, long telegramId)
         {
             this.UserName = userName;
@@ -32,40 +33,30 @@ namespace Bankbot
             this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
 
-
-        /// <summary>
-        /// Metodo para probar por consola creacion de usuarios
-        /// </summary>
-        /// <returns></returns>
-        public static User CreateUser()
-        {
-            System.Console.WriteLine("Ingresa un nombre de usuario: \n");
-            var user = System.Console.ReadLine();
-            System.Console.WriteLine("Ingresa una contraseña: \n");
-            var password = System.Console.ReadLine();
-            return new User(user, password, 1111);
-        }
-
-
         /// <summary>
         /// Agregar un objeto Account a la la lista List<Account>
         /// </summary>
         /// <param name="account"></param>
-        public void AddAccount(Account account)
+        public void AddAccount(string name, AccountType type, Currency currency, double amount, double objective)
         {
             if (this.Accounts == null)
             {
                 this.Accounts = new List<Account> { };
-                this.Accounts.Add(account);
             }
-            else
+            foreach (var account in Accounts)
             {
-                this.Accounts.Add(account);
+                if (account.Name == name)
+                {
+                    System.Console.WriteLine("Ya existe una cuenta con este nombre.");
+                    return;
+                }
             }
+            var newAccount = new Account(name, type, currency, amount, objective);
+            this.Accounts.Add(newAccount);
         }
 
         /// <summary>
-        /// Quita un objeto Account a la la lista List<Account>
+        /// Quita un objeto Account de la lista List<Account>
         /// </summary>
         /// <param name="account"></param>
         public void RemoveAcount(Account account)
@@ -172,7 +163,7 @@ namespace Bankbot
                 res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
             }
         }
-        
+
 
         //PasswordCode
 
