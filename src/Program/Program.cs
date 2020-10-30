@@ -1,10 +1,7 @@
 ﻿using System;
+using GoogleDrive;
+using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security;
-using System.Text;
-using TelegramBot;
 
 namespace Bankbot
 {

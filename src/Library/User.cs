@@ -10,7 +10,6 @@ namespace Bankbot
     /// crear instancias de la clase Account para luego almacenarlos. Por esta razón cumple con los patrones Expert
     /// y Creator dentro de estos principios.
     /// Por otro lado cumple con el patrón OCP al ser una clase abierta a la extensión y cerrada a la modificación.
-    /// 
     /// </summary>
     public class User
     {
@@ -29,6 +28,16 @@ namespace Bankbot
             this.Id = Guid.NewGuid();
             this.Accounts = new List<Account> { };
             this.ChatId = telegramId;
+            this.IncomeList = new List<String> { "Salario", "Regalo" };
+            this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
+        }
+        public User(string[] user)
+        {
+            this.UserName = user[0];
+            this.Password = user[1];
+            this.Id = Guid.Parse(user[2]);
+            this.Accounts = new List<Account> { };
+            this.ChatId = long.Parse(user[3]);
             this.IncomeList = new List<String> { "Salario", "Regalo" };
             this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }

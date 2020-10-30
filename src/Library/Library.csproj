@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TelegramBot\TelegramLibrary.csproj" />
+    <ProjectReference Include="..\GoogleDrive\GoogleDriveLibrary.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
