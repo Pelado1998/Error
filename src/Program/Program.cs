@@ -1,5 +1,4 @@
 ﻿using System;
-using GoogleDrive;
 using System.IO;
 using System.Collections.Generic;
 
@@ -14,7 +13,13 @@ namespace Bankbot
     {
         static void Main(string[] args)
         {
-            BotHandler.BotStarter();
+            Chats chats = new Chats(123);                                       //Chat de prueba
+            chats.History = new List<string>{"1","2"};
+            chats.State = State.Idle;
+            chats.Temp = new List<Object> {1,"Prueba"};
+            chats.User = null;
+            AbstractHandler<Chats> handler = new Handler1(new Condition1());    //
+            handler.Handler(chats);
         }
     }
 }
