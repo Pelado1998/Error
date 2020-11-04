@@ -16,6 +16,7 @@ namespace Bankbot
         #region Login
             LoginUsername,
             LoginPassword,
+
         #endregion
         
         #region CreateAccount
