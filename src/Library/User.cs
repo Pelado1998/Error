@@ -29,15 +29,6 @@ namespace Bankbot
             this.IncomeList = new List<String> { "Salario", "Regalo" };
             this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
-        public User(string[] user)
-        {
-            this.UserName = user[0];
-            this.Password = user[1];
-            this.Id = Guid.Parse(user[2]);
-            this.Accounts = new List<Account> { };
-            this.IncomeList = new List<String> { "Salario", "Regalo" };
-            this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
-        }
 
         /// <summary>
         /// Agregar un objeto Account a la la lista List<Account>
@@ -86,7 +77,6 @@ namespace Bankbot
             this.UserName = newUserName;
         }
 
-
         /// <summary>
         /// Cambia la contraseña generando un nuevo string cifrado
         /// </summary>
@@ -96,27 +86,6 @@ namespace Bankbot
             this.Password = Cypher(newPassword);
         }
 
-
-        /// <summary>
-        /// Muestra todas las cuentas disponibles en consola de forma indexada
-        /// </summary>
-        public StringBuilder ShowAccounts()
-        {
-            StringBuilder accounts = new StringBuilder();
-            if (this.Accounts.Count == 0)
-            {
-                accounts.Append("No hay cuentas asociadas a este usuario.");
-            }
-            else
-            {
-                foreach (Account account in this.Accounts)
-                {
-                    accounts.Append($"{this.Accounts.IndexOf(account) + 1} - {account.Name}\n");
-                }
-            }
-            System.Console.WriteLine(accounts);
-            return accounts;
-        }
         public void AddItem(string name, string option)
         {
             //Income
@@ -138,6 +107,7 @@ namespace Bankbot
                 System.Console.WriteLine("Opción incorrecta");
             }
         }
+
         public void RemoveItem(string name)
         {
             //Income
@@ -155,23 +125,8 @@ namespace Bankbot
                 System.Console.WriteLine("No existe dicho elemento en los rubros.");
             }
         }
-        public void ShowItems()
-        {
-            StringBuilder res = new StringBuilder();
-            res.Append("Income:\n\n");
-            foreach (String item in this.IncomeList)
-            {
-                res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
-            }
-            res.Append("Outcome:\n\n");
-            foreach (string item in this.OutcomeList)
-            {
-                res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
-            }
-        }
 
-
-        //PasswordCode
+        //Password Code
 
         /// <summary>
         /// Clase que utilizando la funcion de derivacion clave PBKDF2 genera una contraseña cifrada y es capaz de descifrarla

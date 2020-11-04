@@ -12,14 +12,7 @@ namespace Bankbot
 
         protected override void handleRequest(Chats request)
         {
-            System.Console.WriteLine("No te entendi. Vuelve a intentarlo.");
-        }
-    }
-    public class DefaultCondition : ICondition<Chats>
-    {
-        public bool IsSatisfied(Chats request)
-        {
-            return true;
+            TelegramBot.Instance.SendMessage(request.Id, "No comprendo lo que dices. Para una lista de comandos disponibles ingresa /commands");
         }
     }
 }

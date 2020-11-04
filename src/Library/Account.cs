@@ -5,10 +5,6 @@ using static System.Math;
 
 namespace Bankbot
 {
-    /// <summary>
-    /// 
-    /// </summary>
-
     public enum AccountType
     {
         CuentaDeAhorro = 1,
