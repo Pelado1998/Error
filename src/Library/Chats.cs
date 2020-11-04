@@ -7,47 +7,47 @@ using System.Collections.Generic;
 namespace Bankbot
 {
     public enum State
-    {   
+    {
         #region CreateUser
-            CreateUsername,
-            CreatePassword,    
+        CreateUsername,
+        CreatePassword,
         #endregion
 
         #region Login
-            LoginUsername,
-            LoginPassword,
+        LoginUsername,
+        LoginPassword,
 
         #endregion
-        
+
         #region CreateAccount
-            CreateAccountName,
-            CreateAccountType,
-            CreateAccountCurrency,
-            CreateAccountAmount,
-            CreateAccountObjective,
+        CreateAccountName,
+        CreateAccountType,
+        CreateAccountCurrency,
+        CreateAccountAmount,
+        CreateAccountObjective,
         #endregion
-        
+
         #region DeleteAccount
-            DeleteAccountName,
-            DeleteAccountConfirmation,
+        DeleteAccountName,
+        DeleteAccountConfirmation,
         #endregion
 
         #region CreateTransaction
-            CreateTransactionAccount,
-            CreateTransactionType,
-            CreateTransactionCurrency,
-            CreateTransactionAmount,
-            CreateTransactionItem,
+        CreateTransactionAccount,
+        CreateTransactionType,
+        CreateTransactionCurrency,
+        CreateTransactionAmount,
+        CreateTransactionItem,
         #endregion
 
         #region Convert
-            ConvertFrom,
-            ConvertTo,
-            ConvertAmount,
+        ConvertFrom,
+        ConvertTo,
+        ConvertAmount,
         #endregion
-        
+
         #region Default
-            Idle,    
+        Idle,
         #endregion
     }
     public class Chats
@@ -55,16 +55,17 @@ namespace Bankbot
         public long Id { get; set; }
         public State State { get; set; }
         public User User { get; set; }
-        public List<Object> Temp {get;set;}
-        public Message Message {get;set;}
+        public List<Object> Temp { get; set; }
+        public Message Message { get; set; }
+        public IChannel Channel { get; set; }
         public Chats(long id)
         {
             this.Id = id;
             this.State = State.Idle;
             this.User = null;
-            this.Temp = new List<Object> ();
+            this.Temp = new List<Object>();
             this.Message = new Message();
         }
-        public void CleanTemp()=> this.Temp = new List<Object> (); 
+        public void CleanTemp() => this.Temp = new List<Object>();
     }
 }

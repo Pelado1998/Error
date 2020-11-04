@@ -27,6 +27,7 @@ namespace Bankbot
         {
             this.CurrencyList = new List<Currency>() { new Currency("UYU", "U$"), new Currency("USS", "US$"), new Currency("ARG", "AR$") };
         }
+
         public void AddCurrency(string codeISO, string symbol)
         {
             foreach (var currency in CurrencyList)
@@ -41,6 +42,7 @@ namespace Bankbot
             Currency newCurrency = new Currency(codeISO, symbol);
             CurrencyList.Add(newCurrency);
         }
+
         public void RemoveCurrency(string codeISO, string symbol)
         {
             foreach (var currency in CurrencyList)
@@ -53,6 +55,7 @@ namespace Bankbot
                 System.Console.WriteLine("Esta moneda no existe");
             }
         }
+
         public static double Convert(double amount, Currency from, Currency to)
         {
             switch (to.CodeISO)

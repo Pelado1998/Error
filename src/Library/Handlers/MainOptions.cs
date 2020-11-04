@@ -10,29 +10,23 @@ namespace Bankbot
         {
         }
 
-        protected override void handleRequest( Chats request)
+        protected override void handleRequest(Chats request)
         {
             switch (request.Message.Text)
             {
                 case "1":
                     request.State = State.LoginUsername;
-                    System.Console.WriteLine("Ingrese el Username");
-                break;
+                    TelegramBot.Instance.SendMessage(request.Id, "Ingrese un Username");
+                    break;
                 case "2":
                     request.State = State.CreateUsername;
-                    System.Console.WriteLine("Ingrese un Username");
-                break;
+                    TelegramBot.Instance.SendMessage(request.Id, "Ingrese un Username");
+                    break;
                 default:
+                    TelegramBot.Instance.SendMessage(request.Id, "Ingrese un valor correcto: 1 o 2");
                     System.Console.WriteLine("Ingrese un valor correcto: 1 o 2");
-                break;
+                    break;
             }
-        }
-    }
-    public class MainCondition : ICondition<Chats>
-    {
-        public bool IsSatisfied(Chats request)
-        {
-            return request.State == State.Idle && request.User == null;
         }
     }
 }
