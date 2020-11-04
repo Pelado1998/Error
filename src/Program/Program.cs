@@ -11,19 +11,34 @@ namespace Bankbot
 
     class Program
     {
+        public static void Read(Chats chats)
+        {
+            chats.Message.Text = System.Console.ReadLine();
+        }
         static void Main(string[] args)
         {
-            Chats chats = new Chats(123);                                       //Chat de prueba
-            chats.History = new List<string>{"1","2"};
+            AbstractHandler<Chats> init = new Init(new InitCondition());
+            AbstractHandler<Chats> mainOptions = new MainOptions(new MainCondition());
+            AbstractHandler<Chats> createUser = new CreateUser(new CreateUserCondition());
+            AbstractHandler<Chats> login = new Login(new LoginCondition());
+            AbstractHandler<Chats> def = new Default(new DefaultCondition());
+
+
+            init.Succesor = mainOptions;
+            mainOptions.Succesor = createUser;
+            createUser.Succesor = login;
+            login.Succesor = def;
+
+            Chats chats = new Chats(123);
             chats.State = State.Idle;
-            chats.Temp = new List<Object> {1,"Prueba"};
+            chats.Temp = new List<Object>{};
             chats.User = null;
-            chats.Message = "2";
-            AbstractHandler<Chats> handler1 = new Handler1(new Condition1());
-            AbstractHandler<Chats> handler2 = new Handler2(new Condition2());
-            handler1.Succesor = handler2;
-            handler1.Handler(ref chats);
-            
+            chats.Message.Text = string.Empty;       
+            while(true)
+            {
+                init.Handler(chats);
+                Read(chats);
+            }
         }
     }
 }

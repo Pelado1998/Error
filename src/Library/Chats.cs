@@ -9,13 +9,14 @@ namespace Bankbot
     public enum State
     {   
         #region CreateUser
-        CreateUsername,
-        CreatePassword,
-        
+            CreateUsername,
+            CreatePassword,    
         #endregion
 
         #region Login
-        LoginUsername,
+            LoginUsername,
+            LoginPassword,
+
         #endregion
         
         #region CreateAccount
@@ -52,18 +53,18 @@ namespace Bankbot
     public class Chats
     {
         public long Id { get; set; }
-        public List<string> History { get; set; }
         public State State { get; set; }
         public User User { get; set; }
         public List<Object> Temp {get;set;}
-        public String Message {get;set;}
+        public Message Message {get;set;}
         public Chats(long id)
         {
             this.Id = id;
-            this.History = new List<string>();
             this.State = State.Idle;
             this.User = null;
             this.Temp = new List<Object> ();
+            this.Message = new Message();
         }
+        public void CleanTemp()=> this.Temp = new List<Object> (); 
     }
 }

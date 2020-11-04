@@ -19,15 +19,13 @@ namespace Bankbot
         public List<Account> Accounts { get; set; }
         public List<String> IncomeList { get; set; }
         public List<String> OutcomeList { get; set; }
-        private long ChatId { get; set; }
 
-        public User(string userName, string password, long telegramId)
+        public User(string userName, string password)
         {
             this.UserName = userName;
             this.Password = Cypher(password);
             this.Id = Guid.NewGuid();
             this.Accounts = new List<Account> { };
-            this.ChatId = telegramId;
             this.IncomeList = new List<String> { "Salario", "Regalo" };
             this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
@@ -37,7 +35,6 @@ namespace Bankbot
             this.Password = user[1];
             this.Id = Guid.Parse(user[2]);
             this.Accounts = new List<Account> { };
-            this.ChatId = long.Parse(user[3]);
             this.IncomeList = new List<String> { "Salario", "Regalo" };
             this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
