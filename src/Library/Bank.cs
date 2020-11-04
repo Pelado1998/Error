@@ -1,8 +1,15 @@
-using System;
 using System.Collections.Generic;
 
 namespace Bankbot
 {
+    /// <summary>
+    /// La clase Bank consta de un Singleton para no generar mas de una instancia del mismo ya que solo queremos
+    /// almacenar los objetos Currency creados en una lista global.
+    /// Dicha clase también cumple con el principio OCP ya que se encuentra abierta a la extensión y cerrada a la modificación,
+    /// como también con el patrón Expert y Creator de los principios GRASP, esto se debe a que esta clase es experta en información
+    /// relacionada con el objeto Currency, por lo que es la que se encarga de crear instancias del mismo y almacenarlas.
+    /// A su vez es la encargada de realizar las conversiones monetarias requeridas entre sus elementos.
+    /// </summary>
     public class Bank
     {
         public List<Currency> CurrencyList { get; set; }
@@ -18,27 +25,31 @@ namespace Bankbot
 
         private Bank()
         {
-            this.CurrencyList = new List<Currency>(){new Currency("UYU","U$"),new Currency("USS","US$"),new Currency("ARG","AR$")};
+            this.CurrencyList = new List<Currency>() { new Currency("UYU", "U$"), new Currency("USS", "US$"), new Currency("ARG", "AR$") };
         }
-        public void AddCurrency(Currency currency)
+        public void AddCurrency(string codeISO, string symbol)
         {
-            if (!this.CurrencyList.Contains(currency))
+            foreach (var currency in CurrencyList)
             {
-                this.CurrencyList.Add(currency);
+                if (currency.CodeISO == codeISO || currency.Symbol == symbol)
+                {
+
+                    System.Console.WriteLine("Esta moneda ya existe");
+                    return;
+                }
             }
-            else
-            {
-                System.Console.WriteLine("Esta moneda ya existe");
-            }
+            Currency newCurrency = new Currency(codeISO, symbol);
+            CurrencyList.Add(newCurrency);
         }
-        public void RemoveCurrency(Currency currency)
+        public void RemoveCurrency(string codeISO, string symbol)
         {
-            if (this.CurrencyList.Contains(currency))
+            foreach (var currency in CurrencyList)
             {
-                this.CurrencyList.Remove(currency);
-            }
-            else
-            {
+                if (currency.CodeISO == codeISO && currency.Symbol == symbol)
+                {
+                    CurrencyList.Remove(currency);
+                    return;
+                }
                 System.Console.WriteLine("Esta moneda no existe");
             }
         }
@@ -78,6 +89,6 @@ namespace Bankbot
 
             }
             return amount;
-        }        
-   }
+        }
+    }
 }

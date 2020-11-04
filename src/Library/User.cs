@@ -5,6 +5,12 @@ using System.Security.Cryptography;
 
 namespace Bankbot
 {
+    /// <summary>
+    /// Esta clase cumple con los principios GRAPS, ya que es experta en información sobre los usuarios, se encarga de 
+    /// crear instancias de la clase Account para luego almacenarlos. Por esta razón cumple con los patrones Expert
+    /// y Creator dentro de estos principios.
+    /// Por otro lado cumple con el patrón OCP al ser una clase abierta a la extensión y cerrada a la modificación.
+    /// </summary>
     public class User
     {
         public string UserName { get; set; }
@@ -13,53 +19,50 @@ namespace Bankbot
         public List<Account> Accounts { get; set; }
         public List<String> IncomeList { get; set; }
         public List<String> OutcomeList { get; set; }
-        private long ChatId { get; set; }
 
-        public User(string userName, string password, long telegramId)
+        public User(string userName, string password)
         {
             this.UserName = userName;
             this.Password = Cypher(password);
             this.Id = Guid.NewGuid();
             this.Accounts = new List<Account> { };
-            this.ChatId = telegramId;
             this.IncomeList = new List<String> { "Salario", "Regalo" };
             this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
-
-
-        /// <summary>
-        /// Metodo para probar por consola creacion de usuarios
-        /// </summary>
-        /// <returns></returns>
-        public static User CreateUser()
+        public User(string[] user)
         {
-            System.Console.WriteLine("Ingresa un nombre de usuario: \n");
-            var user = System.Console.ReadLine();
-            System.Console.WriteLine("Ingresa una contraseña: \n");
-            var password = System.Console.ReadLine();
-            return new User(user, password, 1111);
+            this.UserName = user[0];
+            this.Password = user[1];
+            this.Id = Guid.Parse(user[2]);
+            this.Accounts = new List<Account> { };
+            this.IncomeList = new List<String> { "Salario", "Regalo" };
+            this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
-
 
         /// <summary>
         /// Agregar un objeto Account a la la lista List<Account>
         /// </summary>
         /// <param name="account"></param>
-        public void AddAccount(Account account)
+        public void AddAccount(string name, AccountType type, Currency currency, double amount, double objective)
         {
             if (this.Accounts == null)
             {
                 this.Accounts = new List<Account> { };
-                this.Accounts.Add(account);
             }
-            else
+            foreach (var account in Accounts)
             {
-                this.Accounts.Add(account);
+                if (account.Name == name)
+                {
+                    System.Console.WriteLine("Ya existe una cuenta con este nombre.");
+                    return;
+                }
             }
+            var newAccount = new Account(name, type, currency, amount, objective);
+            this.Accounts.Add(newAccount);
         }
 
         /// <summary>
-        /// Quita un objeto Account a la la lista List<Account>
+        /// Quita un objeto Account de la lista List<Account>
         /// </summary>
         /// <param name="account"></param>
         public void RemoveAcount(Account account)
@@ -164,26 +167,6 @@ namespace Bankbot
             foreach (string item in this.OutcomeList)
             {
                 res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
-            }
-        }
-        public string MakeTransaction(double amount, Currency currency, String item, Account account)
-        {
-            if (this.OutcomeList.Contains(item) && amount >account.Amount)
-            {
-                return "Saldo insuficiente.";
-            }
-            else if (amount > 0 && (this.IncomeList.Contains(item) || this.OutcomeList.Contains(item)))
-            {
-                double convertedAmount = Bank.Convert(amount, currency, account.Currency);
-                convertedAmount = this.IncomeList.Contains(item) ? convertedAmount : (-1)*convertedAmount;
-                Transaction transaction = new Transaction(convertedAmount, account.Currency, DateTime.Now,item);
-                this.Accounts[this.Accounts.IndexOf(account)].Amount += convertedAmount;
-                this.Accounts[this.Accounts.IndexOf(account)].History.Add(transaction);
-                return "Trasferencia existosa.";
-            }
-            else
-            {
-                return "Valor inválido.";
             }
         }
 
