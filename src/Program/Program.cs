@@ -11,9 +11,35 @@ namespace Bankbot
 
     class Program
     {
+        public static void Read(Chats chats)
+        {
+            chats.Message.Text = System.Console.ReadLine();
+        }
         static void Main(string[] args)
         {
-            TelegramBot.Instance.Start();
+            AbstractHandler<Chats> init = new Init(new InitCondition());
+            AbstractHandler<Chats> convertion = new Convertion(new ConvertionCondition());
+            AbstractHandler<Chats> dispatcher = new Dispatcher (new DispatcherCondition());
+            AbstractHandler<Chats> login = new Login(new LoginCondition());           
+            AbstractHandler<Chats> createUser = new CreateUser(new CreateUserCondition());
+            AbstractHandler<Chats> deleteUser = new DeleteUser(new DeleteUserCondition());
+            AbstractHandler<Chats> createAccount = new CreateAccount(new CreateAccountCondition());
+            AbstractHandler<Chats> deleteAccount = new DeleteAccount(new DeleteAccountCondition());
+            AbstractHandler<Chats> def = new Default(new DefaultCondition());
+
+            init.AddSuccesor(convertion);
+            convertion.AddSuccesor(dispatcher);
+            dispatcher.AddSuccesor(login); 
+            login.AddSuccesor(createUser);
+            createUser.AddSuccesor(deleteUser);
+            deleteUser.AddSuccesor(createAccount);
+            createAccount.AddSuccesor(deleteAccount);
+            deleteAccount.AddSuccesor(def);
+            Chats chats = new Chats(123);      
+            while(true)
+            {
+                init.Handler(chats);
+                Read(chats);}
         }
     }
 }
