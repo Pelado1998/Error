@@ -18,24 +18,28 @@ namespace Bankbot
         static void Main(string[] args)
         {
             AbstractHandler<Chats> init = new Init(new InitCondition());
+            AbstractHandler<Chats> convertion = new Convertion(new ConvertionCondition());
             AbstractHandler<Chats> dispatcher = new Dispatcher (new DispatcherCondition());
             AbstractHandler<Chats> login = new Login(new LoginCondition());           
             AbstractHandler<Chats> createUser = new CreateUser(new CreateUserCondition());
+            AbstractHandler<Chats> deleteUser = new DeleteUser(new DeleteUserCondition());
             AbstractHandler<Chats> createAccount = new CreateAccount(new CreateAccountCondition());
+            AbstractHandler<Chats> deleteAccount = new DeleteAccount(new DeleteAccountCondition());
             AbstractHandler<Chats> def = new Default(new DefaultCondition());
 
-            init.Succesor = dispatcher;
-            dispatcher.Succesor = login;
-            login.Succesor = createUser;
-            createUser.Succesor = createAccount;
-            createAccount.Succesor = def;
-
+            init.AddSuccesor(convertion);
+            convertion.AddSuccesor(dispatcher);
+            dispatcher.AddSuccesor(login); 
+            login.AddSuccesor(createUser);
+            createUser.AddSuccesor(deleteUser);
+            deleteUser.AddSuccesor(createAccount);
+            createAccount.AddSuccesor(deleteAccount);
+            deleteAccount.AddSuccesor(def);
             Chats chats = new Chats(123);      
             while(true)
             {
-                Read(chats);
                 init.Handler(chats);
-            }
+                Read(chats);}
         }
     }
 }
