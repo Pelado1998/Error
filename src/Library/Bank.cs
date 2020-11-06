@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 
 namespace Bankbot
 {
@@ -90,5 +91,15 @@ namespace Bankbot
             }
             return amount;
         }
+        public static string ShowCurrencyList()
+         {
+             StringBuilder currencies = new StringBuilder();
+             foreach (Currency currency in Bank.Instance.CurrencyList)
+             {
+                 System.Console.WriteLine(currency.CodeISO);
+                 currencies.Append($"{Bank.Instance.CurrencyList.IndexOf(currency) + 1} - {currency.CodeISO}\n");
+             }
+             return currencies.ToString();
+         }
     }
 }

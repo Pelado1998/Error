@@ -10,15 +10,24 @@ namespace Bankbot
         {
         }
 
-        protected override void handleRequest( Chats request)
+        protected override void handleRequest(Chats request)
         {
-            if(request.User == null)
+            Options(request);
+            request.State=State.Dispatcher;
+        }
+        public static void Options(Chats request)
+        {
+            if(request.State == State.Idle)
             {
-                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t1-Login\n\t2-CreateUser");
+                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t0-Login\n\t1-Conversion\n\t2-CreateUser");
             }
-            else
+            else if (request.State == State.Loged)
             {
-                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t1-CreateUser\n\t2-CreateUser");
+                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t1-Conversion\n\t2-CreateUser\n\t3-DeleteUser\n\t4-CreateAccount");
+            }
+            else if (request.State == State.LogedAccounts)
+            {
+                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t1-Conversion\n\t2-CreateUser\n\t3-DeleteUser\n\t4-CreateAccount\n\t5-DeleteAccount\n\t6-MakeTransaction");
             }
         }
     }
@@ -26,7 +35,7 @@ namespace Bankbot
     {
         public bool IsSatisfied(Chats request)
         {
-            return request.State == State.Idle && request.Message.Text == string.Empty ;
+            return request.State == State.Idle || request.State == State.Loged || request.State == State.LogedAccounts;
         }
     }
 }

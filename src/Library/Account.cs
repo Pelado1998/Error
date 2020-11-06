@@ -29,11 +29,11 @@ namespace Bankbot
     {
         public string Name { get; set; }
         public List<Transaction> History { get; set; }
-        public AccountType AccountType { get; set; }
+        public AccountType? AccountType { get; set; }
         public Currency Currency { get; set; }
         public double Amount { get; set; }
         public double Objective { get; set; }
-        public Account(string name, AccountType type, Currency currency, double amount, double objective)
+        public Account(string name, AccountType? type, Currency currency, double amount, double objective)
         {
             this.Name = name;
             this.History = new List<Transaction>();
@@ -98,6 +98,19 @@ namespace Bankbot
             System.Console.WriteLine(status);
             return status.ToString();
         }
-
+        public static string ShowAccountType()
+        {
+            StringBuilder enumToText = new StringBuilder();
+            var accountType = Enum.GetNames(typeof(AccountType));
+            foreach (var item in accountType)
+            {
+                enumToText.Append($"{Array.IndexOf(accountType, item) + 1 } - {item}\n");
+            }
+            return enumToText.ToString();
+        }
+        public static int AmountTypes()
+        {
+            return (Enum.GetNames(typeof(AccountType))).Length;
+        }
     }
 }
