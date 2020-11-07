@@ -5,10 +5,6 @@ using static System.Math;
 
 namespace Bankbot
 {
-    /// <summary>
-    /// 
-    /// </summary>
-
     public enum AccountType
     {
         CuentaDeAhorro = 1,
@@ -29,11 +25,11 @@ namespace Bankbot
     {
         public string Name { get; set; }
         public List<Transaction> History { get; set; }
-        public AccountType? AccountType { get; set; }
+        public AccountType AccountType { get; set; }
         public Currency Currency { get; set; }
-        public double Amount { get; set; }
-        public double Objective { get; set; }
-        public Account(string name, AccountType? type, Currency currency, double amount, double objective)
+        public float Amount { get; set; }
+        public float Objective { get; set; }
+        public Account(string name, AccountType type, Currency currency, float amount, float objective)
         {
             this.Name = name;
             this.History = new List<Transaction>();
@@ -43,29 +39,20 @@ namespace Bankbot
             this.Objective = objective;
         }
 
-        public void ChangeObjective(double newObjective)
+        public void ChangeObjective(float newObjective)
         {
             this.Objective = newObjective;
         }
 
-        public string MakeTransaction(double amount, Currency currency, String item)
+        public void AddIncome(Currency currency, float amount, string description)
         {
-            if (amount + this.Amount < 0)
-            {
-                return "Saldo insuficiente.";
-            }
-            else if (amount + this.Amount > 0)
-            {
-                double convertedAmount = Bank.Convert(amount, currency, this.Currency);
-                Transaction transaction = new Transaction(convertedAmount, this.Currency, DateTime.Now, item);
-                this.Amount += convertedAmount;
-                this.History.Add(transaction);
-                return "Trasferencia existosa.";
-            }
-            else
-            {
-                return "Valor inválido.";
-            }
+            Transaction transaction = new Income(amount, currency, DateTime.Now, description);
+            History.Add(transaction);
+        }
+        public void AddOutcome(Currency currency, float amount, string item, string description)
+        {
+            Transaction transaction = new Outcome(amount, currency, DateTime.Now, item, description);
+            History.Add(transaction);
         }
 
         public string ShowHistory()
@@ -107,10 +94,6 @@ namespace Bankbot
                 enumToText.Append($"{Array.IndexOf(accountType, item) + 1 } - {item}\n");
             }
             return enumToText.ToString();
-        }
-        public static int AmountTypes()
-        {
-            return (Enum.GetNames(typeof(AccountType))).Length;
         }
     }
 }

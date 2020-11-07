@@ -1,71 +1,92 @@
 using System;
-using System.Collections.Generic;
+using System.Text;
 
 namespace Bankbot
 {
-    public class Dispatcher : AbstractHandler<Chats>
+    public class Dispatcher : AbstractHandler<Conversation>
     {
         public Dispatcher(DispatcherCondition condition) : base(condition)
         {
         }
 
-        protected override void handleRequest( Chats request)
+        protected override void handleRequest(Conversation request)
         {
-            switch (request.Message.Text)
+            switch (request.Message.ToLower())
             {
-                case "0":
-                    if (request.State == State.Dispatcher)
+                case "/createuser":
+
+                    request.State = State.CreateUser;
+                    request.Channel.SendMessage(request.Id, "Ingrese un nuevo nombre de usuario:");
+                    break;
+
+                case "/login":
+
+                    request.State = State.Login;
+                    request.Channel.SendMessage(request.Id, "Ingrese un nombre de usuario:");
+                    break;
+
+                case "/logout":
+
+                    if (request.User != null)
                     {
-                        request.State = State.LoginUsername;
-                        System.Console.WriteLine("Ingrese el Username");
+                        request.User = null;
+                        request.Channel.SendMessage(request.Id, "Se ha desconectado correctamente.");
                     }
-                break;
-                case "1":
-                    request.State = State.ConvertAmount;
-                    System.Console.WriteLine("Ingrese la cantidad que desea convertir");
-                break;
-                case "2":
-                    request.State = State.CreateUsername;
-                    System.Console.WriteLine("Ingrese un Username");
-                break;
-                case "3":
-                    request.State = State.Dispatcher;
-                    request.User = null;
-                    System.Console.WriteLine("Usted se ha deslogueado");
-                    Init.Options(request);
-                break;
-                case "4":
-                    if (request.State == State.Loged || request.State == State.LogedAccounts )
+                    else
                     {
-                        request.State = State.DeleteUser;
-                        System.Console.WriteLine("Ingrese el Username de su usuario para eliminarlo");  
+                        request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
                     }
-                break;
-                case "5":
-                    if (request.State == State.Loged || request.State == State.LogedAccounts )
+                    break;
+
+                case "/createaccount":
+
+                    if (request.User != null)
                     {
-                        request.State = State.CreateAccountName;
-                        System.Console.WriteLine("Ingrese un AccountName");
-                    } 
-                break;
-                case "6":
-                    if (request.State == State.LogedAccounts )
+                        request.State = State.CreateAccount;
+                        request.Channel.SendMessage(request.Id, "Ingrese el tipo de cuenta:\n" + Account.ShowAccountType());
+
+                    }
+                    else
+                    {
+                        request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+                    }
+                    break;
+
+                case "/convert":
+
+                    request.State = State.Converting;
+                    request.Channel.SendMessage(request.Id, "Ingrese la cantidad que desea convertir:");
+                    break;
+
+                case "/deleteuser":
+
+                    request.State = State.DeleteUser;
+                    request.Channel.SendMessage(request.Id, "Ingrese el nombre de usuario que desea eliminar:");
+                    break;
+
+                case "/deleteaccount":
+                    if (request.User != null)
                     {
                         request.State = State.DeleteAccount;
-                        System.Console.WriteLine("Ingrese el AccontName de la cuenta que quiere borrar");
+                        request.Channel.SendMessage(request.Id, "Ingrese el nombre de cuenta que desea eliminar:");
                     }
-                break;
-                case "7":
-                    if (request.State == State.LogedAccounts )
+                    else
                     {
-                        request.State = State.CreateTransactionAccount;
-                        System.Console.WriteLine("Ingrese un monto para la transacción");
+                        request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
                     }
-                break;
-                default:
-                    System.Console.WriteLine("Ingrese un valor correcto por favor");
-                    Init.Options(request);
-                break;
+                    break;
+
+                case "/transaction":
+                    if (request.User != null)
+                    {
+                        request.State = State.Transaction;
+                        request.Channel.SendMessage(request.Id, "Ingrese el tipo de transacción:\n1 - Ingreso\n2 - Gasto");
+                    }
+                    else
+                    {
+                        request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+                    }
+                    break;
             }
         }
     }

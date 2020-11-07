@@ -6,92 +6,105 @@ using static Bankbot.Bank;
 
 namespace Bankbot
 {
-    public class CreateAccount : AbstractHandler<Chats>
+    public class CreateAccount : AbstractHandler<Conversation>
     {
-        public CreateAccount(ICondition<Chats> condition) : base(condition)
+        public CreateAccount(ICondition<Conversation> condition) : base(condition)
         {
         }
 
-        protected override void handleRequest(Chats request)
+        protected override void handleRequest(Conversation request)
         {
-            switch (request.State)
+
+            if (!request.Temp.ContainsKey("type"))
             {
-                case State.CreateAccountName:
-                    
-                    request.State = State.CreateAccountType;
-                    request.AccountName = request.Message.Text;
-                    System.Console.WriteLine("Ingrese un tipo de cuenta\n" + ShowAccountType());
-
-                break;
-                case State.CreateAccountType:
-                    int index;
-                    if (Int32.TryParse(request.Message.Text,out index) && index<=Account.AmountTypes())
-                    {
-                        request.AccountType = (AccountType) index;  //TODO:
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Valor Incorrecto");
-                        System.Console.WriteLine("Ingrese nuevamente un tipo de cuenta\n" + ShowAccountType());
-                        return;  
-                    }   
-                    request.State = State.CreateAccountCurrency;
-                    System.Console.WriteLine("Ingrese una divisa\n" + ShowCurrencyList());
-                    
-                break;                  
-                case State.CreateAccountCurrency:
-
-                    int idx;
-                    if (Int32.TryParse(request.Message.Text,out idx) && idx<=Bank.Instance.CurrencyList.Count )
-                    {
-                        request.AccountCurrency = Bank.Instance.CurrencyList[idx];
-                        request.State = State.CreateAccountAmount;
-                        System.Console.WriteLine("Ingrese un monto para la cuenta");
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Ingrese un valor válido");
-                        System.Console.WriteLine("Ingrese una divisa\n" + ShowCurrencyList());
-                    }
-
-                break;
-                case State.CreateAccountAmount:
-
-                    double amount;
-                    if (Double.TryParse(request.Message.Text,out amount))
-                    {
-                        request.AccountAmount = amount;
-                        request.State = State.CreateAccountObjective;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Ingrese un valor válido");
-                        System.Console.WriteLine("Ingrese un monto para la cuenta");
-                        return;
-                    }
-                    System.Console.WriteLine("Ingrese un objetivo para la cuenta");
-
-                break;               
-                case State.CreateAccountObjective:
-
-                    int objective;
-                    if (Int32.TryParse(request.Message.Text,out objective))
-                    {
-                        request.AccountObjective = objective;
-                        Login.LoginState(request);
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Ingrese un valor válido");
-                        return;
-                    }
-                    request.User.AddAccount(request.AccountName, request.AccountType,request.AccountCurrency,request.AccountAmount,request.AccountObjective);
-                    System.Console.WriteLine("Cuenta creada con éxito!");
-                    request.CleanTemp();
-                    Init.Options(request);
-                    Login.LoginState(request);
-                break;
+                int index;
+                if (Int32.TryParse(request.Message, out index) && index < Enum.GetNames(typeof(AccountType)).Length)
+                {
+                    request.Temp.Add("type", (AccountType)index - 1);
+                    request.Channel.SendMessage(request.Id, "Ingrese un nombre de cuenta:");
+                }
+                else
+                {
+                    request.Channel.SendMessage(request.Id, "Debe ingresar el índece correspondiente.");
+                    request.Channel.SendMessage(request.Id, "Ingrese el tipo de cuenta:\n" + Account.ShowAccountType());
+                }
             }
-        } 
-    }        
+            else if (request.Temp.ContainsKey("type") && !request.Temp.ContainsKey("name"))
+            {
+                if (!request.User.AccountNameExists(request.Message))
+                {
+                    request.Temp.Add("name", request.Message);
+                    request.Channel.SendMessage(request.Id, "Ingrese el tipo de moneda de la cuenta:\n" + Bank.Instance.ShowCurrencyList());
+                }
+                else
+                {
+                    request.Channel.SendMessage(request.Id, "Ya existe una cuenta con este nombre, vuelva a ingresar un nombre de cuenta.");
+                }
+            }
+            else if (request.Temp.ContainsKey("name") && !request.Temp.ContainsKey("currency"))
+            {
+                int index;
+                if (Int32.TryParse(request.Message, out index) && index < Bank.Instance.CurrencyList.Count)
+                {
+                    request.Temp.Add("currency", Bank.Instance.CurrencyList[index - 1]);
+                    request.Channel.SendMessage(request.Id, "Ingrese el saldo inicial de la cuenta:");
+                }
+                else
+                {
+                    request.Channel.SendMessage(request.Id, "Debe ingresar el índece correspondiente.");
+                    request.Channel.SendMessage(request.Id, "Ingrese el tipo de moneda de la cuenta:\n" + Bank.Instance.ShowCurrencyList());
+                }
+            }
+            else if (request.Temp.ContainsKey("currency") && !request.Temp.ContainsKey("amount"))
+            {
+                float amount;
+                if (float.TryParse(request.Message, out amount) && amount > 0)
+                {
+                    request.Temp.Add("amount", amount);
+                    request.Channel.SendMessage(request.Id, "Ingrese el objetivo de la cuenta:");
+                }
+                else
+                {
+                    request.Channel.SendMessage(request.Id, "Debe ingresar un valor válido.");
+                    request.Channel.SendMessage(request.Id, "Ingrese el saldo inicial de la cuenta:");
+                }
+            }
+            else if (request.Temp.ContainsKey("amount") && !request.Temp.ContainsKey("objective"))
+            {
+                float amount;
+                if (float.TryParse(request.Message, out amount) && amount > 0)
+                {
+                    request.Temp.Add("objective", amount);
+                }
+                else
+                {
+                    request.Channel.SendMessage(request.Id, "Debe ingresar un valor válido.");
+                    request.Channel.SendMessage(request.Id, "Ingrese el objetivo de la cuenta:");
+                }
+            }
+
+            if (request.Temp.ContainsKey("type") && request.Temp.ContainsKey("name") && request.Temp.ContainsKey("currency") && request.Temp.ContainsKey("amount") && request.Temp.ContainsKey("objective"))
+            {
+                var type = request.GetDictionaryValue<AccountType>("type");
+                var name = request.GetDictionaryValue<string>("name");
+                var currency = request.GetDictionaryValue<Currency>("currency");
+                var amount = request.GetDictionaryValue<float>("amount");
+                var objective = request.GetDictionaryValue<float>("objective");
+
+                var account = request.User.AddAccount(type, name, currency, amount, objective);
+
+                if (account != null)
+                {
+                    request.Channel.SendMessage(request.Id, "Cuenta creada exitosamente.");
+                }
+                else
+                {
+                    request.Channel.SendMessage(request.Id, "Ha ocurrido un problema.");
+                }
+
+                request.Temp.Clear();
+                request.State = State.Dispatcher;
+            }
+        }
+    }
 }

@@ -1,10 +1,10 @@
 namespace Bankbot
 {
-    public class CreateUserCondition : ICondition<Chats>
+    public class CreateUserCondition : ICondition<Conversation>
     {
-        public bool IsSatisfied(Chats request)
+        public bool IsSatisfied(Conversation request)
         {
-            return request.State == State.CreateUsername || request.State == State.CreatePassword;
+            return request.State == State.CreateUser;
         }
     }
 }

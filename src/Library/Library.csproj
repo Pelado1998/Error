@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\TelegramBot\TelegramLibrary.csproj" />
-    <ProjectReference Include="..\GoogleDrive\GoogleDriveLibrary.csproj" />
+    <PackageReference Include="Telegram.Bot" Version="15.5.1" />
   </ItemGroup>
 
   <PropertyGroup>

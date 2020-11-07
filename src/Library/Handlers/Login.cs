@@ -1,60 +1,40 @@
-using System;
-using System.Collections.Generic;
-
 namespace Bankbot
 {
-    //Implementacion
-    public class Login : AbstractHandler<Chats>
+    public class Login : AbstractHandler<Conversation>
     {
         public Login(LoginCondition condition) : base(condition)
         {
         }
 
-        protected override void handleRequest(Chats request)
-        {  
-            switch (request.State)
-            {
-                case State.LoginUsername:
-
-                    request.LoginUsername = request.Message.Text;
-                    request.State = State.LoginPassword;
-                    System.Console.WriteLine("Ingrese la contraseña");
-
-                break;
-                case State.LoginPassword:
-                    request.LoginPassword = request.Message.Text;
-
-                    User user = AllUsers.Instance.Login(request.LoginUsername,request.LoginPassword);
-                    
-                    if (user != null)
-                    {
-                        request.User = user;
-                        System.Console.WriteLine("Hola " + user.UserName + "!\t👋🏻 Bienvenido!!\n");
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Wrong User or Password");
-                        request.State = State.Idle;
-                    }
-                    LoginState(request);
-                    Init.Options(request);                    
-                    request.CleanTemp();
-                break;
-            }
-        }
-        public static void LoginState(Chats request)
+        protected override void handleRequest(Conversation request)
         {
-            if(request.User == null )
+            if (!request.Temp.ContainsKey("username"))
             {
+                request.Temp.Add("username", request.Message);
+                request.Channel.SendMessage(request.Id, "Ingrese una contraseña:");
+            }
+            else if (request.Temp.ContainsKey("username") && !request.Temp.ContainsKey("password"))
+            {
+                request.Temp.Add("password", request.Message);
+            }
+
+            if (request.Temp.ContainsKey("username") && request.Temp.ContainsKey("password"))
+            {
+                string userName = request.GetDictionaryValue<string>("username");
+                string password = request.GetDictionaryValue<string>("password");
+
+                request.User = Session.Instance.GetUser(userName, password);
+
+                if (request.User != null)
+                {
+                    request.Channel.SendMessage(request.Id, "Se ha conectado correctamente.");
+                }
+                else
+                {
+                    request.Channel.SendMessage(request.Id, "Credenciales incorrectas, vuelva a intentarlo.");
+                }
+                request.Temp.Clear();
                 request.State = State.Dispatcher;
-            }
-            else if (request.User.Accounts.Count == 0)
-            {
-                request.State = State.Loged;
-            }
-            else if (request.User.Accounts.Count != 0)
-            {
-                request.State = State.LogedAccounts;
             }
         }
     }
