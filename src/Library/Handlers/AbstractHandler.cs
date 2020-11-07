@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
-    public abstract class AbstractHandler <T>
+    public abstract class AbstractHandler<T>
     {
-        protected abstract void handleRequest (T request);
-        private ICondition <T> condition;
-        public AbstractHandler <T> Succesor {get;set;}
+        protected abstract void handleRequest(T request);
+        private ICondition<T> condition;
+        public AbstractHandler<T> Succesor { get; set; }
         protected AbstractHandler(ICondition<T> condition)
         {
             this.condition = condition;
@@ -20,11 +20,16 @@ namespace Bankbot
             }
             else
             {
-                if (this.Succesor!=null)
+                if (this.Succesor != null)
                 {
                     this.Succesor.Handler(request);
                 }
             }
+        }
+
+        public void AddSuccesor(AbstractHandler<T> handler)
+        {
+            this.Succesor = handler;
         }
     }
 }

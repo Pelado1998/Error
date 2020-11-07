@@ -23,19 +23,31 @@ namespace Bankbot
             }
             else if (request.State == State.Loged)
             {
-                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t1-Conversion\n\t2-CreateUser\n\t3-DeleteUser\n\t4-CreateAccount");
+                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t0-Login\n\t1-Conversion\n\t2-CreateUser");
             }
-            else if (request.State == State.LogedAccounts)
+            else if (request.User.Accounts.Count == 0)
             {
-                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t1-Conversion\n\t2-CreateUser\n\t3-DeleteUser\n\t4-CreateAccount\n\t5-DeleteAccount\n\t6-MakeTransaction");
+                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t1-Conversion\n\t2-CreateUser\n\t3-Logout\n\t4-DeleteUser\n\t5-CreateAccount");
+            }
+            else if (request.User.Accounts.Count != 0)
+            {
+                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t1-Conversion\n\t2-CreateUser\n\t3--Logout\n\t4-DeleteUser\n\t5-CreateAccount\n\t6-DeleteAccount\n\t7-MakeTransaction");
             }
         }
-    }
-    public class InitCondition : ICondition<Chats>
-    {
-        public bool IsSatisfied(Chats request)
+        public static void RenewState(Chats request)
         {
-            return request.State == State.Idle || request.State == State.Loged || request.State == State.LogedAccounts;
+            if(request.User == null)
+            {
+                request.State = State.Dispatcher;
+            }
+            else if (request.User.Accounts.Count == 0)
+            {
+                request.State = State.Loged;
+            }
+            else if (request.User.Accounts.Count != 0)
+            {
+                request.State = State.LogedAccounts;    
+            }
         }
     }
 }

@@ -58,36 +58,35 @@ namespace Bankbot
         {
             switch (to.CodeISO)
             {
-                case "USD":
+                case "USS":
                     switch (from.CodeISO)
                     {
                         case "UYU":
                             return amount * 0.025;
-                        case "ARS":
+                        case "ARG":
                             return amount * 5;
                     }
                     break;
                 case "UYU":
                     switch (from.CodeISO)
                     {
-                        case "USD":
+                        case "USS":
                             return amount * 40;
-                        case "ARS":
+                        case "ARG":
                             return amount * 500;
                     }
                     break;
-                case "ARS":
+                case "ARG":
                     switch (from.CodeISO)
                     {
                         case "UYU":
                             return amount * 0.2;
-                        case "USD":
+                        case "USS":
                             return amount * 0.04;
                     }
                     break;
                 default:
                     return amount;
-
             }
             return amount;
         }
@@ -96,7 +95,6 @@ namespace Bankbot
              StringBuilder currencies = new StringBuilder();
              foreach (Currency currency in Bank.Instance.CurrencyList)
              {
-                 System.Console.WriteLine(currency.CodeISO);
                  currencies.Append($"{Bank.Instance.CurrencyList.IndexOf(currency) + 1} - {currency.CodeISO}\n");
              }
              return currencies.ToString();

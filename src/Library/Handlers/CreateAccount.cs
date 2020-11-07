@@ -27,7 +27,7 @@ namespace Bankbot
                     int index;
                     if (Int32.TryParse(request.Message.Text,out index) && index<=Account.AmountTypes())
                     {
-                        request.AccountType = (AccountType) index;
+                        request.AccountType = (AccountType) index;  //TODO:
                     }
                     else
                     {
@@ -42,10 +42,11 @@ namespace Bankbot
                 case State.CreateAccountCurrency:
 
                     int idx;
-                    if (Int32.TryParse(request.Message.Text,out idx) && Bank.Instance.CurrencyList.Count-1 <=idx)
+                    if (Int32.TryParse(request.Message.Text,out idx) && idx<=Bank.Instance.CurrencyList.Count )
                     {
                         request.AccountCurrency = Bank.Instance.CurrencyList[idx];
                         request.State = State.CreateAccountAmount;
+                        System.Console.WriteLine("Ingrese un monto para la cuenta");
                     }
                     else
                     {
@@ -53,13 +54,12 @@ namespace Bankbot
                         System.Console.WriteLine("Ingrese una divisa\n" + ShowCurrencyList());
                         return;
                     }
-                    System.Console.WriteLine("Ingrese un monto para la cuenta");
 
                 break;
                 case State.CreateAccountAmount:
 
-                    int amount;
-                    if (Int32.TryParse(request.Message.Text,out amount))
+                    double amount;
+                    if (Double.TryParse(request.Message.Text,out amount))
                     {
                         request.AccountAmount = amount;
                         request.State = State.CreateAccountObjective;
@@ -67,6 +67,7 @@ namespace Bankbot
                     else
                     {
                         System.Console.WriteLine("Ingrese un valor válido");
+                        System.Console.WriteLine("Ingrese un monto para la cuenta");
                         return;
                     }
                     System.Console.WriteLine("Ingrese un objetivo para la cuenta");
@@ -88,27 +89,10 @@ namespace Bankbot
                     request.User.AddAccount(request.AccountName, request.AccountType,request.AccountCurrency,request.AccountAmount,request.AccountObjective);
                     System.Console.WriteLine("Cuenta creada con éxito!");
                     request.CleanTemp();
-
+                    Init.Options(request);
+                    Login.LoginState(request);
                 break;
             }
         } 
     }        
-        
-
-    
-    public class CreateAccountCondition : Bankbot.ICondition<Chats>
-    {
-        public bool IsSatisfied(Chats request)
-        {
-                return request.User != null
-                &&
-                (
-                   request.State == State.CreateAccountName
-                && request.State == State.CreateAccountType
-                && request.State == State.CreateAccountCurrency
-                && request.State == State.CreateAccountAmount
-                && request.State == State.CreateAccountObjective
-                );
-        }
-    }
 }

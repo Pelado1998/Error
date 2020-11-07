@@ -21,35 +21,41 @@ namespace Bankbot
                     }
                 break;
                 case "1":
-                    request.State = State.ConvertFrom;
-                    System.Console.WriteLine("Ingrese la divisa desde la cual quiere convertir");
+                    request.State = State.ConvertAmount;
+                    System.Console.WriteLine("Ingrese la cantidad que desea convertir");
                 break;
                 case "2":
                     request.State = State.CreateUsername;
                     System.Console.WriteLine("Ingrese un Username");
                 break;
                 case "3":
-                    if (request.State == State.Loged || request.State == State.LogedAccounts )
-                    {
-                        request.State = State.DeleteUserName;
-                        System.Console.WriteLine("Ingrese el Username que quiere eliminar");  
-                    }
+                    request.State = State.Dispatcher;
+                    request.User = null;
+                    System.Console.WriteLine("Usted se ha deslogueado");
+                    Init.Options(request);
                 break;
                 case "4":
+                    if (request.State == State.Loged || request.State == State.LogedAccounts )
+                    {
+                        request.State = State.DeleteUser;
+                        System.Console.WriteLine("Ingrese el Username de su usuario para eliminarlo");  
+                    }
+                break;
+                case "5":
                     if (request.State == State.Loged || request.State == State.LogedAccounts )
                     {
                         request.State = State.CreateAccountName;
                         System.Console.WriteLine("Ingrese un AccountName");
                     } 
                 break;
-                case "5":
+                case "6":
                     if (request.State == State.LogedAccounts )
                     {
-                        request.State = State.DeleteAccountName;
+                        request.State = State.DeleteAccount;
                         System.Console.WriteLine("Ingrese el AccontName de la cuenta que quiere borrar");
                     }
                 break;
-                case "6":
+                case "7":
                     if (request.State == State.LogedAccounts )
                     {
                         request.State = State.CreateTransactionAccount;
@@ -61,13 +67,6 @@ namespace Bankbot
                     Init.Options(request);
                 break;
             }
-        }
-    }
-    public class DispatcherCondition : ICondition<Chats>
-    {
-        public bool IsSatisfied(Chats request)
-        {
-            return request.State == State.Dispatcher || request.State == State.Loged || request.State == State.LogedAccounts;
         }
     }
 }

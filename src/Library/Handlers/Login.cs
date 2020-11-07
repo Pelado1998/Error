@@ -34,6 +34,7 @@ namespace Bankbot
                     else
                     {
                         System.Console.WriteLine("Wrong User or Password");
+                        request.State = State.Idle;
                     }
                     LoginState(request);
                     Init.Options(request);                    
@@ -45,7 +46,7 @@ namespace Bankbot
         {
             if(request.User == null )
             {
-                request.State = State.Idle;
+                request.State = State.Dispatcher;
             }
             else if (request.User.Accounts.Count == 0)
             {
@@ -55,13 +56,6 @@ namespace Bankbot
             {
                 request.State = State.LogedAccounts;
             }
-        }
-    }
-    public class LoginCondition : ICondition<Chats>
-    {
-        public bool IsSatisfied(Chats request)
-        {
-            return request.State == State.LoginUsername || request.State == State.LoginPassword ;
         }
     }
 }

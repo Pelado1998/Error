@@ -15,11 +15,4 @@ namespace Bankbot
             System.Console.WriteLine("No te entendi. Vuelve a intentarlo.");
         }
     }
-    public class DefaultCondition : ICondition<Chats>
-    {
-        public bool IsSatisfied(Chats request)
-        {
-            return true;
-        }
-    }
 }

@@ -19,6 +19,7 @@ namespace Bankbot
         public List<Account> Accounts { get; set; }
         public List<String> IncomeList { get; set; }
         public List<String> OutcomeList { get; set; }
+        public static object Empty { get; internal set; }
 
         public User(string userName, string password)
         {
@@ -65,16 +66,17 @@ namespace Bankbot
         /// Quita un objeto Account de la lista List<Account>
         /// </summary>
         /// <param name="account"></param>
-        public void RemoveAcount(Account account)
+        public void RemoveAccount(string accountName)
         {
-            if (this.Accounts.Contains(account))
+            foreach (Account account in this.Accounts)
             {
-                this.Accounts.Remove(account);
+                if (account.Name == accountName)
+                {
+                    this.Accounts.Remove(account);
+                    return;
+                }
             }
-            else
-            {
-                System.Console.WriteLine("No se ha encontrado la cuenta " + account.Name);
-            }
+            System.Console.WriteLine("No se ha encontrado la cuenta " + accountName);
         }
 
         /// <summary>
@@ -258,6 +260,13 @@ namespace Bankbot
             pbkdf2.IterationCount = iterations;
             return pbkdf2.GetBytes(outputBytes);
         }
-
+        public bool AccountExist(string name)
+        {
+            foreach (Account account in this.Accounts)
+            {
+                if (account.Name == name) return true;
+            }
+            return false;
+        }
     }
 }
