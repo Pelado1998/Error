@@ -4,7 +4,7 @@ namespace Bankbot
     {
         public bool IsSatisfied(Chats request)
         {
-            return request.State == State.Idle && request.Message.Text == string.Empty;
+            return request.State == State.Idle;
         }
     }
 }
