@@ -4,7 +4,7 @@ namespace Bankbot
     {
         public bool IsSatisfied(Conversation request)
         {
-            return request.State == State.Init;
+            return AllCommands.Instance(request.Data.DataDictionary["LastCommand"])
         }
     }
 }

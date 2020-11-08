@@ -26,5 +26,10 @@ namespace Bankbot
                 }
             }
         }
+
+        public void AddSuccesor(AbstractHandler<T> handler)
+        {
+            this.Succesor = handler;
+        }
     }
 }

@@ -9,7 +9,8 @@ namespace Bankbot
     {
         CuentaDeAhorro = 1,
         Debito = 2,
-        Credito = 3
+        Credito = 3,
+        Empty = 4
     }
     /// <summary>
     /// Esta clase cumple con el principio de asignacion de responsabilidades GRASP, experto en información. 

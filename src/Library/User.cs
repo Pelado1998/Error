@@ -19,6 +19,7 @@ namespace Bankbot
         public List<Account> Accounts { get; set; }
         public List<String> IncomeList { get; set; }
         public List<String> OutcomeList { get; set; }
+        public static object Empty { get; internal set; }
 
         public User(string username, string password)
         {

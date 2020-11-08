@@ -1,7 +1,7 @@
-using System;
-using Telegram.Bot;
-using Telegram.Bot.Args;
-using Telegram.Bot.Types;
+// using System;
+// using Telegram.Bot;
+// using Telegram.Bot.Args;
+// using Telegram.Bot.Types;
 
 namespace Bankbot
 {
@@ -29,12 +29,12 @@ namespace Bankbot
         {
             this.StartUp();
 
-            Bot.OnMessage += OnMessage;
+//             Bot.OnMessage += OnMessage;
 
-            Bot.StartReceiving();
+//             Bot.StartReceiving();
 
-            Console.WriteLine("Press any key to exit");
-            Console.ReadKey();
+//             Console.WriteLine("Press any key to exit");
+//             Console.ReadKey();
 
             Bot.StopReceiving();
         }
