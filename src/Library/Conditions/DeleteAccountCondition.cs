@@ -1,10 +1,15 @@
+using System;
+
 namespace Bankbot
 {
-    public class DeleteAccountCondition : ICondition<Conversation>
+    public class DeleteAccountCondition : ICondition<IMessage>
     {
-        public bool IsSatisfied(Conversation request)
+        public bool IsSatisfied(IMessage request)
         {
-            return request.State == State.DeleteAccount;
+            Data data = Data.Empty;
+            return AllChats.Instance.ChatsDictionary.TryGetValue(request.id,out data)
+                && (String) data.DataDictionary["LastCommand"] == "\\DeleteAccount"
+            ;
         }
     }
 }

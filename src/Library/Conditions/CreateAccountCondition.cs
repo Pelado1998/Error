@@ -1,11 +1,15 @@
+using System;
+
 namespace Bankbot
 {
-    public class CreateAccountCondition : Bankbot.ICondition<Conversation>
+    public class CreateAccountCondition : Bankbot.ICondition<IMessage>
     {
-        public bool IsSatisfied(Conversation request)
+        public bool IsSatisfied(IMessage request)
         {
-            return request.User != null && request.State == State.CreateAccount;
-
+            Data data = Data.Empty;
+            return AllChats.Instance.ChatsDictionary.TryGetValue(request.id,out data)
+                && (String) data.DataDictionary["LastCommand"] == "\\CreateAccount"
+            ;
         }
     }
 }

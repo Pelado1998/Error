@@ -6,105 +6,87 @@ using static Bankbot.Bank;
 
 namespace Bankbot
 {
-    public class CreateAccount : AbstractHandler<Conversation>
+    public class CreateAccount : AbstractHandler<IMessage>
     {
-        public CreateAccount(ICondition<Conversation> condition) : base(condition)
+        public CreateAccount(ICondition<IMessage> condition) : base(condition)
         {
         }
 
-        protected override void handleRequest(Conversation request)
+        protected override void handleRequest(IMessage request)
         {
-
-            if (!request.Temp.ContainsKey("type"))
+            if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && request.message== "\\CreateAccount")
             {
-                int index;
-                if (Int32.TryParse(request.Message, out index) && index < Enum.GetNames(typeof(AccountType)).Length)
+                System.Console.WriteLine("Ingrese un AccountName");
+            }
+            else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).AccountExist(request.message)))
+            {
+                System.Console.WriteLine("Esa cuenta ya existe. Ingrese otro AccountName que no exista por favor");
+            }
+            else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && !(((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).AccountExist(request.message)))
+            {
+                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] = request.message;
+                System.Console.WriteLine("Ingrese un AccountType:\n" + ShowAccountType());
+            }
+            else if ((AccountType)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountType"] == AccountType.Empty)
+            {
+                int idx;
+                if (Int32.TryParse(request.message, out idx) && idx<=Account.AmountTypes() && idx>0 )
                 {
-                    request.Temp.Add("type", (AccountType)index - 1);
-                    request.Channel.SendMessage(request.Id, "Ingrese un nombre de cuenta:");
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountType"] = (AccountType) idx;
+                    System.Console.WriteLine("Ingrese un Currency:\n" + ShowCurrencyList()); 
                 }
-                else
+                else 
                 {
-                    request.Channel.SendMessage(request.Id, "Debe ingresar el índece correspondiente.");
-                    request.Channel.SendMessage(request.Id, "Ingrese el tipo de cuenta:\n" + Account.ShowAccountType());
+                    System.Console.WriteLine("Ingrese un valor válido" + ShowAccountType());
                 }
             }
-            else if (!request.Temp.ContainsKey("name"))
+            else if ((Currency)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountCurrency"] == Currency.Empty)
             {
-                if (!request.User.AccountNameExists(request.Message))
+                int idx;
+                if (Int32.TryParse(request.message, out idx) && idx<=Bank.Instance.CurrencyList.Count && idx>0 )
                 {
-                    request.Temp.Add("name", request.Message);
-                    request.Channel.SendMessage(request.Id, "Ingrese el tipo de moneda de la cuenta:\n" + Bank.Instance.ShowCurrencyList());
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountCurrency"] = Bank.Instance.CurrencyList[idx];
+                    System.Console.WriteLine("Ingrese un Ammount\n"); 
                 }
-                else
+                else 
                 {
-                    request.Channel.SendMessage(request.Id, "Ya existe una cuenta con este nombre, vuelva a ingresar un nombre de cuenta.");
+                    System.Console.WriteLine("Ingrese un valor válido" + ShowCurrencyList());
                 }
             }
-            else if (!request.Temp.ContainsKey("currency"))
+            else if ((Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountAmount"] == 0.0)
             {
-                int index;
-                if (Int32.TryParse(request.Message, out index) && index < Bank.Instance.CurrencyList.Count)
+                Double ammount;
+                if (Double.TryParse(request.message, out ammount) && ammount>0 )
                 {
-                    request.Temp.Add("currency", Bank.Instance.CurrencyList[index - 1]);
-                    request.Channel.SendMessage(request.Id, "Ingrese el saldo inicial de la cuenta:");
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountAmount"] = ammount;
+                    System.Console.WriteLine("Ingrese un Objetive"); 
                 }
                 else
                 {
-                    request.Channel.SendMessage(request.Id, "Debe ingresar el índece correspondiente.");
-                    request.Channel.SendMessage(request.Id, "Ingrese el tipo de moneda de la cuenta:\n" + Bank.Instance.ShowCurrencyList());
+                    System.Console.WriteLine("Ingrese un valor válido por favor");
                 }
             }
-            else if (!request.Temp.ContainsKey("amount"))
+            else if ((Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountObjective"] == 0.0)
             {
-                float amount;
-                if (float.TryParse(request.Message, out amount) && amount > 0)
+                Double ammount;
+                if (Double.TryParse(request.message, out ammount) && ammount>0 )
                 {
-                    request.Temp.Add("amount", amount);
-                    request.Channel.SendMessage(request.Id, "Ingrese el objetivo de la cuenta:");
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountObjective"] = ammount;
+                    Account account = new Account
+                    (
+                        (String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"],
+                        (AccountType)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountType"],
+                        (Currency)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountCurrency"],
+                        (Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountAmount"],
+                        (Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountObjective"]
+                    );
+                    ((User) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).Accounts.Add(account);
+                    System.Console.WriteLine("Cuenta creada con éxito");
                 }
                 else
                 {
-                    request.Channel.SendMessage(request.Id, "Debe ingresar un valor válido.");
-                    request.Channel.SendMessage(request.Id, "Ingrese el saldo inicial de la cuenta:");
+                    System.Console.WriteLine("Ingrese un valor válido por favor");
                 }
-            }
-            else if (!request.Temp.ContainsKey("objective"))
-            {
-                float amount;
-                if (float.TryParse(request.Message, out amount) && amount > 0)
-                {
-                    request.Temp.Add("objective", amount);
-                }
-                else
-                {
-                    request.Channel.SendMessage(request.Id, "Debe ingresar un valor válido.");
-                    request.Channel.SendMessage(request.Id, "Ingrese el objetivo de la cuenta:");
-                }
-            }
-
-            if (request.Temp.ContainsKey("type") && request.Temp.ContainsKey("name") && request.Temp.ContainsKey("currency") && request.Temp.ContainsKey("amount") && request.Temp.ContainsKey("objective"))
-            {
-                var type = request.GetDictionaryValue<AccountType>("type");
-                var name = request.GetDictionaryValue<string>("name");
-                var currency = request.GetDictionaryValue<Currency>("currency");
-                var amount = request.GetDictionaryValue<float>("amount");
-                var objective = request.GetDictionaryValue<float>("objective");
-
-                var account = request.User.AddAccount(type, name, currency, amount, objective);
-
-                if (account != null)
-                {
-                    request.Channel.SendMessage(request.Id, "Cuenta creada exitosamente.");
-                }
-                // Exception
-                else
-                {
-                    request.Channel.SendMessage(request.Id, "Ha ocurrido un problema.");
-                }
-
-                request.Temp.Clear();
-                request.State = State.Dispatcher;
             }
         }
     }

@@ -15,5 +15,9 @@ namespace Bankbot
         {
             TelegramBot.Instance.Start();
         }
+        public static IMessage Read()
+        {
+            return new TestMessage(System.Console.ReadLine());
+        }
     }
 }

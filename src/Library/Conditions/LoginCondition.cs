@@ -1,10 +1,16 @@
+using System;
+
 namespace Bankbot
 {
-    public class LoginCondition : ICondition<Conversation>
+    public class LoginCondition : ICondition<IMessage>
     {
-        public bool IsSatisfied(Conversation request)
+        public bool IsSatisfied(IMessage request)
         {
-            return request.State == State.Login;
+            Data data = Data.Empty;
+            return AllChats.Instance.ChatsDictionary.TryGetValue(request.id,out data)
+                && (String) data.DataDictionary["LastCommand"] == "\\Login"
+                && data.DataDictionary["User"] == User.Empty
+            ;
         }
     }
 }

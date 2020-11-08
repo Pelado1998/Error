@@ -28,7 +28,6 @@ namespace Bankbot
         {
             this.CurrencyList = new List<Currency>() { new Currency("UYU", "U$"), new Currency("USS", "US$"), new Currency("ARG", "AR$") };
         }
-
         public void AddCurrency(string codeISO, string symbol)
         {
             foreach (var currency in CurrencyList)
@@ -43,7 +42,6 @@ namespace Bankbot
             Currency newCurrency = new Currency(codeISO, symbol);
             CurrencyList.Add(newCurrency);
         }
-
         public void RemoveCurrency(string codeISO, string symbol)
         {
             foreach (var currency in CurrencyList)
@@ -56,36 +54,35 @@ namespace Bankbot
                 System.Console.WriteLine("Esta moneda no existe");
             }
         }
-
-        public float Convert(float amount, Currency from, Currency to)
+        public static double Convert(double amount, Currency from, Currency to)
         {
             switch (to.CodeISO)
             {
-                case "USD":
+                case "USS":
                     switch (from.CodeISO)
                     {
                         case "UYU":
-                            return amount * 0.025f;
-                        case "ARS":
+                            return amount * 0.025;
+                        case "ARG":
                             return amount * 5;
                     }
                     break;
                 case "UYU":
                     switch (from.CodeISO)
                     {
-                        case "USD":
+                        case "USS":
                             return amount * 40;
-                        case "ARS":
+                        case "ARG":
                             return amount * 500;
                     }
                     break;
-                case "ARS":
+                case "ARG":
                     switch (from.CodeISO)
                     {
                         case "UYU":
-                            return amount * 0.2f;
-                        case "USD":
-                            return amount * 0.04f;
+                            return amount * 0.2;
+                        case "USS":
+                            return amount * 0.04;
                     }
                     break;
                 default:
@@ -93,14 +90,14 @@ namespace Bankbot
             }
             return amount;
         }
-        public string ShowCurrencyList()
-        {
-            StringBuilder currencies = new StringBuilder();
-            foreach (Currency currency in CurrencyList)
-            {
-                currencies.Append($"{Bank.Instance.CurrencyList.IndexOf(currency) + 1} - {currency.CodeISO}\n");
-            }
-            return currencies.ToString();
-        }
+        public static string ShowCurrencyList()
+         {
+             StringBuilder currencies = new StringBuilder();
+             foreach (Currency currency in Bank.Instance.CurrencyList)
+             {
+                 currencies.Append($"{Bank.Instance.CurrencyList.IndexOf(currency) + 1} - {currency.CodeISO}\n");
+             }
+             return currencies.ToString();
+         }
     }
 }

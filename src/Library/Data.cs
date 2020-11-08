@@ -16,6 +16,9 @@ namespace Bankbot
                 return instance;
             }
         }
+
+        public static Data Empty { get; internal set; }
+
         private Data()
         {
             this.DataDictionary = new Dictionary<String,Object>(); 
@@ -45,12 +48,13 @@ namespace Bankbot
         }
         public void ClearLastCommand()
         {
-            this.DataDictionary["LastCommand"] = String.Empty;
+            this.DataDictionary["LastCommand"] = "\\Init";
         }
 
         public void ClearUser()
         {
             this.DataDictionary["User"] = User.Empty;
+            ClearLastCommand();
         }
 
         public void ClearConvertion()
@@ -58,6 +62,7 @@ namespace Bankbot
             this.DataDictionary["ConvertFrom"] = Currency.Empty;
             this.DataDictionary["ConvertTo"] = Currency.Empty;
             this.DataDictionary["ConvertAmount"] = 0.0;
+            ClearLastCommand();
         }
 
         public void ClearTransaction()
@@ -67,12 +72,14 @@ namespace Bankbot
             this.DataDictionary["CreateTransactionCurrency"] = Currency.Empty;
             this.DataDictionary["CreateTransactionAmount"] = 0.0;
             this.DataDictionary["CreateTransactionItem"] = String.Empty;
+            ClearLastCommand();
         }
 
         public void ClearDeleteAccount()
         {
             this.DataDictionary["DeleteAccount"] = String.Empty;
             this.DataDictionary["DeleteAccountConfirmation"] = String.Empty;
+            ClearLastCommand();
         }
 
         public void ClearCreateAccount()
@@ -82,24 +89,28 @@ namespace Bankbot
             this.DataDictionary["CreateAccountCurrency"] = Currency.Empty;
             this.DataDictionary["CreateAccountAmount"] = 0.0;
             this.DataDictionary["CreateAccountObjective"] = 0.0;
+            ClearLastCommand();
         }
 
         public void ClearLogin()
         {
             this.DataDictionary["LoginUsername"] = String.Empty;
             this.DataDictionary["LoginPassword"] = String.Empty;
+            ClearLastCommand();
         }
 
         public void ClearDeleteUser()
         {
             this.DataDictionary["DeleteUser"] = String.Empty;
             this.DataDictionary["DeleteUserConfirmation"] = String.Empty;
+            ClearLastCommand();
         }
 
         public void ClearCreateUser()
         {
             this.DataDictionary["CreateUserPassword"] = String.Empty;
             this.DataDictionary["CreateUserUsername"] = String.Empty;
+            ClearLastCommand();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Bankbot
         IObservable Obvservables { get; set; }
         void SendAlert()
         {
-            //TODO
+            //TODO:
         }
     }
 }

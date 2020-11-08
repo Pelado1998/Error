@@ -26,7 +26,7 @@ namespace Bankbot
             {
                 if(user.UserName == username && user.Login(password)) return user;
             }
-            return null;
+            return User.Empty;
         }
         public void AddUser(string username, string password)
         {
