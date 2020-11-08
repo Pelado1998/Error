@@ -1,6 +1,3 @@
-using System;
-using System.Text;
-
 namespace Bankbot
 {
     public class Dispatcher : AbstractHandler<Conversation>
@@ -15,14 +12,23 @@ namespace Bankbot
             {
                 case "/createuser":
 
-                    request.State = State.CreateUser;
-                    request.Channel.SendMessage(request.Id, "Ingrese un nuevo nombre de usuario:");
+                    if (request.User == null)
+                    {
+                        request.State = State.CreateUser;
+                        request.Channel.SendMessage(request.Id, "Ingrese un nuevo nombre de usuario:");
+                        break;
+                    }
+                    request.Channel.SendMessage(request.Id, "Debes estar desconectado para realizar esta operación.");
                     break;
 
                 case "/login":
-
-                    request.State = State.Login;
-                    request.Channel.SendMessage(request.Id, "Ingrese un nombre de usuario:");
+                    if (request.User == null)
+                    {
+                        request.State = State.Login;
+                        request.Channel.SendMessage(request.Id, "Ingrese un nombre de usuario:");
+                        break;
+                    }
+                    request.Channel.SendMessage(request.Id, "Debes estar desconectado para realizar esta operación.");
                     break;
 
                 case "/logout":
@@ -31,11 +37,10 @@ namespace Bankbot
                     {
                         request.User = null;
                         request.Channel.SendMessage(request.Id, "Se ha desconectado correctamente.");
+                        break;
                     }
-                    else
-                    {
-                        request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
-                    }
+                    request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+
                     break;
 
                 case "/createaccount":
@@ -44,18 +49,16 @@ namespace Bankbot
                     {
                         request.State = State.CreateAccount;
                         request.Channel.SendMessage(request.Id, "Ingrese el tipo de cuenta:\n" + Account.ShowAccountType());
+                        break;
+                    }
 
-                    }
-                    else
-                    {
-                        request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
-                    }
+                    request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
                     break;
 
                 case "/convert":
 
                     request.State = State.Converting;
-                    request.Channel.SendMessage(request.Id, "Ingrese la cantidad que desea convertir:");
+                    request.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());
                     break;
 
                 case "/deleteuser":
@@ -68,12 +71,10 @@ namespace Bankbot
                     if (request.User != null)
                     {
                         request.State = State.DeleteAccount;
-                        request.Channel.SendMessage(request.Id, "Ingrese el nombre de cuenta que desea eliminar:");
+                        request.Channel.SendMessage(request.Id, "indique que cuenta desea eliminar:\n" + request.User.ShowAccountList());
+                        break;
                     }
-                    else
-                    {
-                        request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
-                    }
+                    request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
                     break;
 
                 case "/transaction":
@@ -81,11 +82,9 @@ namespace Bankbot
                     {
                         request.State = State.Transaction;
                         request.Channel.SendMessage(request.Id, "Ingrese el tipo de transacción:\n1 - Ingreso\n2 - Gasto");
+                        break;
                     }
-                    else
-                    {
-                        request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
-                    }
+                    request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
                     break;
             }
         }

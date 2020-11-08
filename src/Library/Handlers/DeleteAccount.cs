@@ -11,44 +11,52 @@ namespace Bankbot
 
         protected override void handleRequest(Conversation request)
         {
-            // switch (request.State)
-            // {
-            //     case State.DeleteAccount:
-            //         if (request.User.AccountExist(request.Message.Text))
-            //         {
-            //             request.State = State.DeleteAccountConfirmation;
-            //             request.DeleteAccount = request.Message.Text;
-            //             System.Console.WriteLine("Vuelva a ingresar el AccountName para confirmar que desea eliminarlo");
-            //         }
-            //         else
-            //         {
-            //             System.Console.WriteLine("Esa no es una cuenta válida. Vuelva a intentarlo.");
-            //             Init.Options(request);
-            //             Init.RenewState(request);
-            //         }
+            if (!request.Temp.ContainsKey("account"))
+            {
+                int index;
+                if (Int32.TryParse(request.Message, out index) && index <= request.User.Accounts.Count)
+                {
+                    request.Temp.Add("account", request.User.Accounts[index - 1]);
+                    request.Channel.SendMessage(request.Id, "Ingrese su contraseña para eliminar esta cuenta:");
+                    return;
+                }
+                request.Channel.SendMessage(request.Id, "Debe ingresar el índice correspondiente a la cuenta que desea eliminar.");
+                request.Channel.SendMessage(request.Id, "indique que cuenta desea eliminar:\n" + request.User.ShowAccountList());
+            }
 
-            //         break;
-            //     case State.DeleteAccountConfirmation:
-            //         request.DeleteAccountConfirmation = request.Message.Text;
-            //         if (request.DeleteAccount == request.DeleteAccountConfirmation)
-            //         {
-            //             request.User.RemoveAccount(request.Message.Text);
-            //             System.Console.WriteLine("Cuenta Borrada.");
-            //             request.CleanTemp();
-            //             Login.LoginState(request);
-            //             Init.Options(request);
-            //         }
-            //         else
-            //         {
-            //             System.Console.WriteLine("Accion abortada porque las cuentas no coincidieron.");
-            //             request.CleanTemp();
-            //             Login.LoginState(request);
-            //             Init.Options(request);
-            //         }
+            else if (!request.Temp.ContainsKey("password"))
+            {
+                if (request.User.Login(request.Message))
+                {
+                    request.Channel.SendMessage(request.Id, "¿Esta seguro que desea realizar esta operación? Vuelva a ingresar su contraseña para confirmar.");
+                    request.Temp.Add("confirmation", "");
+                    return;
+                }
 
-            //         break;
-            // }
+                request.Channel.SendMessage(request.Id, "Credenciales incorrectas. Ingrese /deleteaccount para volver a realizar esta operación.");
+                request.Temp.Clear();
+                request.State = State.Dispatcher;
+            }
 
+            else if (!request.Temp.ContainsKey("confirmation"))
+            {
+                if (request.User.Login(request.Message))
+                {
+                    Account account = request.GetDictionaryValue<Account>("account");
+                    request.User.RemoveAcount(account);
+                    if (!request.User.Accounts.Contains(account))
+                    {
+                        request.Channel.SendMessage(request.Id, "Cuenta eliminada correctamente.");
+                    }
+                    else
+                    {
+                        request.Channel.SendMessage(request.Id, "Credenciales incorrectas. Ingrese /deleteaccount para volver a realizar esta operación.");
+                    }
+
+                    request.Temp.Clear();
+                    request.State = State.Dispatcher;
+                }
+            }
         }
     }
 }

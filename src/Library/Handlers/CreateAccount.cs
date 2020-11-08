@@ -29,7 +29,7 @@ namespace Bankbot
                     request.Channel.SendMessage(request.Id, "Ingrese el tipo de cuenta:\n" + Account.ShowAccountType());
                 }
             }
-            else if (request.Temp.ContainsKey("type") && !request.Temp.ContainsKey("name"))
+            else if (!request.Temp.ContainsKey("name"))
             {
                 if (!request.User.AccountNameExists(request.Message))
                 {
@@ -41,7 +41,7 @@ namespace Bankbot
                     request.Channel.SendMessage(request.Id, "Ya existe una cuenta con este nombre, vuelva a ingresar un nombre de cuenta.");
                 }
             }
-            else if (request.Temp.ContainsKey("name") && !request.Temp.ContainsKey("currency"))
+            else if (!request.Temp.ContainsKey("currency"))
             {
                 int index;
                 if (Int32.TryParse(request.Message, out index) && index < Bank.Instance.CurrencyList.Count)
@@ -55,7 +55,7 @@ namespace Bankbot
                     request.Channel.SendMessage(request.Id, "Ingrese el tipo de moneda de la cuenta:\n" + Bank.Instance.ShowCurrencyList());
                 }
             }
-            else if (request.Temp.ContainsKey("currency") && !request.Temp.ContainsKey("amount"))
+            else if (!request.Temp.ContainsKey("amount"))
             {
                 float amount;
                 if (float.TryParse(request.Message, out amount) && amount > 0)
@@ -69,7 +69,7 @@ namespace Bankbot
                     request.Channel.SendMessage(request.Id, "Ingrese el saldo inicial de la cuenta:");
                 }
             }
-            else if (request.Temp.ContainsKey("amount") && !request.Temp.ContainsKey("objective"))
+            else if (!request.Temp.ContainsKey("objective"))
             {
                 float amount;
                 if (float.TryParse(request.Message, out amount) && amount > 0)
@@ -97,6 +97,7 @@ namespace Bankbot
                 {
                     request.Channel.SendMessage(request.Id, "Cuenta creada exitosamente.");
                 }
+                // Exception
                 else
                 {
                     request.Channel.SendMessage(request.Id, "Ha ocurrido un problema.");

@@ -57,7 +57,7 @@ namespace Bankbot
             }
         }
 
-        public static float Convert(float amount, Currency from, Currency to)
+        public float Convert(float amount, Currency from, Currency to)
         {
             switch (to.CodeISO)
             {
@@ -90,7 +90,6 @@ namespace Bankbot
                     break;
                 default:
                     return amount;
-
             }
             return amount;
         }

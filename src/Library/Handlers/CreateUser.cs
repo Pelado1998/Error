@@ -10,7 +10,7 @@ namespace Bankbot
         {
             if (!request.Temp.ContainsKey("username"))
             {
-                if (Session.Instance.UserNameExists(request.Message))
+                if (Session.Instance.UsernameExists(request.Message))
                 {
                     request.Channel.SendMessage(request.Id, "Ya existe un usuario con este nombre. Vuelva a ingresar un nombre de usuario:");
                 }
@@ -20,18 +20,18 @@ namespace Bankbot
                     request.Channel.SendMessage(request.Id, "Ingrese una contraseña:");
                 }
             }
-            else if (request.Temp.ContainsKey("username") && !request.Temp.ContainsKey("password"))
+            else if (!request.Temp.ContainsKey("password"))
             {
                 request.Temp.Add("password", request.Message);
             }
 
             if (request.Temp.ContainsKey("username") && request.Temp.ContainsKey("password"))
             {
-                string userName = request.GetDictionaryValue<string>("username");
+                string username = request.GetDictionaryValue<string>("username");
                 string password = request.GetDictionaryValue<string>("password");
 
-                Session.Instance.AddUser(userName, password);
-                User user = Session.Instance.GetUser(userName, password);
+                Session.Instance.AddUser(username, password);
+                User user = Session.Instance.GetUser(username, password);
 
                 if (user != null)
                 {

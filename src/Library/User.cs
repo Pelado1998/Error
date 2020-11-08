@@ -13,16 +13,16 @@ namespace Bankbot
     /// </summary>
     public class User
     {
-        public string UserName { get; set; }
+        public string Username { get; set; }
         public string Password { get; set; }
         private Guid Id { get; set; }
         public List<Account> Accounts { get; set; }
         public List<String> IncomeList { get; set; }
         public List<String> OutcomeList { get; set; }
 
-        public User(string userName, string password)
+        public User(string username, string password)
         {
-            this.UserName = userName;
+            this.Username = username;
             this.Password = Cypher(password);
             this.Id = Guid.NewGuid();
             this.Accounts = new List<Account> { };
@@ -83,10 +83,10 @@ namespace Bankbot
         /// <summary>
         /// Cambia el nombre de usuario
         /// </summary>
-        /// <param name="newUserName"></param>
-        public void ChangeUserName(string newUserName)
+        /// <param name="newUsername"></param>
+        public void ChangeUsername(string newUsername)
         {
-            this.UserName = newUserName;
+            this.Username = newUsername;
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Bankbot
             StringBuilder accountList = new StringBuilder();
             foreach (var account in Accounts)
             {
-                accountList.Append(Accounts.IndexOf(account).ToString() + " - " + account.Name + "\n");
+                accountList.Append((Accounts.IndexOf(account) + 1).ToString() + " - " + account.Name + "\n");
             }
             return accountList.ToString();
         }

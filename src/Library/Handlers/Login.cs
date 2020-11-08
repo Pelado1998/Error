@@ -20,10 +20,10 @@ namespace Bankbot
 
             if (request.Temp.ContainsKey("username") && request.Temp.ContainsKey("password"))
             {
-                string userName = request.GetDictionaryValue<string>("username");
+                string username = request.GetDictionaryValue<string>("username");
                 string password = request.GetDictionaryValue<string>("password");
 
-                request.User = Session.Instance.GetUser(userName, password);
+                request.User = Session.Instance.GetUser(username, password);
 
                 if (request.User != null)
                 {

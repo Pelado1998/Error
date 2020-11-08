@@ -64,6 +64,7 @@ namespace Bankbot
             //Exception si no se puede pasar a long == id de otro bot
             var chatId = long.Parse(id);
             Bot.SendTextMessageAsync(chatId, message);
+            System.Console.WriteLine(message);
         }
     }
 }

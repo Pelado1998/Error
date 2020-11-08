@@ -20,31 +20,39 @@ namespace Bankbot
             this.AllUsers = new List<User>();
             this.AllConversation = new Dictionary<string, Conversation>();
         }
-        public void AddUser(string userName, string password)
+        public void AddUser(string username, string password)
         {
             foreach (var user in AllUsers)
             {
-                if (user.UserName == userName) return;
+                if (user.Username == username) return;
             }
-            AllUsers.Add(new User(userName, password));
+            AllUsers.Add(new User(username, password));
         }
-        public User GetUser(string userName, string password)
+        public void RemoveUser(string username, string password)
+        {
+            if (UsernameExists(username))
+            {
+                AllUsers.Remove(GetUser(username, password));
+            }
+        }
+
+        public User GetUser(string username, string password)
         {
             foreach (var item in AllUsers)
             {
-                if (item.Login(password)) return item;
+                if (item.Username == username && item.Login(password)) return item;
             }
             return null;
         }
 
-        public bool UserNameExists(string userName)
+        public bool UsernameExists(string username)
         {
             string user = "";
             foreach (var item in AllUsers)
             {
-                if (item.UserName == userName) user = item.UserName;
+                if (item.Username == username) user = item.Username;
             }
-            return user == userName;
+            return user == username;
         }
 
         public Conversation GetChat(string id)
@@ -62,7 +70,6 @@ namespace Bankbot
             }
         }
 
-        // Responsabilidad de session o chat?
         public void SetChannel(string id, IChannel newChannel)
         {
             Conversation chat;

@@ -11,7 +11,6 @@ namespace Bankbot
         Debito = 2,
         Credito = 3
     }
-    public class Account : IObservable
     /// <summary>
     /// Esta clase cumple con el principio de asignacion de responsabilidades GRASP, experto en información. 
     /// Cumple con el patrón Creator el cual identifica quien debe ser responsable de la creación de nuevos objetos.
@@ -22,6 +21,8 @@ namespace Bankbot
     /// el cual, una vez creado se almacenara en una List<Transaction> formando asi el Historial de transacciones de la cuenta.
     /// A su vez cumple con el patrón OCP (Open - Closed Principle) de los principios SOLID, ya que es una clase que se encuentra abierta a la extensión,
     /// pero cerrada a la modificación
+    /// <summary>
+    public class Account : IObservable
     {
         public string Name { get; set; }
         public List<Transaction> History { get; set; }
@@ -55,36 +56,6 @@ namespace Bankbot
             History.Add(transaction);
         }
 
-        public string ShowHistory()
-        {
-            StringBuilder status = new StringBuilder();
-            status.Append("--- Historial de la cuenta " + this.Name + " ---\n");
-            if (this.History.Count != 0)
-            {
-                foreach (Transaction transaction in this.History)
-                {
-                    var type = Sign(transaction.Amount) == 1 ? "Ingreso" : "Egreso";
-                    status.Append($"{type}: {transaction.Currency} {transaction.Amount} {transaction.Date.ToString("dd/MM/yyyy H:mm")} \n");
-                }
-            }
-            else
-            {
-                status.Append("Esta cuenta está vacía.\n");
-                System.Console.WriteLine(status);
-            }
-            status.Append($"Total: {this.Amount} / {this.Objective}");
-            if (this.Amount >= this.Objective)
-            {
-                status.Append("'😁'\n");
-            }
-            else
-            {
-                status.Append("'🥺'\n");
-            }
-            status.Append("-----------------------------------------");
-            System.Console.WriteLine(status);
-            return status.ToString();
-        }
         public static string ShowAccountType()
         {
             StringBuilder enumToText = new StringBuilder();
