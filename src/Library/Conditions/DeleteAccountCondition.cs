@@ -1,10 +1,10 @@
 namespace Bankbot
 {
-    public class DeleteAccountCondition : ICondition<Chats>
+    public class DeleteAccountCondition : ICondition<Conversation>
     {
-        public bool IsSatisfied(Chats request)
+        public bool IsSatisfied(Conversation request)
         {
-            return request.State == State.DeleteAccount || request.State == State.DeleteAccountConfirmation;
+            return request.State == State.DeleteAccount;
         }
     }
 }

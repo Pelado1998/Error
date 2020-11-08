@@ -1,10 +1,10 @@
 namespace Bankbot
 {
-    public class ConvertionCondition : ICondition<Chats>
+    public class ConvertionCondition : ICondition<Conversation>
     {
-        public bool IsSatisfied(Chats request)
+        public bool IsSatisfied(Conversation request)
         {
-            return request.State == State.ConvertAmount|| request.State == State.ConvertFrom || request.State == State.ConvertTo ;
+            return request.State == State.Converting;
         }
     }
 }

@@ -1,10 +1,10 @@
 namespace Bankbot
 {
-    public class InitCondition : ICondition<Chats>
+    public class InitCondition : ICondition<Conversation>
     {
-        public bool IsSatisfied(Chats request)
+        public bool IsSatisfied(Conversation request)
         {
-            return AllCommands.instance (request.Data.DataDictionary["LastCommand"])
+            return AllCommands.Instance(request.Data.DataDictionary["LastCommand"])
         }
     }
 }

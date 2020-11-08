@@ -1,8 +1,8 @@
 namespace Bankbot
 {
-    public class DefaultCondition : ICondition<Chats>
+    public class DefaultCondition : ICondition<Conversation>
     {
-        public bool IsSatisfied(Chats request)
+        public bool IsSatisfied(Conversation request)
         {
             return true;
         }

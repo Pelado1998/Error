@@ -1,71 +1,91 @@
-using System;
-using System.Collections.Generic;
-
 namespace Bankbot
 {
-    public class Dispatcher : AbstractHandler<Chats>
+    public class Dispatcher : AbstractHandler<Conversation>
     {
         public Dispatcher(DispatcherCondition condition) : base(condition)
         {
         }
 
-        protected override void handleRequest( Chats request)
+        protected override void handleRequest(Conversation request)
         {
-            switch (request.Message.Text)
+            switch (request.Message.ToLower())
             {
-                case "0":
-                    if (request.State == State.Dispatcher)
+                case "/createuser":
+
+                    if (request.User == null)
                     {
-                        request.State = State.LoginUsername;
-                        System.Console.WriteLine("Ingrese el Username");
+                        request.State = State.CreateUser;
+                        request.Channel.SendMessage(request.Id, "Ingrese un nuevo nombre de usuario:");
+                        break;
                     }
-                break;
-                case "1":
-                    request.State = State.ConvertAmount;
-                    System.Console.WriteLine("Ingrese la cantidad que desea convertir");
-                break;
-                case "2":
-                    request.State = State.CreateUsername;
-                    System.Console.WriteLine("Ingrese un Username");
-                break;
-                case "3":
-                    request.State = State.Dispatcher;
-                    request.User = null;
-                    System.Console.WriteLine("Usted se ha deslogueado");
-                    Init.Options(request);
-                break;
-                case "4":
-                    if (request.State == State.Loged || request.State == State.LogedAccounts )
+                    request.Channel.SendMessage(request.Id, "Debes estar desconectado para realizar esta operación.");
+                    break;
+
+                case "/login":
+                    if (request.User == null)
                     {
-                        request.State = State.DeleteUser;
-                        System.Console.WriteLine("Ingrese el Username de su usuario para eliminarlo");  
+                        request.State = State.Login;
+                        request.Channel.SendMessage(request.Id, "Ingrese un nombre de usuario:");
+                        break;
                     }
-                break;
-                case "5":
-                    if (request.State == State.Loged || request.State == State.LogedAccounts )
+                    request.Channel.SendMessage(request.Id, "Debes estar desconectado para realizar esta operación.");
+                    break;
+
+                case "/logout":
+
+                    if (request.User != null)
                     {
-                        request.State = State.CreateAccountName;
-                        System.Console.WriteLine("Ingrese un AccountName");
-                    } 
-                break;
-                case "6":
-                    if (request.State == State.LogedAccounts )
+                        request.User = null;
+                        request.Channel.SendMessage(request.Id, "Se ha desconectado correctamente.");
+                        break;
+                    }
+                    request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+
+                    break;
+
+                case "/createaccount":
+
+                    if (request.User != null)
+                    {
+                        request.State = State.CreateAccount;
+                        request.Channel.SendMessage(request.Id, "Ingrese el tipo de cuenta:\n" + Account.ShowAccountType());
+                        break;
+                    }
+
+                    request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+                    break;
+
+                case "/convert":
+
+                    request.State = State.Converting;
+                    request.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());
+                    break;
+
+                case "/deleteuser":
+
+                    request.State = State.DeleteUser;
+                    request.Channel.SendMessage(request.Id, "Ingrese el nombre de usuario que desea eliminar:");
+                    break;
+
+                case "/deleteaccount":
+                    if (request.User != null)
                     {
                         request.State = State.DeleteAccount;
-                        System.Console.WriteLine("Ingrese el AccontName de la cuenta que quiere borrar");
+                        request.Channel.SendMessage(request.Id, "indique que cuenta desea eliminar:\n" + request.User.ShowAccountList());
+                        break;
                     }
-                break;
-                case "7":
-                    if (request.State == State.LogedAccounts )
+                    request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+                    break;
+
+                case "/transaction":
+                    if (request.User != null)
                     {
-                        request.State = State.CreateTransactionAccount;
-                        System.Console.WriteLine("Ingrese un monto para la transacción");
+                        request.State = State.Transaction;
+                        request.Channel.SendMessage(request.Id, "Ingrese el tipo de transacción:\n1 - Ingreso\n2 - Gasto");
+                        break;
                     }
-                break;
-                default:
-                    System.Console.WriteLine("Ingrese un valor correcto por favor");
-                    Init.Options(request);
-                break;
+                    request.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+                    break;
             }
         }
     }

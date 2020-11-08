@@ -4,49 +4,32 @@ using System.Collections.Generic;
 namespace Bankbot
 {
     //Implementacion
-    public class Init : AbstractHandler<Chats>
+    public class Init : AbstractHandler<IMessage>
     {
         public Init(InitCondition condition) : base(condition)
         {
         }
 
-        protected override void handleRequest(Chats request)
+        protected override void handleRequest(IMessage request)
         {
+            AllChats.Instance.AddChat(request);
+            System.Console.WriteLine("Bienvenido!");
             Options(request);
-            request.State=State.Dispatcher;
+
         }
-        public static void Options(Chats request)
+         public static void Options(IMessage request)
         {
-            if(request.State == State.Idle)
+            if((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]==User.Empty)
             {
-                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t0-Login\n\t1-Conversion\n\t2-CreateUser");
+                System.Console.WriteLine("Elija un comando de la siguiente lista:\n"+ AllCommands.CommandsString(1));
             }
-            else if (request.State == State.Loged)
+            else if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).Accounts.Count == 0)
             {
-                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t0-Login\n\t1-Conversion\n\t2-CreateUser");
+                System.Console.WriteLine("Elija un comando de la siguiente lista:"+ AllCommands.CommandsString(2));
             }
-            else if (request.User.Accounts.Count == 0)
+            else 
             {
-                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t1-Conversion\n\t2-CreateUser\n\t3-Logout\n\t4-DeleteUser\n\t5-CreateAccount");
-            }
-            else if (request.User.Accounts.Count != 0)
-            {
-                System.Console.WriteLine("Elija una de las siguientes opciones:\n\t1-Conversion\n\t2-CreateUser\n\t3--Logout\n\t4-DeleteUser\n\t5-CreateAccount\n\t6-DeleteAccount\n\t7-MakeTransaction");
-            }
-        }
-        public static void RenewState(Chats request)
-        {
-            if(request.User == null)
-            {
-                request.State = State.Dispatcher;
-            }
-            else if (request.User.Accounts.Count == 0)
-            {
-                request.State = State.Loged;
-            }
-            else if (request.User.Accounts.Count != 0)
-            {
-                request.State = State.LogedAccounts;    
+                System.Console.WriteLine("Elija un comando de la siguiente lista:" + AllCommands.CommandsString(3));
             }
         }
     }

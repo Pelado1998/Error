@@ -1,37 +1,50 @@
-using System;
-using System.Collections.Generic;
-
 namespace Bankbot
 {
-    public class CreateUser : AbstractHandler<Chats>
+    public class CreateUser : AbstractHandler<Conversation>
     {
         public CreateUser(CreateUserCondition condition) : base(condition)
         {
         }
 
-        protected override void handleRequest(Chats request)
+        protected override void handleRequest(Conversation request)
         {
-            switch (request.State)
+            if (!request.Temp.ContainsKey("username"))
             {
-                case State.CreateUsername:      //Crear Usuario con el user
-
-                    request.State = State.CreatePassword;
-                    request.CreateUserUsername = request.Message.Text;
-                    System.Console.WriteLine("Ingrese una contraseña");
-                
-                break;
-                case State.CreatePassword:      //Crear Usuario con la contraseña
-                    
-                    request.CreateUserPassword =request.Message.Text;
-                    AllUsers.Instance.AddUser(request.CreateUserUsername,request.CreateUserPassword);
-                    System.Console.WriteLine("Usuario Creado\nUsername:\t"+ request.CreateUserUsername+"\nPassword:\t"+new String('*',(request.CreateUserPassword).Length));
-                    request.CleanTemp();
-                    Login.LoginState(request);
-                    Init.Options(request);
-                    request.State = State.Dispatcher;
-                break;
+                if (Session.Instance.UsernameExists(request.Message))
+                {
+                    request.Channel.SendMessage(request.Id, "Ya existe un usuario con este nombre. Vuelva a ingresar un nombre de usuario:");
+                }
+                else
+                {
+                    request.Temp.Add("username", request.Message);
+                    request.Channel.SendMessage(request.Id, "Ingrese una contraseña:");
+                }
+            }
+            else if (!request.Temp.ContainsKey("password"))
+            {
+                request.Temp.Add("password", request.Message);
             }
 
+            if (request.Temp.ContainsKey("username") && request.Temp.ContainsKey("password"))
+            {
+                string username = request.GetDictionaryValue<string>("username");
+                string password = request.GetDictionaryValue<string>("password");
+
+                Session.Instance.AddUser(username, password);
+                User user = Session.Instance.GetUser(username, password);
+
+                if (user != null)
+                {
+                    request.Channel.SendMessage(request.Id, "Usuario creado correctamente.");
+                }
+                // Exception 
+                else
+                {
+                    request.Channel.SendMessage(request.Id, "Ha ocurrido un error.");
+                }
+                request.Temp.Clear();
+                request.State = State.Dispatcher;
+            }
         }
     }
 }
