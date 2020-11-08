@@ -1,18 +1,11 @@
 namespace Bankbot
 {
-    public class CreateAccountCondition : Bankbot.ICondition<Chats>
+    public class CreateAccountCondition : Bankbot.ICondition<Conversation>
     {
-        public bool IsSatisfied(Chats request)
+        public bool IsSatisfied(Conversation request)
         {
-                return request.User != null
-                &&
-                (
-                   request.State == State.CreateAccountName
-                || request.State == State.CreateAccountType
-                || request.State == State.CreateAccountCurrency
-                || request.State == State.CreateAccountAmount
-                || request.State == State.CreateAccountObjective
-                );
+            return request.User != null && request.State == State.CreateAccount;
+
         }
     }
 }

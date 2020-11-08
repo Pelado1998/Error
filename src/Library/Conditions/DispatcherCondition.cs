@@ -1,10 +1,10 @@
 namespace Bankbot
 {
-    public class DispatcherCondition : ICondition<Chats>
+    public class DispatcherCondition : ICondition<Conversation>
     {
-        public bool IsSatisfied(Chats request)
+        public bool IsSatisfied(Conversation request)
         {
-            return request.State == State.Dispatcher || request.State == State.Loged || request.State == State.LogedAccounts;
+            return request.State == State.Dispatcher;
         }
     }
 }

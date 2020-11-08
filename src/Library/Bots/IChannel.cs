@@ -3,8 +3,8 @@ namespace Bankbot
     public interface IChannel
     {
         void Start();
-        void HandleMessage(long id, string message);
-        void SendMessage(long id, string message);
+        void HandleMessage(string id);
+        void SendMessage(string id, string message);
         void StartUp();
     }
 }
