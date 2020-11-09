@@ -18,12 +18,9 @@ namespace Bankbot
             {
                 this.handleRequest(request);
             }
-            else
+            if (this.Succesor != null)
             {
-                if (this.Succesor != null)
-                {
-                    this.Succesor.Handler(request);
-                }
+                this.Succesor.Handler(request);
             }
         }
 

@@ -7,8 +7,8 @@ namespace Bankbot
         public bool IsSatisfied(IMessage request)
         {
             Data data = Data.Empty;
-            return AllChats.Instance.ChatsDictionary.TryGetValue(request.id,out data)
-                && (String) data.DataDictionary["LastCommand"] == "\\CreateUser"
+            bool condition = AllChats.Instance.ChatsDictionary.TryGetValue(request.id,out data);
+            return condition && (String)  AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LastCommand"] == "/CreateUser"
             ;
         }
     }

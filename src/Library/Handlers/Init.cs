@@ -16,14 +16,14 @@ namespace Bankbot
             if (!AllChats.Instance.ChatsDictionary.TryGetValue(request.id, out data))
             {
                 AllChats.Instance.AddChat(request);
-                System.Console.WriteLine("Bienvenido!");
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Bienvenido!");
             }
             Options(request);
-            AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LastCommand"] = "\\Init";
+            AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LastCommand"] = "/Init";
         }
          public static void Options(IMessage request)
         {
-            System.Console.WriteLine("Elija un comando de la siguiente lista:\n"+ AllCommands.CommandsString(request));            
+            ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Elija un comando de la siguiente lista:\n"+ AllCommands.CommandsString(request));          
         }
     }
 }

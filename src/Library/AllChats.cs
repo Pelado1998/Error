@@ -27,7 +27,7 @@ namespace Bankbot
         public void AddChat(IMessage message)
         {
             Data data = Data.Instance;
-            data.DataDictionary["LastCommand"] = "\\Null";
+            data.DataDictionary["LastCommand"] = "/Init";
             this.ChatsDictionary.Add(message.id,data);
         }
     }

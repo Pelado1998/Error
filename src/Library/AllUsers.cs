@@ -22,7 +22,7 @@ namespace Bankbot
         }
         public User Login(string username, string password)
         {   
-            foreach (User user in this.UserList)
+            foreach (User user in AllUsers.Instance.UserList)
             {
                 if(user.UserName == username && user.Login(password)) return user;
             }

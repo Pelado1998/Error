@@ -20,15 +20,15 @@ namespace Bankbot
         private AllCommands()
         {
             this.CommandsList = new List<String>();
-            this.CommandsList.Add("\\Login");               
-            this.CommandsList.Add("\\Conversion");        
-            this.CommandsList.Add("\\CreateUser");                
-            this.CommandsList.Add("\\Logout");          
-            this.CommandsList.Add("\\DeleteUser");     
-            this.CommandsList.Add("\\CreateAccount");      
-            this.CommandsList.Add("\\DeleteAccount");          
-            this.CommandsList.Add("\\Transaction");   
-            this.CommandsList.Add("\\Init");
+            this.CommandsList.Add("/Login");               
+            this.CommandsList.Add("/Conversion");        
+            this.CommandsList.Add("/CreateUser");                
+            this.CommandsList.Add("/Logout");          
+            this.CommandsList.Add("/DeleteUser");     
+            this.CommandsList.Add("/CreateAccount");      
+            this.CommandsList.Add("/DeleteAccount");          
+            this.CommandsList.Add("/Transaction");   
+            this.CommandsList.Add("/Init");
         }
         public static String CommandsString(IMessage message)
         {
@@ -40,7 +40,7 @@ namespace Bankbot
                     commandList+=command+"\n";
                 }
             }
-            else if ((Account)AllChats.Instance.ChatsDictionary[message.id].DataDictionary["Account"]==Account.Empty)
+            else if (((User)AllChats.Instance.ChatsDictionary[message.id].DataDictionary["User"]).Accounts.Count==0)
             {
                 foreach (String command in HasNoAccountsCommandsList())
                 {
@@ -59,31 +59,31 @@ namespace Bankbot
         private static List<String> UnlogedCommandsList()
         {
             List<String> unlogedList = new List<String>();
-            unlogedList.Add("\\Login");
-            unlogedList.Add("\\Conversion");
-            unlogedList.Add("\\CreateUser");
+            unlogedList.Add("/Login");
+            unlogedList.Add("/Conversion");
+            unlogedList.Add("/CreateUser");
             return unlogedList;
         }
         private static List<String> HasNoAccountsCommandsList()
         {
             List<String> hasNoAccountsList = new List<String>();
-            hasNoAccountsList.Add("\\Logout");
-            hasNoAccountsList.Add("\\DeleteUser");
-            hasNoAccountsList.Add("\\CreateAccount");
-            hasNoAccountsList.Add("\\Conversion");
-            hasNoAccountsList.Add("\\CreateUser");
+            hasNoAccountsList.Add("/Logout");
+            hasNoAccountsList.Add("/DeleteUser");
+            hasNoAccountsList.Add("/CreateAccount");
+            hasNoAccountsList.Add("/Conversion");
+            hasNoAccountsList.Add("/CreateUser");
             return hasNoAccountsList;
         }
         private static List<String> HasAccountCommandsList()
         {
             List<String> hasAccountsList = new List<String>();
-            hasAccountsList.Add("\\Logout");
-            hasAccountsList.Add("\\DeleteUser");
-            hasAccountsList.Add("\\CreateAccount");
-            hasAccountsList.Add("\\Conversion");
-            hasAccountsList.Add("\\CreateUser");
-            hasAccountsList.Add("\\DeleteAccount");
-            hasAccountsList.Add("\\Transaction");
+            hasAccountsList.Add("/Logout");
+            hasAccountsList.Add("/DeleteUser");
+            hasAccountsList.Add("/CreateAccount");
+            hasAccountsList.Add("/Conversion");
+            hasAccountsList.Add("/CreateUser");
+            hasAccountsList.Add("/DeleteAccount");
+            hasAccountsList.Add("/Transaction");
             return hasAccountsList;
         }
 

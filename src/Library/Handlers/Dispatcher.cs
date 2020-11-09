@@ -8,7 +8,7 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LastCommnad"] = request.message;   
+            AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LastCommand"] = request.message;   
         }
     }
 }

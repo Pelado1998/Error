@@ -10,20 +10,21 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"] == string.Empty && request.message== "\\CreateUser")
+            if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"] == string.Empty && request.message== "/CreateUser")
             {
-                System.Console.WriteLine("Ingrese un Username");
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un Username");
             }
             else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"] == string.Empty)
             {
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"] = request.message;
-                System.Console.WriteLine("Ingrese una Password");
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una Password");
             }
             else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserPassword"] == string.Empty)
             {
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserPassword"] = request.message;
+                AllUsers.Instance.AddUser((String) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"],(String) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserPassword"]);
                 AllChats.Instance.ChatsDictionary[request.id].ClearCreateUser();
-                System.Console.WriteLine("Usuario Creado con éxito!");
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usuario Creado con éxito!");
             }
         }
     }

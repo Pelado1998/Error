@@ -71,7 +71,7 @@ namespace Bankbot
             }
         }
 
-        public string ShowHistory()
+        public string ShowHistory(IMessage request)
         {
             StringBuilder status = new StringBuilder();
             status.Append("--- Historial de la cuenta " + this.Name + " ---\n");
@@ -86,7 +86,7 @@ namespace Bankbot
             else
             {
                 status.Append("Esta cuenta está vacía.\n");
-                System.Console.WriteLine(status);
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,status.ToString());
             }
             status.Append($"Total: {this.Amount} / {this.Objective}");
             if (this.Amount >= this.Objective)
@@ -98,7 +98,7 @@ namespace Bankbot
                 status.Append("'🥺'\n");
             }
             status.Append("-----------------------------------------");
-            System.Console.WriteLine(status);
+            ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,status.ToString());
             return status.ToString();
         }
         public static string ShowAccountType()

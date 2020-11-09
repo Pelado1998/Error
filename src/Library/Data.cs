@@ -19,6 +19,7 @@ namespace Bankbot
 
         public static Data Empty { get; internal set; }
 
+
         private Data()
         {
             this.DataDictionary = new Dictionary<String,Object>(); 
@@ -45,10 +46,12 @@ namespace Bankbot
             this.DataDictionary.Add("ConvertAmount",0.0);
             this.DataDictionary.Add("User", User.Empty);
             this.DataDictionary.Add("LastCommand", String.Empty);
+            this.DataDictionary.Add("Channel", TelegramBot.Instance);
         }
+        
         public void ClearLastCommand()
         {
-            this.DataDictionary["LastCommand"] = "\\Init";
+            this.DataDictionary["LastCommand"] = "/Init";
         }
 
         public void ClearUser()

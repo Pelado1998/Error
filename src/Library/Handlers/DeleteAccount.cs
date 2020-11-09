@@ -11,20 +11,20 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == string.Empty && request.message== "\\DeleteAccount")
+            if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == string.Empty && request.message== "/DeleteAccount")
             {
-                System.Console.WriteLine("Ingrese un AccountName para eliminar");
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un AccountName para eliminar");
             }
             else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == string.Empty)
             {
                 if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).AccountExist(request.message))
                 {
                     AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] = request.message;
-                    System.Console.WriteLine("Confirme que quiera borrar la cuenta ingresando nuevamente el AccountName");
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Confirme que quiera borrar la cuenta ingresando nuevamente el AccountName");
                 }
                 else 
                 {
-                    System.Console.WriteLine("La cuenta no existe. Vuelva a intentarlo");
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"La cuenta no existe. Vuelva a intentarlo");
                     AllChats.Instance.ChatsDictionary[request.id].ClearDeleteAccount();
                 }
             }
@@ -33,12 +33,12 @@ namespace Bankbot
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccountConfirmation"] = request.message;
                 if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == (String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccountConfirmation"])
                 {
-                    System.Console.WriteLine("Cuenta eliminada con éxito!");
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Cuenta eliminada con éxito!");
                     AllChats.Instance.ChatsDictionary[request.id].ClearDeleteAccount();
                 }
                 else
                 {
-                    System.Console.WriteLine("La cuenta no fue eliminada porque no fue confirmada correctamente");
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"La cuenta no fue eliminada porque no fue confirmada correctamente");
                     AllChats.Instance.ChatsDictionary[request.id].ClearDeleteAccount();
                 }
             }

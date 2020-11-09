@@ -9,7 +9,7 @@ namespace Bankbot
             Data data = Data.Empty;
             return AllChats.Instance.ChatsDictionary.TryGetValue(request.id,out data)
                 && !AllCommands.Instance.CommandsList.Contains(request.message)
-                && (String) data.DataDictionary["LastCommand"] == "\\Init";
+                && (String) data.DataDictionary["LastCommand"] == "/Init";
             ;
         }
     }
