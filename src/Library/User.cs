@@ -268,5 +268,13 @@ namespace Bankbot
             }
             return false;
         }
+        public Account GetAccount (string name)
+        {
+            foreach (Account account in this.Accounts)
+            {
+                if (account.Name == name) return account;
+            }
+            return Account.Empty;
+        }
     }
 }

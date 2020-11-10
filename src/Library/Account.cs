@@ -51,23 +51,23 @@ namespace Bankbot
             this.Objective = newObjective;
         }
 
-        public string MakeTransaction(double amount, Currency currency, String item)
+        public bool MakeTransaction(double amount, Currency currency, String item, String description)
         {
             if (amount + this.Amount < 0)
             {
-                return "Saldo insuficiente.";
+                return false;
             }
             else if (amount + this.Amount > 0)
             {
                 double convertedAmount = Bank.Convert(amount, currency, this.Currency);
-                Transaction transaction = new Transaction(convertedAmount, this.Currency, DateTime.Now, item);
+                Transaction transaction = new Transaction(convertedAmount, this.Currency, DateTime.Now, item, description);
                 this.Amount += convertedAmount;
                 this.History.Add(transaction);
-                return "Trasferencia existosa.";
+                return true;
             }
             else
             {
-                return "Valor inválido.";
+                return false;
             }
         }
 

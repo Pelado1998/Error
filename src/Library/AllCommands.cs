@@ -20,8 +20,9 @@ namespace Bankbot
         private AllCommands()
         {
             this.CommandsList = new List<String>();
+            this.CommandsList.Add("/Abort"); 
             this.CommandsList.Add("/Login");               
-            this.CommandsList.Add("/Conversion");        
+            this.CommandsList.Add("/Convertion");        
             this.CommandsList.Add("/CreateUser");                
             this.CommandsList.Add("/Logout");          
             this.CommandsList.Add("/DeleteUser");     
@@ -60,7 +61,7 @@ namespace Bankbot
         {
             List<String> unlogedList = new List<String>();
             unlogedList.Add("/Login");
-            unlogedList.Add("/Conversion");
+            unlogedList.Add("/Convertion");
             unlogedList.Add("/CreateUser");
             return unlogedList;
         }
@@ -70,7 +71,7 @@ namespace Bankbot
             hasNoAccountsList.Add("/Logout");
             hasNoAccountsList.Add("/DeleteUser");
             hasNoAccountsList.Add("/CreateAccount");
-            hasNoAccountsList.Add("/Conversion");
+            hasNoAccountsList.Add("/Convertion");
             hasNoAccountsList.Add("/CreateUser");
             return hasNoAccountsList;
         }
@@ -80,7 +81,7 @@ namespace Bankbot
             hasAccountsList.Add("/Logout");
             hasAccountsList.Add("/DeleteUser");
             hasAccountsList.Add("/CreateAccount");
-            hasAccountsList.Add("/Conversion");
+            hasAccountsList.Add("/Convertion");
             hasAccountsList.Add("/CreateUser");
             hasAccountsList.Add("/DeleteAccount");
             hasAccountsList.Add("/Transaction");

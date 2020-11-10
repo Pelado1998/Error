@@ -10,7 +10,12 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            if((String) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] == String.Empty && request.message== "/Login")
+            if ((User) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"] != User.Empty)
+            {
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usted ya se encuentra logueado");
+                AllChats.Instance.ChatsDictionary[request.id].ClearLogin();
+            }
+            else if((String) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] == String.Empty && request.message== "/Login")
             {
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un Username");
             }

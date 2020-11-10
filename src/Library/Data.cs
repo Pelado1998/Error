@@ -41,6 +41,7 @@ namespace Bankbot
             this.DataDictionary.Add("CreateTransactionCurrency", Currency.Empty);
             this.DataDictionary.Add("CreateTransactionAmount", 0.0);
             this.DataDictionary.Add("CreateTransactionItem", String.Empty);
+            this.DataDictionary.Add("CreateTransactionDescription", String.Empty);
             this.DataDictionary.Add("ConvertFrom", Currency.Empty);
             this.DataDictionary.Add("ConvertTo",Currency.Empty);
             this.DataDictionary.Add("ConvertAmount",0.0);
@@ -48,7 +49,17 @@ namespace Bankbot
             this.DataDictionary.Add("LastCommand", String.Empty);
             this.DataDictionary.Add("Channel", TelegramBot.Instance);
         }
-        
+        public void Abort()
+        {
+            ClearLastCommand();
+            ClearConvertion();
+            ClearTransaction();
+            ClearDeleteAccount();
+            ClearCreateAccount();
+            ClearLogin();
+            ClearDeleteUser();
+            ClearCreateUser();
+        }
         public void ClearLastCommand()
         {
             this.DataDictionary["LastCommand"] = "/Init";
@@ -75,6 +86,7 @@ namespace Bankbot
             this.DataDictionary["CreateTransactionCurrency"] = Currency.Empty;
             this.DataDictionary["CreateTransactionAmount"] = 0.0;
             this.DataDictionary["CreateTransactionItem"] = String.Empty;
+            this.DataDictionary["CreateTransactionDescription"] =String.Empty;
             ClearLastCommand();
         }
 

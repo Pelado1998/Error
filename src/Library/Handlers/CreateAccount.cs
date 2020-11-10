@@ -14,7 +14,12 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && request.message== "/CreateAccount")
+            if ((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"] == User.Empty )
+            {
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Debes loguearte antes de crear una cuenta. Prueba con el comando /Login o /CreateUser en el caso de que no tengas un usuario.");
+                AllChats.Instance.ChatsDictionary[request.id].ClearCreateAccount();
+            }
+            else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && request.message== "/CreateAccount")
             {
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un AccountName");
             }

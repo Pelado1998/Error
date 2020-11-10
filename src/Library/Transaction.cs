@@ -12,22 +12,22 @@ namespace Bankbot
         public Currency Currency { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }
-        public string Type { get; set; }
+        public string Item { get; set; }
 
-        public Transaction(double amount, Currency currency, DateTime date, String type)
+        public Transaction(double amount, Currency currency, DateTime date, String item)
         {
             this.Amount = amount;
             this.Currency = currency;
             this.Date = date;
-            this.Type = type;
+            this.Item = item;
             this.Description = string.Empty;
         }
-        public Transaction(double amount, Currency currency, DateTime date, String type, String description)
+        public Transaction(double amount, Currency currency, DateTime date, String item, String description)
         {
             this.Amount = amount;
             this.Currency = currency;
             this.Date = date;
-            this.Type = type;
+            this.Item = item;
             this.Description = description;
         }
     }
