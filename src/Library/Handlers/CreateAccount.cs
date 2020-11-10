@@ -50,7 +50,7 @@ namespace Bankbot
                 }
                 else 
                 {
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un valor válido" + ShowCurrencyList());
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un valor válido\n" + ShowCurrencyList());
                 }
             }
             else if ((Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountAmount"] == 0.0)
@@ -81,6 +81,7 @@ namespace Bankbot
                         (Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountObjective"]
                     );
                     ((User) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).Accounts.Add(account);
+                    AllChats.Instance.ChatsDictionary[request.id].ClearCreateAccount();
                     ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Cuenta creada con éxito");
                 }
                 else

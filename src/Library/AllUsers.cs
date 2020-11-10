@@ -40,14 +40,13 @@ namespace Bankbot
             }
             return false;
         } 
-        public void RemoveUser(string username, String id)
+        public void RemoveUser(string username)
         {
             foreach (User user in this.UserList)
             {
                 if(user.UserName == username)
                 {
                     this.UserList.Remove(user);
-                    (AllChats.Instance.ChatsDictionary[id]).DataDictionary ["User"] = User.Empty;
                     return;
                 }
             }

@@ -28,7 +28,7 @@ namespace Bankbot
             this.CommandsList.Add("/CreateAccount");      
             this.CommandsList.Add("/DeleteAccount");          
             this.CommandsList.Add("/Transaction");   
-            this.CommandsList.Add("/Init");
+            //this.CommandsList.Add("/Init");         El usuario no deberia de poder editar este comando
         }
         public static String CommandsString(IMessage message)
         {

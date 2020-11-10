@@ -14,7 +14,7 @@ namespace Bankbot
         CuentaDeAhorro = 1,
         Debito = 2,
         Credito = 3,
-        Empty = 4
+        Empty = 4, //Asegurarse de que sea siempre el último por ahora
     }
     public class Account : IObservable
     /// <summary>
@@ -105,9 +105,12 @@ namespace Bankbot
         {
             StringBuilder enumToText = new StringBuilder();
             var accountType = Enum.GetNames(typeof(AccountType));
-            foreach (var item in accountType)
+            foreach (String item in accountType)
             {
-                enumToText.Append($"{Array.IndexOf(accountType, item) + 1 } - {item}\n");
+                if (item != Bankbot.AccountType.Empty.ToString())
+                {
+                    enumToText.Append($"{Array.IndexOf(accountType, item) + 1 } - {item}\n");
+                }
             }
             return enumToText.ToString();
         }

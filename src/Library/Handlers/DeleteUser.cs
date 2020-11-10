@@ -17,7 +17,7 @@ namespace Bankbot
             }
             else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == string.Empty)
             {
-                if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).Password == request.message)
+                if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).Login(request.message))
                 {
                     AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] = request.message;
                     ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Confirme que quiera borrar la cuenta ingresando la contraseña nuevamente");
@@ -33,7 +33,9 @@ namespace Bankbot
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUserConfirmation"] = request.message;
                 if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == (String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUserConfirmation"])
                 {
+                    AllUsers.Instance.RemoveUser(((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).UserName);
                     ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usuario eliminado con éxito!");
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"] = User.Empty;
                     AllChats.Instance.ChatsDictionary[request.id].ClearDeleteUser();
                 }
                 else

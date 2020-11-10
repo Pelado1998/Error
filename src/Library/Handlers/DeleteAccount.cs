@@ -33,6 +33,7 @@ namespace Bankbot
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccountConfirmation"] = request.message;
                 if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == (String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccountConfirmation"])
                 {
+                    ((User) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).RemoveAccount((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"]);
                     ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Cuenta eliminada con éxito!");
                     AllChats.Instance.ChatsDictionary[request.id].ClearDeleteAccount();
                 }

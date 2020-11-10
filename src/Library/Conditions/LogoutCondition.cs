@@ -9,7 +9,6 @@ namespace Bankbot
             Data data = Data.Empty;
             return AllChats.Instance.ChatsDictionary.TryGetValue(request.id,out data)
                 && (String) data.DataDictionary["LastCommand"] == "/Logout"
-                && data.DataDictionary["User"] != User.Empty
             ;
         }
     }

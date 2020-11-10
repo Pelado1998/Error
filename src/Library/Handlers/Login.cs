@@ -31,7 +31,8 @@ namespace Bankbot
                 }
                 else 
                 {
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Username o Password incorrectos. Vuelva a intentarlo");
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Username o Password incorrectos. Vuelva a intentarlo ingresando el comando /Login u otro comando");
+                    AllChats.Instance.ChatsDictionary[request.id].ClearLogin();
                 }
             }
         }

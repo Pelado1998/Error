@@ -10,8 +10,15 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            AllChats.Instance.ChatsDictionary[request.id].ClearUser();
-            ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usted se a deslogueado");
+            if (AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"] !=User.Empty)
+            {
+                 AllChats.Instance.ChatsDictionary[request.id].ClearUser();
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usted se a deslogueado");
+            }
+            else
+            {
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usted ya se encuentra deslogueado");
+            }
         }
     }
 }

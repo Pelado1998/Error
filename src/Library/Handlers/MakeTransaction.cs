@@ -10,7 +10,7 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            //TODO:
+            ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Entro a transaccion");
         }
     }
 }

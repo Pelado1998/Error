@@ -95,7 +95,7 @@ namespace Bankbot
              StringBuilder currencies = new StringBuilder();
              foreach (Currency currency in Bank.Instance.CurrencyList)
              {
-                 currencies.Append($"{Bank.Instance.CurrencyList.IndexOf(currency) + 1} - {currency.CodeISO}\n");
+                currencies.Append($"{Bank.Instance.CurrencyList.IndexOf(currency) + 1} - {currency.CodeISO}\n");
              }
              return currencies.ToString();
          }

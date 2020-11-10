@@ -16,8 +16,16 @@ namespace Bankbot
             }
             else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"] == string.Empty)
             {
-                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"] = request.message;
+                if (!AllUsers.Instance.UserExist(request.message))
+                {
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"] = request.message;
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una Password");
+                }
+                else
+                {
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ese Username ya existe 😟\nElija otro por favor!");
+                }
+                
             }
             else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserPassword"] == string.Empty)
             {
