@@ -1,8 +1,4 @@
-// using System;
-// using Telegram.Bot;
-// using Telegram.Bot.Args;
-// using Telegram.Bot.Types;
-
+using System;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
@@ -12,7 +8,10 @@ namespace Bankbot
     public class TelegramBot : IChannel
     {
         private ITelegramBotClient Bot;
-        private const string Token = "1365916215:AAEE-yM7Jnz4XFZE6ExdDezyLXU-i5zqGnw";
+        //BankBot
+        // private const string Token = "1365916215:AAEE-yM7Jnz4XFZE6ExdDezyLXU-i5zqGnw";
+        //BankBot Testing
+        private const string Token = "1499140541:AAF_y-gfrPJZAPl4mBiNkawCRXFyt6TCcgE";
         private AbstractHandler<IMessage> Handler;
         private static TelegramBot instance;
         public static TelegramBot Instance
@@ -33,43 +32,42 @@ namespace Bankbot
         {
             this.StartUp();
 
-             Bot.OnMessage += OnMessage;
+            Bot.OnMessage += OnMessage;
 
-             Bot.StartReceiving();
-             System.Console.WriteLine("Press any key to exit");
-             //System.Console.ReadKey();
+            Bot.StartReceiving();
 
-            //Bot.StopReceiving();
+            Console.WriteLine("Press any key to exit");
+            Console.ReadKey();
+
+            Bot.StopReceiving();
         }
         private async void OnMessage(object sender, MessageEventArgs messageEventArgs)
         {
-            System.Console.WriteLine($"{messageEventArgs.Message.Chat.FirstName}: {messageEventArgs.Message.Text}");
-            IMessage menssage = new TelegramMessage(messageEventArgs.Message.Chat.Id.ToString(), messageEventArgs.Message.Text);
-            TelegramBot.Instance.HandleMessage(menssage);
-        }
+            Message message = messageEventArgs.Message;
+            string chatId = message.Chat.Id.ToString();
 
+            IMessage msg = new BotMessage(chatId, message.Text);
+            TelegramBot.Instance.HandleMessage(msg);
+
+
+        }
         public void StartUp()
         {
             Handler = StartupConfig.HandlerConfig();
         }
         public void HandleMessage(IMessage message)
         {
-            CreateChat(message);
+            var data = Session.Instance.GetChat(message.Id);
+            Session.Instance.SetChannel(message.Id, TelegramBot.Instance);
+
             Handler.Handler(message);
         }
         public void SendMessage(string id, string message)
         {
-            Bot.SendTextMessageAsync(long.Parse(id), message);
+            //Exception si no se puede pasar a long == id de otro bot
+            var chatId = long.Parse(id);
+            Bot.SendTextMessageAsync(chatId, message);
             System.Console.WriteLine(message);
-        }
-
-        public void CreateChat(IMessage request)
-        {
-            if(!AllChats.Instance.ChatExist(request.id))
-            {
-                AllChats.Instance.AddChat(request);
-                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"] = new TelegramBot();
-            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Bankbot
     {
         public List<string> CommandsList { get; set; }
         private static AllCommands instance;
-        
+
         public static AllCommands Instance
         {
             get
@@ -19,43 +19,48 @@ namespace Bankbot
         }
         private AllCommands()
         {
-            this.CommandsList = new List<string>();
-            this.CommandsList.Add("/Abort"); 
-            this.CommandsList.Add("/Login");               
-            this.CommandsList.Add("/Convertion");        
-            this.CommandsList.Add("/CreateUser");                
-            this.CommandsList.Add("/Logout");          
-            this.CommandsList.Add("/DeleteUser");     
-            this.CommandsList.Add("/CreateAccount");      
-            this.CommandsList.Add("/DeleteAccount");          
-            this.CommandsList.Add("/Transaction");
-            this.CommandsList.Add("/Commands");    
-            //this.CommandsList.Add("/Init");         El usuario no deberia de poder editar este comando
+            this.CommandsList = new List<string>()
+            {
+                "/Abort",
+                "/Login",
+                "/Convert",
+                "/CreateUser",
+                "/Logout",
+                "/DeleteUser",
+                "/CreateAccount",
+                "/DeleteAccount",
+                "/Transaction",
+                "/Commands"
+            };
         }
-        public static string Commandsstring(IMessage message)
+        public string CommandList(string id)
         {
+            var data = Session.Instance.GetChat(id);
+
             string commandList = string.Empty;
-            if ((User)AllChats.Instance.ChatsDictionary[message.id].DataDictionary["User"] == User.Empty )
+
+            if (data.User == null)
             {
                 foreach (string command in UnlogedCommandsList())
                 {
-                    commandList+=command+"\n";
+                    commandList += command + "\n";
                 }
+                return commandList;
             }
-            else if (((User)AllChats.Instance.ChatsDictionary[message.id].DataDictionary["User"]).Accounts.Count==0)
+            else if (data.User.Accounts.Count == 0)
             {
                 foreach (string command in HasNoAccountsCommandsList())
                 {
-                    commandList+=command+"\n";
+                    commandList += command + "\n";
                 }
+                return commandList;
             }
-            else
+
+            foreach (string command in HasAccountCommandsList())
             {
-                foreach (string command in HasAccountCommandsList())
-                {
-                    commandList+=command+"\n";
-                }
+                commandList += command + "\n";
             }
+
             return commandList;
         }
         private static List<string> UnlogedCommandsList()

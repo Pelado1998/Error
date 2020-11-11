@@ -1,8 +1,3 @@
-using System;
-// using Telegram.Bot;
-// using Telegram.Bot.Args;
-// using Telegram.Bot.Types;
-
 namespace Bankbot
 {
     public class ConsoleBot : IChannel
@@ -19,16 +14,16 @@ namespace Bankbot
             }
         }
         private ConsoleBot()
-        {}
+        { }
         public void Start()
         {
             this.StartUp();
             System.Console.WriteLine("Para salir escriba \"Exit\"");
             while (true)
             {
-                string text = System.Console.ReadLine().ToString();   
+                string text = System.Console.ReadLine().ToString();
                 if (text == "Exit") return;
-                TelegramMessage message = new TelegramMessage("UNIQUE_CONSOLE",text);
+                BotMessage message = new BotMessage("UNIQUE_CONSOLE", text);
                 HandleMessage(message);
             }
         }
@@ -40,20 +35,14 @@ namespace Bankbot
         }
         public void HandleMessage(IMessage message)
         {
-            CreateChat(message);
+            var data = Session.Instance.GetChat(message.Id);
+            Session.Instance.SetChannel(message.Id, ConsoleBot.Instance);
+
             Handler.Handler(message);
         }
         public void SendMessage(string id, string message)
         {
-            System.Console.WriteLine(message); 
-        }
-        public void CreateChat(IMessage request)
-        {
-            if(!AllChats.Instance.ChatExist(request.id))
-            {
-                AllChats.Instance.AddChat(request);
-                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"] = new ConsoleBot();
-            }
+            System.Console.WriteLine(message);
         }
     }
 }
