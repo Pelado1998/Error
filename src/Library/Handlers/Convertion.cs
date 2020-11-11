@@ -3,66 +3,66 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
-    public class Convertion : AbstractHandler<Conversation>
+    public class Convertion : AbstractHandler<IMessage>
     {
         public Convertion(ConvertionCondition condition) : base(condition)
         {
         }
 
-        protected override void handleRequest(Conversation request)
-        {
-            if (!request.Temp.ContainsKey("from"))
+        protected override void handleRequest(IMessage request)
+        { 
+            if ((Double) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertAmount"]== 0.0 && request.message == "/Convertion")
             {
-                int index;
-                if (Int32.TryParse(request.Message, out index) && index <= Bank.Instance.CurrencyList.Count)
-                {
-                    request.Temp.Add("from", Bank.Instance.CurrencyList[index - 1]);
-                    request.Channel.SendMessage(request.Id, "Seleccione a que moneda desea convertir:\n" + Bank.Instance.ShowCurrencyList());
-                    return;
-                }
-                request.Channel.SendMessage(request.Id, "Debe seleecionar un valor correspondiente al índice de la moneda.");
-                request.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un valor para convertir");
             }
-            else if (!request.Temp.ContainsKey("to"))
+            else if ((Double) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertAmount"]== 0.0)
             {
-                int index;
-                if (Int32.TryParse(request.Message, out index) && index <= Bank.Instance.CurrencyList.Count)
+                Double ammount;
+                if (Double.TryParse(request.message, out ammount) && ammount> 0.0)
                 {
-                    if (Bank.Instance.CurrencyList[index - 1] != request.GetDictionaryValue<Currency>("from"))
-                    {
-                        request.Temp.Add("to", Bank.Instance.CurrencyList[index - 1]);
-                        request.Channel.SendMessage(request.Id, "Ingrese el monto que desea convertir:");
-                        return;
-                    }
-                    request.Channel.SendMessage(request.Id, "Debe seleecionar una moneda diferente.");
-                    request.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());
-                    return;
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertAmount"] = ammount;
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese la divisa que desea convertir\n" + Bank.ShowCurrencyList());
+
                 }
-                request.Channel.SendMessage(request.Id, "Debe seleecionar un valor correspondiente al índice de la moneda.");
-                request.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());
-            }
-            else if (!request.Temp.ContainsKey("amount"))
-            {
-                float amount;
-                if (float.TryParse(request.Message, out amount) && amount > 0)
+                else
                 {
-                    request.Temp.Add("amount", amount);
+                     ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un valor válido");
                 }
-                request.Channel.SendMessage(request.Id, "Debe ingresar un valor numérico mayor a 0.");
-                request.Channel.SendMessage(request.Id, "Ingrese el monto que desea convertir:");
             }
-
-            if (request.Temp.ContainsKey("from") && request.Temp.ContainsKey("to") && request.Temp.ContainsKey("amount"))
+            else if ((Currency) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertFrom"]== Currency.Empty)
             {
-                var amount = request.GetDictionaryValue<float>("amount");
-                var from = request.GetDictionaryValue<Currency>("from");
-                var to = request.GetDictionaryValue<Currency>("to");
-
-                var newAmount = Bank.Instance.Convert(amount, from, to);
-                request.Channel.SendMessage(request.Id, $"{from.CodeISO} {amount} equivalen a {to.CodeISO} {newAmount}");
-
-                request.Temp.Clear();
-                request.State = State.Dispatcher;
+                int idx;
+                if (Int32.TryParse(request.message,out idx) && idx>0 && idx<= Bank.Instance.CurrencyList.Count)
+                {
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertFrom"] = Bank.Instance.CurrencyList[idx];
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese la divisa a la que desea convertir\n" + Bank.ShowCurrencyList());
+                }
+                else
+                {
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un valor válido");
+                }
+            }
+            else if ((Currency) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertTo"]== Currency.Empty)
+            {
+                int idx;
+                if (Int32.TryParse(request.message,out idx) && idx>0 && idx<= Bank.Instance.CurrencyList.Count)
+                {
+                    double converted;
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertTo"] = Bank.Instance.CurrencyList[idx];
+                    converted = Bank.Convert((Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertAmount"],(Currency)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertFrom"],(Currency)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertTo"]);
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Resultado de la conversión:\n"+
+                    (Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertAmount"] + " " +
+                    ((Currency)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertFrom"]).CodeISO+
+                    " ~ " +
+                    converted + " "+
+                    ((Currency)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["ConvertTo"]).CodeISO
+                    );
+                    AllChats.Instance.ChatsDictionary[request.id].ClearConvertion();
+                }
+                else
+                {
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un valor válido");
+                }
             }
         }
     }

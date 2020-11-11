@@ -12,25 +12,18 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            AllChats.Instance.AddChat(request);
-            System.Console.WriteLine("Bienvenido!");
+            Data data = Data.Empty;
+            if (!AllChats.Instance.ChatsDictionary.TryGetValue(request.id, out data))
+            {
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Bienvenido!");
+            }
             Options(request);
-
+            AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LastCommand"] = "/Init";
         }
          public static void Options(IMessage request)
         {
-            if((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]==User.Empty)
-            {
-                System.Console.WriteLine("Elija un comando de la siguiente lista:\n"+ AllCommands.CommandsString(1));
-            }
-            else if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).Accounts.Count == 0)
-            {
-                System.Console.WriteLine("Elija un comando de la siguiente lista:"+ AllCommands.CommandsString(2));
-            }
-            else 
-            {
-                System.Console.WriteLine("Elija un comando de la siguiente lista:" + AllCommands.CommandsString(3));
-            }
+            ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Elija un comando de la siguiente lista:\n"+ AllCommands.Commandsstring(request));          
+            ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"También puedes utilizar el comando /Abort para abortar cualquier actividad que estés realizando o /Commands para ver los comandos disponibles");
         }
     }
 }

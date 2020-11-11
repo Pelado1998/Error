@@ -7,7 +7,7 @@ namespace Bankbot
     /// </summary>
     public interface IObservable
     {
-        float Amount { get; set; }
-        float Objective { get; set; }
+        double Amount { get; set; }
+        double Objective { get; set; }
     }
 }

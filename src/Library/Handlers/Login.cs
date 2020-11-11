@@ -1,40 +1,44 @@
+using System;
+
 namespace Bankbot
 {
-    public class Login : AbstractHandler<Conversation>
+    public class Login : AbstractHandler<IMessage>
     {
         public Login(LoginCondition condition) : base(condition)
         {
         }
 
-        protected override void handleRequest(Conversation request)
+        protected override void handleRequest(IMessage request)
         {
-            if (!request.Temp.ContainsKey("username"))
+            if ((User) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"] != User.Empty)
             {
-                request.Temp.Add("username", request.Message);
-                request.Channel.SendMessage(request.Id, "Ingrese una contraseña:");
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usted ya se encuentra logueado");
+                AllChats.Instance.ChatsDictionary[request.id].ClearLogin();
             }
-            else if (request.Temp.ContainsKey("username") && !request.Temp.ContainsKey("password"))
+            else if((string) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] == string.Empty && request.message== "/Login")
             {
-                request.Temp.Add("password", request.Message);
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un Username");
             }
-
-            if (request.Temp.ContainsKey("username") && request.Temp.ContainsKey("password"))
+            else if ((string) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] == string.Empty)
             {
-                string username = request.GetDictionaryValue<string>("username");
-                string password = request.GetDictionaryValue<string>("password");
-
-                request.User = Session.Instance.GetUser(username, password);
-
-                if (request.User != null)
+                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] = request.message;
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una Password");
+            }
+            else if((string) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] != string.Empty)
+            {
+                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginPassword"] = request.message;
+                User user = AllUsers.Instance.Login((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"], (string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginPassword"]);
+                if (user != User.Empty)
                 {
-                    request.Channel.SendMessage(request.Id, "Se ha conectado correctamente.");
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"] = user;
+                    AllChats.Instance.ChatsDictionary[request.id].ClearLogin();
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Login Exitoso");
                 }
-                else
+                else 
                 {
-                    request.Channel.SendMessage(request.Id, "Credenciales incorrectas, vuelva a intentarlo.");
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Username o Password incorrectos. Vuelva a intentarlo ingresando el comando /Login u otro comando");
+                    AllChats.Instance.ChatsDictionary[request.id].ClearLogin();
                 }
-                request.Temp.Clear();
-                request.State = State.Dispatcher;
             }
         }
     }

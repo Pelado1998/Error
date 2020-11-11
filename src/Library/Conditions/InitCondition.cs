@@ -1,10 +1,20 @@
+using System;
+
 namespace Bankbot
 {
-    public class InitCondition : ICondition<Conversation>
+    public class InitCondition : ICondition<IMessage>
     {
-        public bool IsSatisfied(Conversation request)
+        public bool IsSatisfied(IMessage request)
         {
-            return AllCommands.Instance(request.Data.DataDictionary["LastCommand"])
+            Data data = Data.Empty;
+            return !AllChats.Instance.ChatsDictionary.TryGetValue(request.id, out data) 
+                || 
+                    (
+                        (string) data.DataDictionary["LastCommand"] == "/Init"
+                      &&
+                        !AllCommands.Instance.CommandsList.Contains(request.message)
+                    ) 
+                    ;
         }
     }
 }

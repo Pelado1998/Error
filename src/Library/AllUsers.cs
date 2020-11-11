@@ -22,11 +22,11 @@ namespace Bankbot
         }
         public User Login(string username, string password)
         {   
-            foreach (User user in this.UserList)
+            foreach (User user in AllUsers.Instance.UserList)
             {
                 if(user.UserName == username && user.Login(password)) return user;
             }
-            return null;
+            return User.Empty;
         }
         public void AddUser(string username, string password)
         {
@@ -40,14 +40,13 @@ namespace Bankbot
             }
             return false;
         } 
-        public void RemoveUser(string username, String id)
+        public void RemoveUser(string username)
         {
             foreach (User user in this.UserList)
             {
                 if(user.UserName == username)
                 {
                     this.UserList.Remove(user);
-                    (AllChats.Instance.ChatsDictionary[id]).DataDictionary ["User"] = User.Empty;
                     return;
                 }
             }

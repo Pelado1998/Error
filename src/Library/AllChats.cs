@@ -5,7 +5,7 @@ namespace Bankbot
 {
     public class AllChats
     {
-        public Dictionary<String,Data> ChatsDictionary { get; set; }
+        public Dictionary<string,Data> ChatsDictionary { get; set; }
         private static AllChats instance;
         
         public static AllChats Instance
@@ -18,7 +18,7 @@ namespace Bankbot
         }
         private AllChats()
         {
-            this.ChatsDictionary = new Dictionary<String,Data>();         
+            this.ChatsDictionary = new Dictionary<string,Data>();         
         }
         public bool ChatExist(string id)
         {
@@ -26,8 +26,8 @@ namespace Bankbot
         }
         public void AddChat(IMessage message)
         {
-            Data data = Data.Instance;
-            data.DataDictionary["LastCommand"] = message.message;
+            Data data = new Data();
+            data.DataDictionary["LastCommand"] = "/Init";
             this.ChatsDictionary.Add(message.id,data);
         }
     }

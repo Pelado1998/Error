@@ -1,49 +1,38 @@
+using System;
+
 namespace Bankbot
 {
-    public class CreateUser : AbstractHandler<Conversation>
+    public class CreateUser : AbstractHandler<IMessage>
     {
         public CreateUser(CreateUserCondition condition) : base(condition)
         {
         }
 
-        protected override void handleRequest(Conversation request)
+        protected override void handleRequest(IMessage request)
         {
-            if (!request.Temp.ContainsKey("username"))
+            if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"] == string.Empty && request.message== "/CreateUser")
             {
-                if (Session.Instance.UsernameExists(request.Message))
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un Username");
+            }
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"] == string.Empty)
+            {
+                if (!AllUsers.Instance.UserExist(request.message))
                 {
-                    request.Channel.SendMessage(request.Id, "Ya existe un usuario con este nombre. Vuelva a ingresar un nombre de usuario:");
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"] = request.message;
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una Password");
                 }
                 else
                 {
-                    request.Temp.Add("username", request.Message);
-                    request.Channel.SendMessage(request.Id, "Ingrese una contraseña:");
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ese Username ya existe 😟\nElija otro por favor!");
                 }
+                
             }
-            else if (!request.Temp.ContainsKey("password"))
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserPassword"] == string.Empty)
             {
-                request.Temp.Add("password", request.Message);
-            }
-
-            if (request.Temp.ContainsKey("username") && request.Temp.ContainsKey("password"))
-            {
-                string username = request.GetDictionaryValue<string>("username");
-                string password = request.GetDictionaryValue<string>("password");
-
-                Session.Instance.AddUser(username, password);
-                User user = Session.Instance.GetUser(username, password);
-
-                if (user != null)
-                {
-                    request.Channel.SendMessage(request.Id, "Usuario creado correctamente.");
-                }
-                // Exception 
-                else
-                {
-                    request.Channel.SendMessage(request.Id, "Ha ocurrido un error.");
-                }
-                request.Temp.Clear();
-                request.State = State.Dispatcher;
+                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserPassword"] = request.message;
+                AllUsers.Instance.AddUser((string) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserUsername"],(string) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateUserPassword"]);
+                AllChats.Instance.ChatsDictionary[request.id].ClearCreateUser();
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usuario Creado con éxito!");
             }
         }
     }

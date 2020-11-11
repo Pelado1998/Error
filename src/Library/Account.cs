@@ -5,13 +5,18 @@ using static System.Math;
 
 namespace Bankbot
 {
+    /// <summary>
+    /// 
+    /// </summary>
+
     public enum AccountType
     {
         CuentaDeAhorro = 1,
         Debito = 2,
         Credito = 3,
-        Empty = 4
+        Empty = 4, //Asegurarse de que sea siempre el último por ahora
     }
+    public class Account : IObservable
     /// <summary>
     /// Esta clase cumple con el principio de asignacion de responsabilidades GRASP, experto en información. 
     /// Cumple con el patrón Creator el cual identifica quien debe ser responsable de la creación de nuevos objetos.
@@ -22,16 +27,16 @@ namespace Bankbot
     /// el cual, una vez creado se almacenara en una List<Transaction> formando asi el Historial de transacciones de la cuenta.
     /// A su vez cumple con el patrón OCP (Open - Closed Principle) de los principios SOLID, ya que es una clase que se encuentra abierta a la extensión,
     /// pero cerrada a la modificación
-    /// <summary>
-    public class Account : IObservable
     {
         public string Name { get; set; }
         public List<Transaction> History { get; set; }
-        public AccountType AccountType { get; set; }
+        public AccountType? AccountType { get; set; }
         public Currency Currency { get; set; }
-        public float Amount { get; set; }
-        public float Objective { get; set; }
-        public Account(string name, AccountType type, Currency currency, float amount, float objective)
+        public double Amount { get; set; }
+        public double Objective { get; set; }
+        public static Account Empty { get; internal set; }
+
+        public Account(string name, AccountType? type, Currency currency, double amount, double objective)
         {
             this.Name = name;
             this.History = new List<Transaction>();
@@ -41,31 +46,77 @@ namespace Bankbot
             this.Objective = objective;
         }
 
-        public void ChangeObjective(float newObjective)
+        public void ChangeObjective(double newObjective)
         {
             this.Objective = newObjective;
         }
 
-        public void AddIncome(Currency currency, float amount, string description)
+        public bool MakeTransaction(double amount, Currency currency, string item, string description)
         {
-            Transaction transaction = new Income(amount, currency, DateTime.Now, description);
-            History.Add(transaction);
-        }
-        public void AddOutcome(Currency currency, float amount, string item, string description)
-        {
-            Transaction transaction = new Outcome(amount, currency, DateTime.Now, item, description);
-            History.Add(transaction);
+            if (amount + this.Amount < 0)
+            {
+                return false;
+            }
+            else if (amount + this.Amount > 0)
+            {
+                double convertedAmount = Bank.Convert(amount, currency, this.Currency);
+                Transaction transaction = new Transaction(convertedAmount, this.Currency, DateTime.Now, item, description);
+                this.Amount += convertedAmount;
+                this.History.Add(transaction);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
+        public string ShowHistory(IMessage request)
+        {
+            StringBuilder status = new StringBuilder();
+            status.Append("--- Historial de la cuenta " + this.Name + " ---\n");
+            if (this.History.Count != 0)
+            {
+                foreach (Transaction transaction in this.History)
+                {
+                    var type = Sign(transaction.Amount) == 1 ? "Ingreso" : "Egreso";
+                    status.Append($"{type}: {transaction.Currency} {transaction.Amount} {transaction.Date.ToString("dd/MM/yyyy H:mm")} \n");
+                }
+            }
+            else
+            {
+                status.Append("Esta cuenta está vacía.\n");
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,status.ToString());
+            }
+            status.Append($"Total: {this.Amount} / {this.Objective}");
+            if (this.Amount >= this.Objective)
+            {
+                status.Append("'😁'\n");
+            }
+            else
+            {
+                status.Append("'🥺'\n");
+            }
+            status.Append("-----------------------------------------");
+            ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,status.ToString());
+            return status.ToString();
+        }
         public static string ShowAccountType()
         {
             StringBuilder enumToText = new StringBuilder();
             var accountType = Enum.GetNames(typeof(AccountType));
-            foreach (var item in accountType)
+            foreach (string item in accountType)
             {
-                enumToText.Append($"{Array.IndexOf(accountType, item) + 1 } - {item}\n");
+                if (item != Bankbot.AccountType.Empty.ToString())
+                {
+                    enumToText.Append($"{Array.IndexOf(accountType, item) + 1 } - {item}\n");
+                }
             }
             return enumToText.ToString();
+        }
+        public static int AmountTypes()
+        {
+            return (Enum.GetNames(typeof(AccountType))).Length;
         }
     }
 }

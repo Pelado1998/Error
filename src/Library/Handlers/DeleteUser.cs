@@ -3,60 +3,46 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
-    public class DeleteUser : AbstractHandler<Conversation>
+    public class DeleteUser : AbstractHandler<IMessage>
     {
         public DeleteUser(DeleteUserCondition condition) : base(condition)
         {
         }
 
-        protected override void handleRequest(Conversation request)
+        protected override void handleRequest(IMessage request)
         {
-            if (!request.Temp.ContainsKey("username"))
+            if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == string.Empty && request.message== "/DeleteUser")
             {
-                request.Temp.Add("username", request.Message);
-                request.Channel.SendMessage(request.Id, "Ingrese una constraseña:");
-
+                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese la Password para eliminarlo");
             }
-            else if (!request.Temp.ContainsKey("password"))
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == string.Empty)
             {
-                request.Temp.Add("password", request.Message);
-            }
-
-            if (request.Temp.ContainsKey("username") && request.Temp.ContainsKey("password"))
-            {
-                string username = request.GetDictionaryValue<string>("username");
-                string password = request.GetDictionaryValue<string>("password");
-
-                User user = Session.Instance.GetUser(username, password);
-
-                if (user == null)
+                if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).Login(request.message))
                 {
-                    request.Channel.SendMessage(request.Id, "Credenciales incorrectas, vuelva a intentarlo.");
-                    return;
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] = request.message;
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Confirme que quiera borrar la cuenta ingresando la contraseña nuevamente");
                 }
-
-                request.Channel.SendMessage(request.Id, "¿Estas seguro que deseas borrar este usuario? Vuelva a ingresar su contraseña:");
-                request.Temp.Add("confirmation", "");
-
-            }
-            else if (request.Temp.ContainsKey("confirmation"))
-            {
-                string username = request.GetDictionaryValue<string>("username");
-                string password = request.GetDictionaryValue<string>("password");
-                string confirmationPassword = request.Message;
-
-                if (password == confirmationPassword)
+                else 
                 {
-                    Session.Instance.RemoveUser(username, password);
-                    request.Channel.SendMessage(request.Id, "Usuario eliminado correctamente.");
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Contaseña incorrecta. Vuelva a intentarlo");
+                    AllChats.Instance.ChatsDictionary[request.id].ClearDeleteUser();
+                }
+            }
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUserConfirmation"] == string.Empty)
+            {
+                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUserConfirmation"] = request.message;
+                if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == (string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUserConfirmation"])
+                {
+                    AllUsers.Instance.RemoveUser(((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).UserName);
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usuario eliminado con éxito!");
+                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"] = User.Empty;
+                    AllChats.Instance.ChatsDictionary[request.id].ClearDeleteUser();
                 }
                 else
                 {
-                    request.Channel.SendMessage(request.Id, "Credenciales incorrectas.");
+                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"El usuario no fue eliminado porque la contraseña no fue confirmada correctamente");
+                    AllChats.Instance.ChatsDictionary[request.id].ClearDeleteUser();
                 }
-
-                request.Temp.Clear();
-                request.State = State.Dispatcher;
             }
         }
     }

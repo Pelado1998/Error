@@ -13,28 +13,38 @@ namespace Bankbot
     /// </summary>
     public class User
     {
-        public string Username { get; set; }
+        public string UserName { get; set; }
         public string Password { get; set; }
         private Guid Id { get; set; }
         public List<Account> Accounts { get; set; }
-        public List<String> IncomeList { get; set; }
-        public List<String> OutcomeList { get; set; }
-        public static object Empty { get; internal set; }
+        public List<string> IncomeList { get; set; }
+        public List<string> OutcomeList { get; set; }
+        public static User Empty { get; internal set; }
 
-        public User(string username, string password)
+        public User(string userName, string password)
         {
-            this.Username = username;
+            this.UserName = userName;
             this.Password = Cypher(password);
             this.Id = Guid.NewGuid();
             this.Accounts = new List<Account> { };
-            this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
+            this.IncomeList = new List<string> { "Salario", "Regalo" };
+            this.OutcomeList = new List<string> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
+        }
+        public User(string[] user)
+        {
+            this.UserName = user[0];
+            this.Password = user[1];
+            this.Id = Guid.Parse(user[2]);
+            this.Accounts = new List<Account> { };
+            this.IncomeList = new List<string> { "Salario", "Regalo" };
+            this.OutcomeList = new List<string> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
 
         /// <summary>
         /// Agregar un objeto Account a la la lista List<Account>
         /// </summary>
         /// <param name="account"></param>
-        public Account AddAccount(AccountType type, string name, Currency currency, float amount, float objective)
+        public void AddAccount(string name, AccountType? type, Currency currency, double amount, double objective)
         {
             if (this.Accounts == null)
             {
@@ -45,50 +55,39 @@ namespace Bankbot
                 if (account.Name == name)
                 {
                     System.Console.WriteLine("Ya existe una cuenta con este nombre.");
-                    return null;
+                    return;
                 }
             }
             var newAccount = new Account(name, type, currency, amount, objective);
             this.Accounts.Add(newAccount);
-            return newAccount;
-        }
-
-        public bool AccountNameExists(string name)
-        {
-            string accountName = String.Empty;
-
-            foreach (var item in Accounts)
-            {
-                if (item.Name == name) accountName = item.Name;
-            }
-
-            return accountName == name;
         }
 
         /// <summary>
         /// Quita un objeto Account de la lista List<Account>
         /// </summary>
         /// <param name="account"></param>
-        public void RemoveAcount(Account account)
+        public void RemoveAccount(string accountName)
         {
-            if (this.Accounts.Contains(account))
+            foreach (Account account in this.Accounts)
             {
-                this.Accounts.Remove(account);
+                if (account.Name == accountName)
+                {
+                    this.Accounts.Remove(account);
+                    return;
+                }
             }
-            else
-            {
-                System.Console.WriteLine("No se ha encontrado la cuenta " + account.Name);
-            }
+            System.Console.WriteLine("No se ha encontrado la cuenta " + accountName);
         }
 
         /// <summary>
         /// Cambia el nombre de usuario
         /// </summary>
-        /// <param name="newUsername"></param>
-        public void ChangeUsername(string newUsername)
+        /// <param name="newUserName"></param>
+        public void ChangeUserName(string newUserName)
         {
-            this.Username = newUsername;
+            this.UserName = newUserName;
         }
+
 
         /// <summary>
         /// Cambia la contraseña generando un nuevo string cifrado
@@ -99,6 +98,27 @@ namespace Bankbot
             this.Password = Cypher(newPassword);
         }
 
+
+        /// <summary>
+        /// Muestra todas las cuentas disponibles en consola de forma indexada
+        /// </summary>
+        public StringBuilder ShowAccounts()
+        {
+            StringBuilder accounts = new StringBuilder();
+            if (this.Accounts.Count == 0)
+            {
+                accounts.Append("No hay cuentas asociadas a este usuario.");
+            }
+            else
+            {
+                foreach (Account account in this.Accounts)
+                {
+                    accounts.Append($"{this.Accounts.IndexOf(account) + 1} - {account.Name}\n");
+                }
+            }
+            System.Console.WriteLine(accounts);
+            return accounts;
+        }
         public void AddItem(string name, string option)
         {
             //Income
@@ -120,7 +140,6 @@ namespace Bankbot
                 System.Console.WriteLine("Opción incorrecta");
             }
         }
-
         public void RemoveItem(string name)
         {
             //Income
@@ -138,27 +157,23 @@ namespace Bankbot
                 System.Console.WriteLine("No existe dicho elemento en los rubros.");
             }
         }
-
-        public string ShowAccountList()
+        public void ShowItems()
         {
-            StringBuilder accountList = new StringBuilder();
-            foreach (var account in Accounts)
+            StringBuilder res = new StringBuilder();
+            res.Append("Income:\n\n");
+            foreach (string item in this.IncomeList)
             {
-                accountList.Append((Accounts.IndexOf(account) + 1).ToString() + " - " + account.Name + "\n");
+                res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
             }
-            return accountList.ToString();
-        }
-        public string ShowItemList()
-        {
-            StringBuilder outcomeList = new StringBuilder();
-            foreach (var outcome in OutcomeList)
+            res.Append("Outcome:\n\n");
+            foreach (string item in this.OutcomeList)
             {
-                outcomeList.Append(outcome + "\n");
+                res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
             }
-            return outcomeList.ToString();
         }
 
-        //Password Code
+
+        //PasswordCode
 
         /// <summary>
         /// Clase que utilizando la funcion de derivacion clave PBKDF2 genera una contraseña cifrada y es capaz de descifrarla
@@ -245,6 +260,21 @@ namespace Bankbot
             pbkdf2.IterationCount = iterations;
             return pbkdf2.GetBytes(outputBytes);
         }
-
+        public bool AccountExist(string name)
+        {
+            foreach (Account account in this.Accounts)
+            {
+                if (account.Name == name) return true;
+            }
+            return false;
+        }
+        public Account GetAccount (string name)
+        {
+            foreach (Account account in this.Accounts)
+            {
+                if (account.Name == name) return account;
+            }
+            return Account.Empty;
+        }
     }
 }
