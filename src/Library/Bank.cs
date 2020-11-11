@@ -54,7 +54,7 @@ namespace Bankbot
                 System.Console.WriteLine("Esta moneda no existe");
             }
         }
-        public static double Convert(double amount, Currency from, Currency to)
+        public double Convert(double amount, Currency from, Currency to)
         {
             switch (to.CodeISO)
             {
@@ -90,14 +90,14 @@ namespace Bankbot
             }
             return amount;
         }
-        public static string ShowCurrencyList()
-         {
-             StringBuilder currencies = new StringBuilder();
-             foreach (Currency currency in Bank.Instance.CurrencyList)
-             {
+        public string ShowCurrencyList()
+        {
+            StringBuilder currencies = new StringBuilder();
+            foreach (Currency currency in Bank.Instance.CurrencyList)
+            {
                 currencies.Append($"{Bank.Instance.CurrencyList.IndexOf(currency) + 1} - {currency.CodeISO}\n");
-             }
-             return currencies.ToString();
-         }
+            }
+            return currencies.ToString();
+        }
     }
 }

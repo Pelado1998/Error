@@ -6,6 +6,5 @@ namespace Bankbot
         void HandleMessage(IMessage message);
         void SendMessage(string id, string message);
         void StartUp();
-        void CreateChat(IMessage message);
     }
 }

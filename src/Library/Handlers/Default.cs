@@ -12,7 +12,9 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"No te entendi. Vuelve a intentarlo.");
+            var data = Session.Instance.GetChat(request.Id);
+            data.Channel.SendMessage(request.Id, "No te entendi, vuelve a intentarlo.");
+            data.State = State.Dispatcher;
         }
     }
 }

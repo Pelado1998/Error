@@ -1,15 +1,11 @@
-using System;
-
 namespace Bankbot
 {
     public class CreateUserCondition : ICondition<IMessage>
     {
         public bool IsSatisfied(IMessage request)
         {
-            Data data = Data.Empty;
-            return  AllChats.Instance.ChatsDictionary.TryGetValue(request.id,out data) 
-            &&      (string)  AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LastCommand"] == "/CreateUser"
-            ;
+            var data = Session.Instance.GetChat(request.Id);
+            return data.State == State.HandlingCommand && data.Command.ToLower() == "/createuser";
         }
     }
 }

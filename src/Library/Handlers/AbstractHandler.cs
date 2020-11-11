@@ -1,22 +1,21 @@
-using System;
-using System.Collections.Generic;
-
 namespace Bankbot
 {
+    //REVISAR
     public abstract class AbstractHandler<T>
     {
-        protected abstract void handleRequest(T request);
-        private ICondition<T> condition;
+        protected abstract void handleRequest(IMessage request);
+        private ICondition<IMessage> condition;
         public AbstractHandler<T> Succesor { get; set; }
-        protected AbstractHandler(ICondition<T> condition)
+        protected AbstractHandler(ICondition<IMessage> condition)
         {
             this.condition = condition;
         }
-        public virtual void Handler(T request)
+        public virtual void Handler(IMessage request)
         {
             if (this.condition.IsSatisfied(request))
             {
                 this.handleRequest(request);
+                return;
             }
             if (this.Succesor != null)
             {

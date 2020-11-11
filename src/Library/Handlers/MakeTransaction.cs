@@ -10,104 +10,106 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            if(((User)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"])) == User.Empty)
-            {
-                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Igresar a un usuario si tienes uno con el comando /Login o crear uno con el comando /CreateUser en caso de que no tengas uno antes de crear una transacción.\n Luego debes tener una cuenta a lo sumo. Para crear una cuenta utiliza el comando /CreateAccount");
-                AllChats.Instance.ChatsDictionary[request.id].ClearTransaction();
-            }
-            else if (((User)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"])).Accounts.Count == 0)
-            {
-                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Debes tener una cuenta antes de realizar una transacción. Prueba con el comando /CreateAccount");
-                AllChats.Instance.ChatsDictionary[request.id].ClearTransaction();
-            }
-            else if ((string)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAccount"])==string.Empty && request.message == "/Transaction")
-            {
-                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese el AccountName de la cuenta a la que quiere realizar una transacción");
-            }
-            else if ((string)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAccount"])==string.Empty)
-            {
-                if (((User)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"])).AccountExist(request.message))
-                {
-                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAccount"] = request.message;
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese el tipo de transacción que desea realizar:\n1-Ingreso\n2-Gasto");
-                }
-                else
-                {
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una cuenta válida");
-                }
-            }
-            else if ((Int32)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionType"])== 0)
-            {
-                int option;
-                if (Int32.TryParse(request.message,out option) && option==1)    //Ingreso
-                {
-                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionType"]= 1;
-                     ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una cantidad para realizar la transacción");
-                }
-                else if (Int32.TryParse(request.message,out option) && option==2)   //Gasto
-                {
-                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionType"]= -1;
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una cantidad para realizar la transacción");
+            var data = Session.Instance.GetChat(request.Id);
 
-                }
-                else
-                {
-                  ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un valor válido");   
-                }
-            }
-            else if ((Double)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAmount"])== 0.0)
+            if (!data.Temp.ContainsKey("type"))
             {
-                Double ammount;
-                if (Double.TryParse(request.message,out ammount) && ammount>0)
+                int index;
+                if (Int32.TryParse(request.Text, out index) && (index == 1 || index == 2))
                 {
-                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAmount"]= ammount;
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una divisa para realizar la transacción\n" + Bank.ShowCurrencyList());   
-                }
-                else
-                {
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un valor válido");   
+                    data.Temp.Add("type", index);
+                    data.Channel.SendMessage(request.Id, "Ingrese la cuenta en la cual desea realizar la transacción:\n" + data.User.ShowAccountList());
+                    return;
                 }
 
-            }
-            else if ((Currency)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionCurrency"])== Currency.Empty)
-            {
-                Int32 idx;
-                if (Int32.TryParse(request.message,out idx) && idx>0 && idx<= Bank.Instance.CurrencyList.Count)
-                {
-                    AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionCurrency"]= Bank.Instance.CurrencyList[idx];
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un rubro dentro del cuál se registrará la transacción");   
-                }
-                else
-                {
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un valor válido");   
-                }
-            }
-            else if ((string)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionItem"])== string.Empty)
-            {
-                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionItem"]= request.message;
-                ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una descripción de la transacción");   
-            }
-            else if ((string)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionDescription"])== string.Empty)
-            {
-                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionDescription"]= request.message;
-                if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).GetAccount((string)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAccount"])).MakeTransaction
-                (
-                    (Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAmount"]*
-                    Convert.ToDouble(((Int32)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionType"])),
-                    (Currency)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionCurrency"],
-                    (string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionItem"],
-                    (string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionDescription"]
+                data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice del tipo.");
+                data.Channel.SendMessage(request.Id, "Ingrese el tipo de transacción:\n1 - Ingreso\n2 - Gasto");
 
-                ))
+            }
+            else if (!data.Temp.ContainsKey("account"))
+            {
+                int index;
+                if (Int32.TryParse(request.Text, out index) && index <= data.User.Accounts.Count)
                 {
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Se ha realizado la transación con éxito!");   
-                    AllChats.Instance.ChatsDictionary[request.id].ClearTransaction();
+                    data.Temp.Add("account", data.User.Accounts[index - 1]);
+                    data.Channel.SendMessage(request.Id, "Ingrese la moneda en la cual desea realizar la transacción:\n" + Bank.Instance.ShowCurrencyList());
+                    return;
                 }
-                else
+
+                data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice de la cuenta.");
+                data.Channel.SendMessage(request.Id, "Ingrese la cuenta en la cual desea realizar la transacción:\n" + data.User.ShowAccountList());
+
+            }
+            else if (!data.Temp.ContainsKey("currency"))
+            {
+                int index;
+                if (Int32.TryParse(request.Text, out index) && index < Bank.Instance.CurrencyList.Count)
                 {
-                    ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"No se ha podido realizar la transacción. Pruebe nuevamente con el comando /Transaction");   
-                    AllChats.Instance.ChatsDictionary[request.id].ClearTransaction();
+                    data.Temp.Add("currency", Bank.Instance.CurrencyList[index - 1]);
+                    data.Channel.SendMessage(request.Id, "Ingrese el monto de la transacción:");
+                    return;
                 }
+
+                data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice de la moneda.");
+                data.Channel.SendMessage(request.Id, "Ingrese la moneda en la cual desea realizar la transacción:\n" + Bank.Instance.ShowCurrencyList());
+
+            }
+            else if (!data.Temp.ContainsKey("amount"))
+            {
+                double amount;
+                if (double.TryParse(request.Text, out amount) && amount > 0)
+                {
+                    amount = data.GetDictionaryValue<int>("type") == 1 ? amount : -amount;
+                    data.Temp.Add("amount", amount);
+
+                    if (data.GetDictionaryValue<int>("type") == 1)
+                    {
+                        data.Channel.SendMessage(request.Id, "Ingrese una descripción de la transacción:");
+                        return;
+                    }
+
+                    data.Channel.SendMessage(request.Id, "Seleccione el rubro del gasto:\n" + data.User.ShowItemList());
+                    return;
+
+                }
+
+                data.Channel.SendMessage(request.Id, "Debe ingresar un valor numérico mayor a 0.");
+                data.Channel.SendMessage(request.Id, "Ingrese el monto de la transacción:");
+
+            }
+            else if (!data.Temp.ContainsKey("description"))
+            {
+                if (data.GetDictionaryValue<int>("type") == 2)
+                {
+                    int index;
+                    if (Int32.TryParse(request.Text, out index) && index < data.User.OutcomeList.Count)
+                    {
+                        data.Temp.Add("item", data.User.OutcomeList[index - 1]);
+                        return;
+                    }
+                    data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice del rubro");
+                    data.Channel.SendMessage(request.Id, "Seleccione el rubro del gasto:\n" + data.User.ShowItemList());
+                    return;
+
+                }
+                data.Temp.Add("description", request.Text);
+            }
+
+
+
+            if (data.Temp.ContainsKey("type") && data.Temp.ContainsKey("account") && data.Temp.ContainsKey("currency") && data.Temp.ContainsKey("amount") && data.Temp.ContainsKey("description"))
+            {
+                var type = data.GetDictionaryValue<int>("type");
+                var account = data.GetDictionaryValue<Account>("account");
+                var currency = data.GetDictionaryValue<Currency>("currency");
+                var amount = data.GetDictionaryValue<double>("amount");
+                var description = data.GetDictionaryValue<string>("description");
+
+                account.AddTransaction(currency, amount, description);
+
+                data.Channel.SendMessage(request.Id, "Se ha realizado una transacción.");
+                data.Temp.Clear();
+                data.State = State.Dispatcher;
             }
         }
     }

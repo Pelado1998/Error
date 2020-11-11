@@ -12,9 +12,12 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            AllChats.Instance.ChatsDictionary[request.id].Abort();
-            request.message = "Aborted";
-            ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"La operación se ha abortado.");
+            var data = Session.Instance.GetChat(request.Id);
+            data.Temp.Clear();
+            data.Command = string.Empty;
+            data.State = State.Dispatcher;
+
+            data.Channel.SendMessage(request.Id, "Operación cancelada.");
         }
     }
 }

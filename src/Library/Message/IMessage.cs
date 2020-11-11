@@ -2,7 +2,7 @@ namespace Bankbot
 {
     public interface IMessage
     {
-        string message{get;set;}
-        string id {get;set;}
+        string Text { get; set; }
+        string Id { get; set; }
     }
 }
