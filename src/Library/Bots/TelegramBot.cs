@@ -37,9 +37,9 @@ namespace Bankbot
 
              Bot.StartReceiving();
              System.Console.WriteLine("Press any key to exit");
-             System.Console.ReadKey();
+             //System.Console.ReadKey();
 
-            Bot.StopReceiving();
+            //Bot.StopReceiving();
         }
         private async void OnMessage(object sender, MessageEventArgs messageEventArgs)
         {
@@ -54,12 +54,22 @@ namespace Bankbot
         }
         public void HandleMessage(IMessage message)
         {
+            CreateChat(message);
             Handler.Handler(message);
         }
         public void SendMessage(string id, string message)
         {
             Bot.SendTextMessageAsync(long.Parse(id), message);
             System.Console.WriteLine(message);
+        }
+
+        public void CreateChat(IMessage request)
+        {
+            if(!AllChats.Instance.ChatExist(request.id))
+            {
+                AllChats.Instance.AddChat(request);
+                AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"] = new TelegramBot();
+            }
         }
     }
 }

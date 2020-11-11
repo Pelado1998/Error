@@ -62,27 +62,27 @@ namespace Bankbot
                     switch (from.CodeISO)
                     {
                         case "UYU":
-                            return amount * 0.025;
+                            return amount * 42.74;
                         case "ARG":
-                            return amount * 5;
+                            return amount * 79.38;
                     }
                     break;
                 case "UYU":
                     switch (from.CodeISO)
                     {
                         case "USS":
-                            return amount * 40;
+                            return amount * 0.023;
                         case "ARG":
-                            return amount * 500;
+                            return amount * 1.86;
                     }
                     break;
                 case "ARG":
                     switch (from.CodeISO)
                     {
                         case "UYU":
-                            return amount * 0.2;
+                            return amount * 0.54;
                         case "USS":
-                            return amount * 0.04;
+                            return amount * 0.013;
                     }
                     break;
                 default:

@@ -11,11 +11,11 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == string.Empty && request.message== "/DeleteUser")
+            if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == string.Empty && request.message== "/DeleteUser")
             {
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese la Password para eliminarlo");
             }
-            else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == string.Empty)
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == string.Empty)
             {
                 if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).Login(request.message))
                 {
@@ -28,10 +28,10 @@ namespace Bankbot
                     AllChats.Instance.ChatsDictionary[request.id].ClearDeleteUser();
                 }
             }
-            else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUserConfirmation"] == string.Empty)
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUserConfirmation"] == string.Empty)
             {
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUserConfirmation"] = request.message;
-                if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == (String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUserConfirmation"])
+                if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUser"] == (string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteUserConfirmation"])
                 {
                     AllUsers.Instance.RemoveUser(((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).UserName);
                     ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usuario eliminado con éxito!");

@@ -20,11 +20,11 @@ namespace Bankbot
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Debes tener una cuenta antes de realizar una transacción. Prueba con el comando /CreateAccount");
                 AllChats.Instance.ChatsDictionary[request.id].ClearTransaction();
             }
-            else if ((String)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAccount"])==String.Empty && request.message == "/Transaction")
+            else if ((string)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAccount"])==string.Empty && request.message == "/Transaction")
             {
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese el AccountName de la cuenta a la que quiere realizar una transacción");
             }
-            else if ((String)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAccount"])==String.Empty)
+            else if ((string)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAccount"])==string.Empty)
             {
                 if (((User)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"])).AccountExist(request.message))
                 {
@@ -82,21 +82,21 @@ namespace Bankbot
                     ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un valor válido");   
                 }
             }
-            else if ((String)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionItem"])== String.Empty)
+            else if ((string)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionItem"])== string.Empty)
             {
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionItem"]= request.message;
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una descripción de la transacción");   
             }
-            else if ((String)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionDescription"])== String.Empty)
+            else if ((string)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionDescription"])== string.Empty)
             {
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionDescription"]= request.message;
-                if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).GetAccount((String)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAccount"])).MakeTransaction
+                if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).GetAccount((string)(AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAccount"])).MakeTransaction
                 (
                     (Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionAmount"]*
                     Convert.ToDouble(((Int32)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionType"])),
                     (Currency)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionCurrency"],
-                    (String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionItem"],
-                    (String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionDescription"]
+                    (string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionItem"],
+                    (string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateTransactionDescription"]
 
                 ))
                 {

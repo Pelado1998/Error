@@ -6,7 +6,7 @@ namespace Bankbot
 {
     public class AllCommands
     {
-        public List<String> CommandsList { get; set; }
+        public List<string> CommandsList { get; set; }
         private static AllCommands instance;
         
         public static AllCommands Instance
@@ -19,7 +19,7 @@ namespace Bankbot
         }
         private AllCommands()
         {
-            this.CommandsList = new List<String>();
+            this.CommandsList = new List<string>();
             this.CommandsList.Add("/Abort"); 
             this.CommandsList.Add("/Login");               
             this.CommandsList.Add("/Convertion");        
@@ -28,46 +28,47 @@ namespace Bankbot
             this.CommandsList.Add("/DeleteUser");     
             this.CommandsList.Add("/CreateAccount");      
             this.CommandsList.Add("/DeleteAccount");          
-            this.CommandsList.Add("/Transaction");   
+            this.CommandsList.Add("/Transaction");
+            this.CommandsList.Add("/Commands");    
             //this.CommandsList.Add("/Init");         El usuario no deberia de poder editar este comando
         }
-        public static String CommandsString(IMessage message)
+        public static string Commandsstring(IMessage message)
         {
-            String commandList = String.Empty;
+            string commandList = string.Empty;
             if ((User)AllChats.Instance.ChatsDictionary[message.id].DataDictionary["User"] == User.Empty )
             {
-                foreach (String command in UnlogedCommandsList())
+                foreach (string command in UnlogedCommandsList())
                 {
                     commandList+=command+"\n";
                 }
             }
             else if (((User)AllChats.Instance.ChatsDictionary[message.id].DataDictionary["User"]).Accounts.Count==0)
             {
-                foreach (String command in HasNoAccountsCommandsList())
+                foreach (string command in HasNoAccountsCommandsList())
                 {
                     commandList+=command+"\n";
                 }
             }
             else
             {
-                foreach (String command in HasAccountCommandsList())
+                foreach (string command in HasAccountCommandsList())
                 {
                     commandList+=command+"\n";
                 }
             }
             return commandList;
         }
-        private static List<String> UnlogedCommandsList()
+        private static List<string> UnlogedCommandsList()
         {
-            List<String> unlogedList = new List<String>();
+            List<string> unlogedList = new List<string>();
             unlogedList.Add("/Login");
             unlogedList.Add("/Convertion");
             unlogedList.Add("/CreateUser");
             return unlogedList;
         }
-        private static List<String> HasNoAccountsCommandsList()
+        private static List<string> HasNoAccountsCommandsList()
         {
-            List<String> hasNoAccountsList = new List<String>();
+            List<string> hasNoAccountsList = new List<string>();
             hasNoAccountsList.Add("/Logout");
             hasNoAccountsList.Add("/DeleteUser");
             hasNoAccountsList.Add("/CreateAccount");
@@ -75,9 +76,9 @@ namespace Bankbot
             hasNoAccountsList.Add("/CreateUser");
             return hasNoAccountsList;
         }
-        private static List<String> HasAccountCommandsList()
+        private static List<string> HasAccountCommandsList()
         {
-            List<String> hasAccountsList = new List<String>();
+            List<string> hasAccountsList = new List<string>();
             hasAccountsList.Add("/Logout");
             hasAccountsList.Add("/DeleteUser");
             hasAccountsList.Add("/CreateAccount");

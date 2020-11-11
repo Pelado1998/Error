@@ -11,11 +11,11 @@ namespace Bankbot
 
         protected override void handleRequest(IMessage request)
         {
-            if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == string.Empty && request.message== "/DeleteAccount")
+            if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == string.Empty && request.message== "/DeleteAccount")
             {
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un AccountName para eliminar");
             }
-            else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == string.Empty)
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == string.Empty)
             {
                 if (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).AccountExist(request.message))
                 {
@@ -28,12 +28,12 @@ namespace Bankbot
                     AllChats.Instance.ChatsDictionary[request.id].ClearDeleteAccount();
                 }
             }
-            else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccountConfirmation"] == string.Empty)
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccountConfirmation"] == string.Empty)
             {
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccountConfirmation"] = request.message;
-                if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == (String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccountConfirmation"])
+                if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"] == (string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccountConfirmation"])
                 {
-                    ((User) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).RemoveAccount((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"]);
+                    ((User) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).RemoveAccount((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["DeleteAccount"]);
                     ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Cuenta eliminada con éxito!");
                     AllChats.Instance.ChatsDictionary[request.id].ClearDeleteAccount();
                 }
@@ -44,8 +44,8 @@ namespace Bankbot
                 }
             }
             
-            // this.DataDictionary.Add("DeleteAccount", String.Empty);
-            // this.DataDictionary.Add("DeleteAccountConfirmation", String.Empty);
+            // this.DataDictionary.Add("DeleteAccount", string.Empty);
+            // this.DataDictionary.Add("DeleteAccountConfirmation", string.Empty);
         }
     }
 }

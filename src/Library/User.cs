@@ -17,8 +17,8 @@ namespace Bankbot
         public string Password { get; set; }
         private Guid Id { get; set; }
         public List<Account> Accounts { get; set; }
-        public List<String> IncomeList { get; set; }
-        public List<String> OutcomeList { get; set; }
+        public List<string> IncomeList { get; set; }
+        public List<string> OutcomeList { get; set; }
         public static User Empty { get; internal set; }
 
         public User(string userName, string password)
@@ -27,8 +27,8 @@ namespace Bankbot
             this.Password = Cypher(password);
             this.Id = Guid.NewGuid();
             this.Accounts = new List<Account> { };
-            this.IncomeList = new List<String> { "Salario", "Regalo" };
-            this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
+            this.IncomeList = new List<string> { "Salario", "Regalo" };
+            this.OutcomeList = new List<string> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
         public User(string[] user)
         {
@@ -36,8 +36,8 @@ namespace Bankbot
             this.Password = user[1];
             this.Id = Guid.Parse(user[2]);
             this.Accounts = new List<Account> { };
-            this.IncomeList = new List<String> { "Salario", "Regalo" };
-            this.OutcomeList = new List<String> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
+            this.IncomeList = new List<string> { "Salario", "Regalo" };
+            this.OutcomeList = new List<string> { "Comida", "Transporte", "Ocio", "Alquiler", "Impuestos" };
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Bankbot
         {
             StringBuilder res = new StringBuilder();
             res.Append("Income:\n\n");
-            foreach (String item in this.IncomeList)
+            foreach (string item in this.IncomeList)
             {
                 res.Append((this.IncomeList.IndexOf(item) + 1).ToString() + " - " + item + "\n");
             }

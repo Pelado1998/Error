@@ -5,49 +5,38 @@ namespace Bankbot
 {
     public class Data
     {
-        public Dictionary<String,Object> DataDictionary { get; set; }
-        private static Data instance;
-        
-        public static Data Instance
-        {
-            get
-            {
-                if (instance == null) instance = new Data();
-                return instance;
-            }
-        }
+        public Dictionary<string,Object> DataDictionary { get; set; }
 
         public static Data Empty { get; internal set; }
 
-
-        private Data()
+        public Data()
         {
-            this.DataDictionary = new Dictionary<String,Object>(); 
-            this.DataDictionary.Add("CreateUserPassword", String.Empty);
-            this.DataDictionary.Add("CreateUserUsername", String.Empty);
-            this.DataDictionary.Add("DeleteUser", String.Empty);
-            this.DataDictionary.Add("DeleteUserConfirmation", String.Empty);
-            this.DataDictionary.Add("LoginUsername", String.Empty);
-            this.DataDictionary.Add("LoginPassword", String.Empty);
-            this.DataDictionary.Add("CreateAccountName", String.Empty);
+            this.DataDictionary = new Dictionary<string,Object>(); 
+            this.DataDictionary.Add("CreateUserPassword", string.Empty);
+            this.DataDictionary.Add("CreateUserUsername", string.Empty);
+            this.DataDictionary.Add("DeleteUser", string.Empty);
+            this.DataDictionary.Add("DeleteUserConfirmation", string.Empty);
+            this.DataDictionary.Add("LoginUsername", string.Empty);
+            this.DataDictionary.Add("LoginPassword", string.Empty);
+            this.DataDictionary.Add("CreateAccountName", string.Empty);
             this.DataDictionary.Add("CreateAccountType", AccountType.Empty);
             this.DataDictionary.Add("CreateAccountCurrency", Currency.Empty);
             this.DataDictionary.Add("CreateAccountAmount", 0.0);
             this.DataDictionary.Add("CreateAccountObjective", 0.0);
-            this.DataDictionary.Add("DeleteAccount", String.Empty);
-            this.DataDictionary.Add("DeleteAccountConfirmation", String.Empty);
-            this.DataDictionary.Add("CreateTransactionAccount", String.Empty);
+            this.DataDictionary.Add("DeleteAccount", string.Empty);
+            this.DataDictionary.Add("DeleteAccountConfirmation", string.Empty);
+            this.DataDictionary.Add("CreateTransactionAccount", string.Empty);
             this.DataDictionary.Add("CreateTransactionType", 0);
             this.DataDictionary.Add("CreateTransactionCurrency", Currency.Empty);
             this.DataDictionary.Add("CreateTransactionAmount", 0.0);
-            this.DataDictionary.Add("CreateTransactionItem", String.Empty);
-            this.DataDictionary.Add("CreateTransactionDescription", String.Empty);
+            this.DataDictionary.Add("CreateTransactionItem", string.Empty);
+            this.DataDictionary.Add("CreateTransactionDescription", string.Empty);
             this.DataDictionary.Add("ConvertFrom", Currency.Empty);
             this.DataDictionary.Add("ConvertTo",Currency.Empty);
             this.DataDictionary.Add("ConvertAmount",0.0);
             this.DataDictionary.Add("User", User.Empty);
-            this.DataDictionary.Add("LastCommand", String.Empty);
-            this.DataDictionary.Add("Channel", TelegramBot.Instance);
+            this.DataDictionary.Add("LastCommand", string.Empty);
+            this.DataDictionary.Add("Channel", ConsoleBot.Instance);
         }
         public void Abort()
         {
@@ -81,25 +70,25 @@ namespace Bankbot
 
         public void ClearTransaction()
         {
-            this.DataDictionary["CreateTransactionAccount"] = String.Empty;
+            this.DataDictionary["CreateTransactionAccount"] = string.Empty;
             this.DataDictionary["CreateTransactionType"] = 0;
             this.DataDictionary["CreateTransactionCurrency"] = Currency.Empty;
             this.DataDictionary["CreateTransactionAmount"] = 0.0;
-            this.DataDictionary["CreateTransactionItem"] = String.Empty;
-            this.DataDictionary["CreateTransactionDescription"] =String.Empty;
+            this.DataDictionary["CreateTransactionItem"] = string.Empty;
+            this.DataDictionary["CreateTransactionDescription"] =string.Empty;
             ClearLastCommand();
         }
 
         public void ClearDeleteAccount()
         {
-            this.DataDictionary["DeleteAccount"] = String.Empty;
-            this.DataDictionary["DeleteAccountConfirmation"] = String.Empty;
+            this.DataDictionary["DeleteAccount"] = string.Empty;
+            this.DataDictionary["DeleteAccountConfirmation"] = string.Empty;
             ClearLastCommand();
         }
 
         public void ClearCreateAccount()
         {
-            this.DataDictionary["CreateAccountName"] = String.Empty;
+            this.DataDictionary["CreateAccountName"] = string.Empty;
             this.DataDictionary["CreateAccountType"] = AccountType.Empty;
             this.DataDictionary["CreateAccountCurrency"] = Currency.Empty;
             this.DataDictionary["CreateAccountAmount"] = 0.0;
@@ -109,22 +98,22 @@ namespace Bankbot
 
         public void ClearLogin()
         {
-            this.DataDictionary["LoginUsername"] = String.Empty;
-            this.DataDictionary["LoginPassword"] = String.Empty;
+            this.DataDictionary["LoginUsername"] = string.Empty;
+            this.DataDictionary["LoginPassword"] = string.Empty;
             ClearLastCommand();
         }
 
         public void ClearDeleteUser()
         {
-            this.DataDictionary["DeleteUser"] = String.Empty;
-            this.DataDictionary["DeleteUserConfirmation"] = String.Empty;
+            this.DataDictionary["DeleteUser"] = string.Empty;
+            this.DataDictionary["DeleteUserConfirmation"] = string.Empty;
             ClearLastCommand();
         }
 
         public void ClearCreateUser()
         {
-            this.DataDictionary["CreateUserPassword"] = String.Empty;
-            this.DataDictionary["CreateUserUsername"] = String.Empty;
+            this.DataDictionary["CreateUserPassword"] = string.Empty;
+            this.DataDictionary["CreateUserUsername"] = string.Empty;
             ClearLastCommand();
         }
     }

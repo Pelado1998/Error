@@ -19,15 +19,15 @@ namespace Bankbot
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Debes loguearte antes de crear una cuenta. Prueba con el comando /Login o /CreateUser en el caso de que no tengas un usuario.");
                 AllChats.Instance.ChatsDictionary[request.id].ClearCreateAccount();
             }
-            else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && request.message== "/CreateAccount")
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && request.message== "/CreateAccount")
             {
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un AccountName");
             }
-            else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).AccountExist(request.message)))
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && (((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).AccountExist(request.message)))
             {
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Esa cuenta ya existe. Ingrese otro AccountName que no exista por favor");
             }
-            else if ((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && !(((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).AccountExist(request.message)))
+            else if ((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] == string.Empty && !(((User)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"]).AccountExist(request.message)))
             {
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"] = request.message;
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un AccountType:\n" + ShowAccountType());
@@ -79,7 +79,7 @@ namespace Bankbot
                     AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountObjective"] = ammount;
                     Account account = new Account
                     (
-                        (String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"],
+                        (string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountName"],
                         (AccountType)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountType"],
                         (Currency)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountCurrency"],
                         (Double)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["CreateAccountAmount"],

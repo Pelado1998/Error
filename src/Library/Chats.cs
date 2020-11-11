@@ -9,9 +9,9 @@ namespace Bankbot
     public class Chats
     {
         public Data Data {get;set;}
-        public Chats(String id)
+        public Chats(string id)
         {
-            this.Data = Data.Instance;
+            this.Data = new Data();
         }
     }
 }

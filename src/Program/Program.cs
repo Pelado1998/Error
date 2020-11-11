@@ -8,12 +8,14 @@ namespace Bankbot
     //Ver como hacemos el historial
     //Tipos de cuenta como enums
     //IPrintable?
+    //@BankerPII_bot
 
     class Program
     {
         static void Main(string[] args)
         {
             TelegramBot.Instance.Start();
+            ConsoleBot.Instance.Start();
         }
     }
 }

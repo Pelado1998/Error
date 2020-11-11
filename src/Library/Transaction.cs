@@ -14,7 +14,7 @@ namespace Bankbot
         public string Description { get; set; }
         public string Item { get; set; }
 
-        public Transaction(double amount, Currency currency, DateTime date, String item)
+        public Transaction(double amount, Currency currency, DateTime date, string item)
         {
             this.Amount = amount;
             this.Currency = currency;
@@ -22,7 +22,7 @@ namespace Bankbot
             this.Item = item;
             this.Description = string.Empty;
         }
-        public Transaction(double amount, Currency currency, DateTime date, String item, String description)
+        public Transaction(double amount, Currency currency, DateTime date, string item, string description)
         {
             this.Amount = amount;
             this.Currency = currency;

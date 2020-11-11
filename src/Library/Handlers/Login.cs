@@ -15,19 +15,19 @@ namespace Bankbot
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Usted ya se encuentra logueado");
                 AllChats.Instance.ChatsDictionary[request.id].ClearLogin();
             }
-            else if((String) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] == String.Empty && request.message== "/Login")
+            else if((string) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] == string.Empty && request.message== "/Login")
             {
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese un Username");
             }
-            else if ((String) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] == String.Empty)
+            else if ((string) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] == string.Empty)
             {
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] = request.message;
                 ((IChannel) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["Channel"]).SendMessage(request.id,"Ingrese una Password");
             }
-            else if((String) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] != String.Empty)
+            else if((string) AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"] != string.Empty)
             {
                 AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginPassword"] = request.message;
-                User user = AllUsers.Instance.Login((String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"], (String)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginPassword"]);
+                User user = AllUsers.Instance.Login((string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginUsername"], (string)AllChats.Instance.ChatsDictionary[request.id].DataDictionary["LoginPassword"]);
                 if (user != User.Empty)
                 {
                     AllChats.Instance.ChatsDictionary[request.id].DataDictionary["User"] = user;

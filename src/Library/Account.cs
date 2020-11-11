@@ -51,7 +51,7 @@ namespace Bankbot
             this.Objective = newObjective;
         }
 
-        public bool MakeTransaction(double amount, Currency currency, String item, String description)
+        public bool MakeTransaction(double amount, Currency currency, string item, string description)
         {
             if (amount + this.Amount < 0)
             {
@@ -105,7 +105,7 @@ namespace Bankbot
         {
             StringBuilder enumToText = new StringBuilder();
             var accountType = Enum.GetNames(typeof(AccountType));
-            foreach (String item in accountType)
+            foreach (string item in accountType)
             {
                 if (item != Bankbot.AccountType.Empty.ToString())
                 {
