@@ -4,7 +4,7 @@ namespace Bankbot
 {
     public class Session
     {
-        public List<User> AllUsers;
+        public List<User> AllUsers { get; set; }
         public Dictionary<string, Data> DataMap;
         public IPrinter Printer { get; set; }
         private static Session instance;

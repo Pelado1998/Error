@@ -32,7 +32,7 @@ namespace Bankbot
         /// Agregar un objeto Account a la la lista List<Account>
         /// </summary>
         /// <param name="account"></param>
-        public Account AddAccount(AccountType type, string name, Currency currency, double amount, double objective)
+        public Account AddAccount(AccountType type, string name, Currency currency, double balance, Objective objective)
         {
             if (this.Accounts == null)
             {
@@ -45,7 +45,7 @@ namespace Bankbot
                     return null;
                 }
             }
-            var newAccount = new Account(name, type, currency, amount, objective);
+            var newAccount = new Account(name, type, currency, balance, objective);
             this.Accounts.Add(newAccount);
             return newAccount;
         }

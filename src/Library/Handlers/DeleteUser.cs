@@ -34,11 +34,12 @@ namespace Bankbot
                 if (user == null)
                 {
                     data.Channel.SendMessage(request.Id, "Credenciales incorrectas, vuelva a intentarlo.");
-                    return;
                 }
-
-                data.Channel.SendMessage(request.Id, "¿Estas seguro que deseas borrar este usuario? Vuelva a ingresar su contraseña:");
-                data.Temp.Add("confirmation", "");
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "¿Estas seguro que deseas borrar este usuario? Vuelva a ingresar su contraseña:");
+                    data.Temp.Add("confirmation", "");
+                }
 
             }
             else if (data.Temp.ContainsKey("confirmation"))

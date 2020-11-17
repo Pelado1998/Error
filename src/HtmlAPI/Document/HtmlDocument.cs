@@ -36,14 +36,7 @@ namespace PII_HTML_API
             HTMLDocument document = null;
             try
             {
-
-                // document = File.Exists(this.path)
-                //     ? new HTMLDocument(this.path)
-                //         : new HTMLDocument();
-
                 document = new HTMLDocument();
-
-
 
                 document.Title = this.title;
 
