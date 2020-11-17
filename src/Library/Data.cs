@@ -15,6 +15,7 @@ namespace Bankbot
         public User User { get; set; }
         public Dictionary<string, object> Temp { get; set; }
         public IChannel Channel { get; set; }
+        public List<IFilter> Filters { get; set; }
         public Data()
         {
             this.State = State.Init;
@@ -22,6 +23,7 @@ namespace Bankbot
             this.User = null;
             this.Temp = new Dictionary<string, object>();
             this.Channel = null;
+            this.Filters = new List<IFilter>();
         }
 
         public T GetDictionaryValue<T>(string key)

@@ -67,8 +67,8 @@ namespace Bankbot
         {
             List<string> unlogedList = new List<string>();
             unlogedList.Add("/Login");
-            unlogedList.Add("/Convertion");
             unlogedList.Add("/CreateUser");
+            unlogedList.Add("/Convertion");
             return unlogedList;
         }
         private static List<string> HasNoAccountsCommandsList()

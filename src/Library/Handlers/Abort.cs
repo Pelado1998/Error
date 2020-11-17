@@ -4,9 +4,9 @@ using System;
 namespace Bankbot
 {
     //Implementacion
-    public class Abort : AbstractHandler<IMessage>
+    public class Exit : AbstractHandler<IMessage>
     {
-        public Abort(AbortCondition condition) : base(condition)
+        public Exit(ExitCondition condition) : base(condition)
         {
         }
 

@@ -101,7 +101,8 @@ namespace Bankbot
             StringBuilder accountList = new StringBuilder();
             foreach (var account in Accounts)
             {
-                accountList.Append((Accounts.IndexOf(account) + 1).ToString() + " - " + account.Name + "\n");
+                string index = (Accounts.IndexOf(account) + 1).ToString();
+                accountList.Append(index + " - " + account.Name + "\n");
             }
             return accountList.ToString();
         }
@@ -110,7 +111,8 @@ namespace Bankbot
             StringBuilder outcomeList = new StringBuilder();
             foreach (var outcome in OutcomeList)
             {
-                outcomeList.Append(outcome + "\n");
+                string index = (OutcomeList.IndexOf(outcome) + 1).ToString();
+                outcomeList.Append(index + " - " + outcome + "\n");
             }
             return outcomeList.ToString();
         }
