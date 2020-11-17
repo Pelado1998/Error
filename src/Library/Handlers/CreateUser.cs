@@ -41,6 +41,7 @@ namespace Bankbot
                 if (user != null)
                 {
                     data.Channel.SendMessage(request.Id, "Usuario creado correctamente.");
+                    data.Channel.SendMessage(request.Id, "Elija un comando de la siguiente lista:\n" + AllCommands.Instance.CommandList(request.Id));
                 }
                 // Exception 
                 else

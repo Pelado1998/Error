@@ -14,6 +14,18 @@ namespace Bankbot
     {
         static void Main(string[] args)
         {
+            var user = new User("a", "a");
+            var currency = Bank.Instance.CurrencyList[0];
+            user.AddAccount(AccountType.CuentaDeAhorro, "a", currency, 123123, 123);
+
+            for (int i = 0; i < 100; i++)
+            {
+                var amount = i % 2 == 0 ? i * 10 : -i * 10;
+                user.Accounts[0].AddTransaction(currency, amount, i.ToString());
+            }
+
+            Session.Instance.AllUsers.Add(user);
+
             TelegramBot.Instance.Start();
             ConsoleBot.Instance.Start();
         }

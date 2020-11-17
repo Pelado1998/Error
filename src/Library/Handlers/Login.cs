@@ -17,7 +17,7 @@ namespace Bankbot
                 data.Temp.Add("username", request.Text);
                 data.Channel.SendMessage(request.Id, "Ingrese una contraseña:");
             }
-            else if (data.Temp.ContainsKey("username") && !data.Temp.ContainsKey("password"))
+            else if (!data.Temp.ContainsKey("password"))
             {
                 data.Temp.Add("password", request.Text);
             }

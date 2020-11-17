@@ -6,6 +6,7 @@ namespace Bankbot
     {
         public List<User> AllUsers;
         public Dictionary<string, Data> DataMap;
+        public IPrinter Printer { get; set; }
         private static Session instance;
         public static Session Instance
         {
@@ -19,6 +20,9 @@ namespace Bankbot
         {
             this.AllUsers = new List<User>();
             this.DataMap = new Dictionary<string, Data>();
+
+            //Agregar por setup
+            this.Printer = new HtmlPrinter();
         }
         public void AddUser(string username, string password)
         {
@@ -65,15 +69,12 @@ namespace Bankbot
             chat = new Data();
             DataMap.Add(id, chat);
             return chat;
+
         }
 
         public void SetChannel(string id, IChannel newChannel)
         {
-            Data chat;
-            if (DataMap.TryGetValue(id, out chat))
-            {
-                chat.Channel = newChannel;
-            }
+            GetChat(id).Channel = newChannel;
         }
     }
 }

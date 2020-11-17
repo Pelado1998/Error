@@ -81,11 +81,13 @@ namespace Bankbot
             {
                 if (data.GetDictionaryValue<int>("type") == 2)
                 {
+                    System.Console.WriteLine("outcome 1");
                     int index;
-                    if (Int32.TryParse(request.Text, out index) && index < data.User.OutcomeList.Count)
+                    if (Int32.TryParse(request.Text, out index) && index <= data.User.OutcomeList.Count)
                     {
-                        data.Temp.Add("item", data.User.OutcomeList[index - 1]);
-                        return;
+
+                        System.Console.WriteLine("outcome 2");
+                        data.Temp.Add("description", data.User.OutcomeList[index - 1]);
                     }
                     data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice del rubro");
                     data.Channel.SendMessage(request.Id, "Seleccione el rubro del gasto:\n" + data.User.ShowItemList());
@@ -93,6 +95,7 @@ namespace Bankbot
 
                 }
                 data.Temp.Add("description", request.Text);
+                System.Console.WriteLine("income");
             }
 
 
