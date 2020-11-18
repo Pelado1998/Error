@@ -45,8 +45,7 @@ namespace Bankbot
             string chatId = message.Chat.Id.ToString();
 
             IMessage msg = new BotMessage(chatId, message.Text);
-            Session.Instance.SetChannel(chatId, this);
-
+            SetChannel(chatId, this);
             TelegramBot.Instance.HandleMessage(msg);
         }
         public override void SendMessage(string id, string message)

@@ -43,14 +43,14 @@ namespace Bankbot
             var rows = new List<Row>();
             foreach (var item in list)
             {
-                var cell = new List<Cell>();
+                var cells = new List<Cell>();
 
-                cell.Add(new Cell(item.Currency.CodeISO));
-                cell.Add(new Cell(item.Amount.ToString()));
-                cell.Add(new Cell(item.Date.ToString("dd/MM/yyyy")));
-                cell.Add(new Cell(item.Description));
+                cells.Add(new Cell(item.Currency.CodeISO));
+                cells.Add(new Cell(item.Amount.ToString()));
+                cells.Add(new Cell(item.Date.ToString("dd/MM/yyyy")));
+                cells.Add(new Cell(item.Description));
 
-                rows.Add(new Row(cell));
+                rows.Add(new Row(cells));
             }
 
             return rows;

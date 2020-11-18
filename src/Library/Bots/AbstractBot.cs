@@ -12,6 +12,10 @@ namespace Bankbot
         {
             Handler.Handler(message);
         }
+        public void SetChannel(string id, IChannel channel)
+        {
+            Session.Instance.SetChannel(id, channel);
+        }
         public abstract void SendMessage(string id, string message);
     }
 }

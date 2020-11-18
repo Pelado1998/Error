@@ -22,11 +22,12 @@ namespace Bankbot
                 {
                     data.Temp.Add("account", data.User.Accounts[index - 1]);
                     data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
-                    return;
                 }
-                data.Channel.SendMessage(request.Id, "Debe ingresar un valor igual al índice indicado.");
-                data.Channel.SendMessage(request.Id, "Seleccione una cuenta para ver el historial:\n" + data.User.ShowAccountList());
-                return;
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "Debe ingresar un valor igual al índice indicado.");
+                    data.Channel.SendMessage(request.Id, "Seleccione una cuenta para ver el historial:\n" + data.User.ShowAccountList());
+                }
             }
 
             if (!data.Temp.ContainsKey("type") && !data.Temp.ContainsKey("item") && !data.Temp.ContainsKey("date"))
@@ -78,12 +79,12 @@ namespace Bankbot
                     System.Console.WriteLine(data.Filters.Count);
                     data.Temp.Remove("type");
                     data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
-                    return;
                 }
-
-                data.Channel.SendMessage(request.Id, "Debe seleccionar una de las opciones indicadas.");
-                data.Channel.SendMessage(request.Id, "Seleccione el tipo por el cual desea filtrar:\n1 - Ingreso\n2 - Egreso");
-                return;
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "Debe seleccionar una de las opciones indicadas.");
+                    data.Channel.SendMessage(request.Id, "Seleccione el tipo por el cual desea filtrar:\n1 - Ingreso\n2 - Egreso");
+                }
             }
 
             else if (data.Temp.ContainsKey("item") && data.GetDictionaryValue<string>("item") == string.Empty)
@@ -102,7 +103,6 @@ namespace Bankbot
                 data.Filters.Add(new TransactionItemFilter(item));
                 data.Temp.Remove("item");
                 data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
-                return;
             }
 
             else if (data.Temp.ContainsKey("date"))
@@ -113,13 +113,11 @@ namespace Bankbot
                     {
                         data.Channel.SendMessage(request.Id, "Ingrese una fecha en el formato dd/mm/aaaa:");
                         data.Temp["date"] = "from";
-                        return;
                     }
                     else if (request.Text == "2")
                     {
                         data.Channel.SendMessage(request.Id, "Ingrese la primer fecha en el formato dd/mm/aaaa:");
                         data.Temp["date"] = "range";
-                        return;
                     }
                 }
 
@@ -132,7 +130,10 @@ namespace Bankbot
                     foreach (var item in dateSplit)
                     {
                         int number;
-                        if (Int32.TryParse(item, out number)) dateInt.Add(number);
+                        if (Int32.TryParse(item, out number))
+                        {
+                            dateInt.Add(number);
+                        }
                         else
                         {
                             data.Channel.SendMessage(request.Id, "Debe ingresar una fecha en el formato dd/mm/aaaa:");
@@ -156,14 +157,12 @@ namespace Bankbot
                         data.Filters.Add(new TransactionDateFilter(date));
                         data.Temp.Remove("date");
                         data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
-                        return;
                     }
                     else if (data.GetDictionaryValue<string>("date") == "range")
                     {
                         data.Temp.Add("dateFrom", date);
                         data.Temp["date"] = "rangeTo";
                         data.Channel.SendMessage(request.Id, "Ingrese la segunda fecha en el formato dd/mm/aaaa:");
-                        return;
                     }
                     else if (data.GetDictionaryValue<string>("date") == "rangeTo")
                     {
@@ -171,7 +170,6 @@ namespace Bankbot
                         data.Filters.Add(new TransactionDateFromToFilter(dateFrom, date));
                         data.Temp.Remove("date");
                         data.Temp.Remove("dateFrom");
-                        return;
                     }
                 }
             }
