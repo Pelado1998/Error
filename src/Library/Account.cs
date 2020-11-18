@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
-using static System.Math;
 
 namespace Bankbot
 {
@@ -22,25 +21,25 @@ namespace Bankbot
     /// A su vez cumple con el patrón OCP (Open - Closed Principle) de los principios SOLID, ya que es una clase que se encuentra abierta a la extensión,
     /// pero cerrada a la modificación
     /// <summary>
-    public class Account : IObservable
+    public class Account
     {
         public string Name { get; set; }
         public List<Transaction> History { get; set; }
         public AccountType AccountType { get; set; }
         public Currency Currency { get; set; }
-        public double Amount { get; set; }
-        public double Objective { get; set; }
-        public Account(string name, AccountType type, Currency currency, double amount, double objective)
+        public double Balance { get; set; }
+        public Objective Objective { get; set; }
+        public Account(string name, AccountType type, Currency currency, double balance, Objective objective)
         {
             this.Name = name;
             this.History = new List<Transaction>();
             this.AccountType = type;
             this.Currency = currency;
-            this.Amount = amount;
+            this.Balance = balance;
             this.Objective = objective;
         }
 
-        public void ChangeObjective(double newObjective)
+        public void ChangeObjective(Objective newObjective)
         {
             this.Objective = newObjective;
         }
@@ -48,7 +47,8 @@ namespace Bankbot
         public void AddTransaction(Currency currency, double amount, string description)
         {
             Transaction transaction = new Transaction(amount, currency, DateTime.Now, description);
-            History.Add(transaction);
+            this.History.Add(transaction);
+            this.Balance += amount;
         }
 
         public static string ShowAccountType()

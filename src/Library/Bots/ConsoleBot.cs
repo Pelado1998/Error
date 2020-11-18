@@ -21,7 +21,7 @@ namespace Bankbot
             {
                 string text = System.Console.ReadLine().ToString();
                 if (text == "Exit") return;
-                Session.Instance.SetChannel("UNIQUE_CONSOLE", this);
+                SetChannel("UNIQUE_CONSOLE", this);
                 BotMessage message = new BotMessage("UNIQUE_CONSOLE", text);
                 HandleMessage(message);
             }

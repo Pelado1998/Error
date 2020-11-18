@@ -20,10 +20,12 @@ namespace Bankbot
                 {
                     data.Temp.Add("account", data.User.Accounts[index - 1]);
                     data.Channel.SendMessage(request.Id, "Ingrese su contraseña para eliminar esta cuenta:");
-                    return;
                 }
-                data.Channel.SendMessage(request.Id, "Debe ingresar el índice correspondiente a la cuenta que desea eliminar.");
-                data.Channel.SendMessage(request.Id, "indique que cuenta desea eliminar:\n" + data.User.ShowAccountList());
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "Debe ingresar el índice correspondiente a la cuenta que desea eliminar.");
+                    data.Channel.SendMessage(request.Id, "indique que cuenta desea eliminar:\n" + data.User.ShowAccountList());
+                }
             }
 
             else if (!data.Temp.ContainsKey("password"))
@@ -32,12 +34,13 @@ namespace Bankbot
                 {
                     data.Channel.SendMessage(request.Id, "¿Esta seguro que desea realizar esta operación? Vuelva a ingresar su contraseña para confirmar.");
                     data.Temp.Add("confirmation", "");
-                    return;
                 }
-
-                data.Channel.SendMessage(request.Id, "Credenciales incorrectas. Ingrese /deleteaccount para volver a realizar esta operación.");
-                data.Temp.Clear();
-                data.State = State.Dispatcher;
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "Credenciales incorrectas. Ingrese /deleteaccount para volver a realizar esta operación.");
+                    data.Temp.Clear();
+                    data.State = State.Dispatcher;
+                }
             }
 
             else if (!data.Temp.ContainsKey("confirmation"))

@@ -20,10 +20,12 @@ namespace Bankbot
                 {
                     data.Temp.Add("from", Bank.Instance.CurrencyList[index - 1]);
                     data.Channel.SendMessage(request.Id, "Seleccione a que moneda desea convertir:\n" + Bank.Instance.ShowCurrencyList());
-                    return;
                 }
-                data.Channel.SendMessage(request.Id, "Debe seleecionar un valor correspondiente al índice de la moneda.");
-                data.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "Debe seleecionar un valor correspondiente al índice de la moneda.");
+                    data.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());
+                }
             }
             else if (!data.Temp.ContainsKey("to"))
             {
@@ -34,11 +36,12 @@ namespace Bankbot
                     {
                         data.Temp.Add("to", Bank.Instance.CurrencyList[index - 1]);
                         data.Channel.SendMessage(request.Id, "Ingrese el monto que desea convertir:");
-                        return;
                     }
-                    data.Channel.SendMessage(request.Id, "Debe seleecionar una moneda diferente.");
-                    data.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());
-                    return;
+                    else
+                    {
+                        data.Channel.SendMessage(request.Id, "Debe seleecionar una moneda diferente.");
+                        data.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());
+                    }
                 }
                 data.Channel.SendMessage(request.Id, "Debe seleecionar un valor correspondiente al índice de la moneda.");
                 data.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());
@@ -50,6 +53,7 @@ namespace Bankbot
                 {
                     data.Temp.Add("amount", amount);
                 }
+
                 data.Channel.SendMessage(request.Id, "Debe ingresar un valor numérico mayor a 0.");
                 data.Channel.SendMessage(request.Id, "Ingrese el monto que desea convertir:");
             }
