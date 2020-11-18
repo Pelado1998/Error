@@ -8,9 +8,11 @@ namespace Bankbot
     public interface IAlert
     {
         IObservable Obvservables { get; set; }
+        string Texttosend {get; set;}
+        IChannel SetChannel {get; set;}
         void SendAlert()
         {
-            //TODO:
+
         }
     }
 }

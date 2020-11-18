@@ -1,3 +1,5 @@
+
+using System.Collections.Generic;
 namespace Bankbot
 {
     /// <summary>
@@ -9,5 +11,6 @@ namespace Bankbot
     {
         double Amount { get; set; }
         double Objective { get; set; }
+        
     }
 }

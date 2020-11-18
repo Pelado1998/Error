@@ -2,7 +2,15 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
-    public class Session
+    /// <summary>
+    /// Esta clase cumple con el patron ## observer ## ya que se encarga de ser la que le brinda la información necesaria a IAlert
+    /// que es el Observer para que pueda actualizarse cada vez que hay un cambio y notificar a el/los usuarios.
+    /// Cumple con el patrón ## EXPERT ## ya que es la mejor encargada de la información que maneja.
+    /// También cumple con ## SRP ## porque no tiene mas de una razón de cambio, que en este caso sería el user.
+    /// Cumple con ## SINGLETON ## ya que se desea almacenar una única vez el usuario en dicha lista la cual se fijará
+    /// si el mismo esta iniciado en la session o no y le enviara comandos correspondientes.
+    /// </summary>
+    public class Session 
     {
         public List<User> AllUsers;
         public Dictionary<string, Data> DataMap;

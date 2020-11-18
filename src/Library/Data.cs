@@ -8,6 +8,9 @@ namespace Bankbot
         Dispatcher,
         HandlingCommand
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public class Data
     {
         public State State { get; set; }
@@ -15,13 +18,15 @@ namespace Bankbot
         public User User { get; set; }
         public Dictionary<string, object> Temp { get; set; }
         public IChannel Channel { get; set; }
-        public Data()
+        public string Id { get; set;}
+        public Data(string Id)
         {
             this.State = State.Init;
             this.Command = string.Empty;
             this.User = null;
             this.Temp = new Dictionary<string, object>();
             this.Channel = null;
+            this.Id = Id;
         }
 
         public T GetDictionaryValue<T>(string key)
