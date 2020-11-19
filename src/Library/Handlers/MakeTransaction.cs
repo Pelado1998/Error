@@ -2,6 +2,11 @@ using System;
 
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+    /// <summary>
+    /// Handler para realizar una transacción.
+    /// </summary>
     public class MakeTransaction : AbstractHandler<IMessage>
     {
         public MakeTransaction(TransactionCondition condition) : base(condition)

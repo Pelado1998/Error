@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+
+    /// <summary>
+    /// Handler para convertir un tipo de moneda.
+    /// </summary>
     public class Convertion : AbstractHandler<IMessage>
     {
         public Convertion(ConvertionCondition condition) : base(condition)

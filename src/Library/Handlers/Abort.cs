@@ -3,7 +3,11 @@ using System;
 
 namespace Bankbot
 {
-    //Implementacion
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+    /// <summary>
+    /// Handler para cancelar una opción o salir.
+    /// </summary>
     public class Exit : AbstractHandler<IMessage>
     {
         public Exit(ExitCondition condition) : base(condition)

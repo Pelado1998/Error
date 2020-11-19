@@ -2,6 +2,12 @@ using System;
 
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+
+    /// <summary>
+    /// Handler para crearel usuario.
+    /// </summary>
     public class CreateUser : AbstractHandler<IMessage>
     {
         public CreateUser(CreateUserCondition condition) : base(condition)

@@ -5,12 +5,10 @@ using System.Security.Cryptography;
 
 namespace Bankbot
 {
-    /// <summary>
-    /// Esta clase cumple con los principios GRAPS, ya que es experta en información sobre los usuarios, se encarga de 
-    /// crear instancias de la clase Account para luego almacenarlos. Por esta razón cumple con los patrones Expert
-    /// y Creator dentro de estos principios.
-    /// Por otro lado cumple con el patrón OCP al ser una clase abierta a la extensión y cerrada a la modificación.
-    /// </summary>
+    /*Esta clase cumple con los principios GRAPS, ya que es experta en información sobre los usuarios, se encarga de 
+    crear instancias de la clase Account para luego almacenarlos. Por esta razón cumple con los patrones Expert
+    y Creator dentro de estos principios.
+    Por otro lado cumple con el patrón OCP al ser una clase abierta a la extensión y cerrada a la modificación.*/
     public class User
     {
         public string Username { get; set; }
@@ -130,9 +128,7 @@ namespace Bankbot
 
         //Password Code
 
-        /// <summary>
-        /// Clase que utilizando la funcion de derivacion clave PBKDF2 genera una contraseña cifrada y es capaz de descifrarla
-        /// </summary>
+        /*Clase que utilizando la funcion de derivacion clave PBKDF2 genera una contraseña cifrada y es capaz de descifrarla.*/
         private const int SaltByteSize = 24;
         private const int HashByteSize = 20;
         private const int Pbkdf2Iterations = 1000;
@@ -184,7 +180,8 @@ namespace Bankbot
         }
 
         /// <summary>
-        /// Compara ambas contraseñas provistas
+        /// Compara ambas contraseñas provistas.<!--
+        /// -->
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>

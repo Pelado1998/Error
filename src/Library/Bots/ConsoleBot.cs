@@ -1,5 +1,8 @@
 namespace Bankbot
 {
+    /// <summary>
+    /// Implementa el bot por consola.
+    /// </summary>
     public class ConsoleBot : AbstractBot
     {
         private static ConsoleBot instance;

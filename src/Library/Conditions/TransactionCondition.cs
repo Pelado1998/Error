@@ -1,5 +1,10 @@
 namespace Bankbot
 {
+    /*Cumple con EXPERT y SRP*/
+
+    /// <summary>
+    /// Comando para realizar una transacción.
+    /// </summary>
     public class TransactionCondition : ICondition<IMessage>
     {
         public bool IsSatisfied(IMessage request)

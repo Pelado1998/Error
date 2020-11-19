@@ -4,6 +4,12 @@ namespace Bankbot
 {
     public class Search
     {
+        /*Cumple con ## SINGLETON ## ya que se va a crear una única instancia.
+        */
+
+        /// <summary>
+        /// Busqueda inteligente. 
+        /// </summary>
         private static Search instance;
         public static Search Instance
         {
@@ -15,6 +21,12 @@ namespace Bankbot
         }
 
         private Search() { }
+      
+        /// <summary>
+        /// Aplica filtros de búsqueda.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="list"></param>
         public string ApplyFilter(string id, List<Transaction> list)
         {
             var data = Session.Instance.GetChat(id);

@@ -1,5 +1,11 @@
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+
+    /// <summary>
+    /// Handler de comandos generales.
+    /// </summary>
     public class Dispatcher : AbstractHandler<IMessage>
     {
         public Dispatcher(DispatcherCondition condition) : base(condition)

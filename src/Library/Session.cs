@@ -2,7 +2,15 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
-    public class Session
+    /*Cumple con el patrón ## EXPERT ## ya que es la mejor encargada de la información que maneja.
+    También cumple con ## SRP ## porque no tiene mas de una razón de cambio, que en este caso sería el user.
+    Cumple con ## SINGLETON ## ya que se desea almacenar una única vez el usuario en dicha lista la cual se fijará
+    si el mismo esta iniciado en la session o no y le enviara comandos correspondientes.*/
+
+    /// <summary>
+    /// Se crea una sesión diferente y única para cada usuario de la plataforma.
+    /// </summary>
+    public class Session 
     {
         public List<User> AllUsers { get; set; }
         public Dictionary<string, Data> DataMap;
@@ -20,10 +28,14 @@ namespace Bankbot
         {
             this.AllUsers = new List<User>();
             this.DataMap = new Dictionary<string, Data>();
-
-            //Agregar por setup
             this.Printer = new HtmlPrinter();
         }
+
+        /// <summary>
+        /// Agrega un usuario nuevo a la lista de usuarios en caso que no esté(para diferenciarlos).
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public void AddUser(string username, string password)
         {
             foreach (var user in AllUsers)
@@ -32,6 +44,12 @@ namespace Bankbot
             }
             AllUsers.Add(new User(username, password));
         }
+
+        /// <summary>
+        /// Remueve de la lista el usuario deseado.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public void RemoveUser(string username, string password)
         {
             if (UsernameExists(username))
@@ -47,6 +65,12 @@ namespace Bankbot
             }
             return null;
         }
+
+        /// <summary>
+        ///     Chequea si existe o no el usuario.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
 
         public bool UsernameExists(string username)
         {
@@ -71,6 +95,12 @@ namespace Bankbot
             return chat;
 
         }
+
+        /// <summary>
+        /// Setea el canal de comunicación.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newChannel"></param>
 
         public void SetChannel(string id, IChannel newChannel)
         {

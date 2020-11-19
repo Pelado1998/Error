@@ -3,6 +3,10 @@ using PII_HTML_API;
 
 namespace Bankbot
 {
+
+    /// <summary>
+    /// Utiliza IPrinter para imprimir la lista de transacciones con fecha en html.
+    /// </summary>
     public class HtmlPrinter : IPrinter
     {
         public HtmlPrinter()

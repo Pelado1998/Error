@@ -1,8 +1,10 @@
 namespace Bankbot
 {
+    /*Esta clase cumple con el patrón Expert del principio GRASP ya que es la que contiene toda la información
+    sobre Currency, pero tambien con el patrón SRP por tener una unica razón de cambio.*/
+    
     /// <summary>
-    /// Esta clase cumple con el patrón Expert del principio GRASP ya que es la que contiene toda la información
-    /// sobre Currency, pero tambien con el patrón SRP por tener una unica razón de cambio.
+    /// Clase correspondiente a la moneda, la cual tiene un símbolo y un código.
     /// </summary>
     public class Currency
     {

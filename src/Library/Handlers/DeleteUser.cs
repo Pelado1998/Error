@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+
+    /// <summary>
+    /// Handler para borrar el usuario.
+    /// </summary>
     public class DeleteUser : AbstractHandler<IMessage>
     {
         public DeleteUser(DeleteUserCondition condition) : base(condition)

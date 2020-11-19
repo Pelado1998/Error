@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+
+    /// <summary>
+    /// Handler para filtrar la búsqueda.
+    /// </summary>
     public class FilterHandler : AbstractHandler<IMessage>
     {
         public FilterHandler(FilterCondition condition) : base(condition)

@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+
+    /// <summary>
+    /// Handler para borrar las cuentas.
+    /// </summary>
     public class DeleteAccount : AbstractHandler<IMessage>
     {
         public DeleteAccount(DeleteAccountCondition condition) : base(condition)

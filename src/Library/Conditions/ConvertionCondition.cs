@@ -1,5 +1,9 @@
 namespace Bankbot
 {
+    /*Cumple con EXPERT y SRP*/
+    /// <summary>
+    /// Se encarga de dar la posibilidad de convertir al usuario.
+    /// </summary>
     public class ConvertionCondition : ICondition<IMessage>
     {
         public bool IsSatisfied(IMessage request)
