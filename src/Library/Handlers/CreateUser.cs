@@ -2,6 +2,12 @@ using System;
 
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+
+    /// <summary>
+    /// Handler para crearel usuario.
+    /// </summary>
     public class CreateUser : AbstractHandler<IMessage>
     {
         public CreateUser(CreateUserCondition condition) : base(condition)
@@ -41,6 +47,7 @@ namespace Bankbot
                 if (user != null)
                 {
                     data.Channel.SendMessage(request.Id, "Usuario creado correctamente.");
+                    data.Channel.SendMessage(request.Id, "Elija un comando de la siguiente lista:\n" + AllCommands.Instance.CommandList(request.Id));
                 }
                 // Exception 
                 else

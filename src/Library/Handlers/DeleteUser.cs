@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+
+    /// <summary>
+    /// Handler para borrar el usuario.
+    /// </summary>
     public class DeleteUser : AbstractHandler<IMessage>
     {
         public DeleteUser(DeleteUserCondition condition) : base(condition)
@@ -34,11 +40,12 @@ namespace Bankbot
                 if (user == null)
                 {
                     data.Channel.SendMessage(request.Id, "Credenciales incorrectas, vuelva a intentarlo.");
-                    return;
                 }
-
-                data.Channel.SendMessage(request.Id, "¿Estas seguro que deseas borrar este usuario? Vuelva a ingresar su contraseña:");
-                data.Temp.Add("confirmation", "");
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "¿Estas seguro que deseas borrar este usuario? Vuelva a ingresar su contraseña:");
+                    data.Temp.Add("confirmation", "");
+                }
 
             }
             else if (data.Temp.ContainsKey("confirmation"))

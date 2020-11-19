@@ -1,5 +1,9 @@
 namespace Bankbot
 {
+    /*Cumple con EXPERT y SRP*/
+    /// <summary>
+    /// Condición inicial.
+    /// </summary>
     public class InitCondition : ICondition<IMessage>
     {
         public bool IsSatisfied(IMessage request)

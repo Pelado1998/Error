@@ -1,5 +1,6 @@
 namespace Bankbot
 {
+    /*Cumple con EXPERT y SRP*/
     public class DispatcherCondition : ICondition<IMessage>
     {
         public bool IsSatisfied(IMessage request)

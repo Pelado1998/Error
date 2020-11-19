@@ -2,6 +2,11 @@ using System;
 
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+    /// <summary>
+    /// Handler para realizar una transacción.
+    /// </summary>
     public class MakeTransaction : AbstractHandler<IMessage>
     {
         public MakeTransaction(TransactionCondition condition) : base(condition)
@@ -19,12 +24,12 @@ namespace Bankbot
                 {
                     data.Temp.Add("type", index);
                     data.Channel.SendMessage(request.Id, "Ingrese la cuenta en la cual desea realizar la transacción:\n" + data.User.ShowAccountList());
-                    return;
                 }
-
-                data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice del tipo.");
-                data.Channel.SendMessage(request.Id, "Ingrese el tipo de transacción:\n1 - Ingreso\n2 - Gasto");
-
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice del tipo.");
+                    data.Channel.SendMessage(request.Id, "Ingrese el tipo de transacción:\n1 - Ingreso\n2 - Gasto");
+                }
             }
             else if (!data.Temp.ContainsKey("account"))
             {
@@ -33,11 +38,13 @@ namespace Bankbot
                 {
                     data.Temp.Add("account", data.User.Accounts[index - 1]);
                     data.Channel.SendMessage(request.Id, "Ingrese la moneda en la cual desea realizar la transacción:\n" + Bank.Instance.ShowCurrencyList());
-                    return;
+                }
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice de la cuenta.");
+                    data.Channel.SendMessage(request.Id, "Ingrese la cuenta en la cual desea realizar la transacción:\n" + data.User.ShowAccountList());
                 }
 
-                data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice de la cuenta.");
-                data.Channel.SendMessage(request.Id, "Ingrese la cuenta en la cual desea realizar la transacción:\n" + data.User.ShowAccountList());
 
             }
             else if (!data.Temp.ContainsKey("currency"))
@@ -47,11 +54,13 @@ namespace Bankbot
                 {
                     data.Temp.Add("currency", Bank.Instance.CurrencyList[index - 1]);
                     data.Channel.SendMessage(request.Id, "Ingrese el monto de la transacción:");
-                    return;
+                }
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice de la moneda.");
+                    data.Channel.SendMessage(request.Id, "Ingrese la moneda en la cual desea realizar la transacción:\n" + Bank.Instance.ShowCurrencyList());
                 }
 
-                data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice de la moneda.");
-                data.Channel.SendMessage(request.Id, "Ingrese la moneda en la cual desea realizar la transacción:\n" + Bank.Instance.ShowCurrencyList());
 
             }
             else if (!data.Temp.ContainsKey("amount"))
@@ -65,12 +74,11 @@ namespace Bankbot
                     if (data.GetDictionaryValue<int>("type") == 1)
                     {
                         data.Channel.SendMessage(request.Id, "Ingrese una descripción de la transacción:");
-                        return;
                     }
-
-                    data.Channel.SendMessage(request.Id, "Seleccione el rubro del gasto:\n" + data.User.ShowItemList());
-                    return;
-
+                    else
+                    {
+                        data.Channel.SendMessage(request.Id, "Seleccione el rubro del gasto:\n" + data.User.ShowItemList());
+                    }
                 }
 
                 data.Channel.SendMessage(request.Id, "Debe ingresar un valor numérico mayor a 0.");
@@ -82,17 +90,22 @@ namespace Bankbot
                 if (data.GetDictionaryValue<int>("type") == 2)
                 {
                     int index;
-                    if (Int32.TryParse(request.Text, out index) && index < data.User.OutcomeList.Count)
+                    if (Int32.TryParse(request.Text, out index) && index <= data.User.OutcomeList.Count)
                     {
-                        data.Temp.Add("item", data.User.OutcomeList[index - 1]);
+                        data.Temp.Add("description", data.User.OutcomeList[index - 1]);
+                    }
+                    else
+                    {
+                        data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice del rubro");
+                        data.Channel.SendMessage(request.Id, "Seleccione el rubro del gasto:\n" + data.User.ShowItemList());
                         return;
                     }
-                    data.Channel.SendMessage(request.Id, "Debe ingresar un valor correspondiente al índice del rubro");
-                    data.Channel.SendMessage(request.Id, "Seleccione el rubro del gasto:\n" + data.User.ShowItemList());
-                    return;
 
                 }
-                data.Temp.Add("description", request.Text);
+                else if (data.GetDictionaryValue<int>("type") == 1)
+                {
+                    data.Temp.Add("description", request.Text);
+                }
             }
 
 
@@ -108,8 +121,19 @@ namespace Bankbot
                 account.AddTransaction(currency, amount, description);
 
                 data.Channel.SendMessage(request.Id, "Se ha realizado una transacción.");
+
+                if (account.Objective.Min > account.Balance)
+                {
+                    data.Channel.SendMessage(request.Id, "Ha sobrepasado su objetivo mínimo. Debe ahorrar más.");
+                }
+                else if (account.Objective.Max < account.Balance)
+                {
+                    data.Channel.SendMessage(request.Id, "Ha superado su objetivo máximo. Empiece a gastar.");
+                }
+
                 data.Temp.Clear();
                 data.State = State.Dispatcher;
+                return;
             }
         }
     }

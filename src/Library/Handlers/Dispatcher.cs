@@ -1,5 +1,11 @@
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+
+    /// <summary>
+    /// Handler de comandos generales.
+    /// </summary>
     public class Dispatcher : AbstractHandler<IMessage>
     {
         public Dispatcher(DispatcherCondition condition) : base(condition)
@@ -92,6 +98,16 @@ namespace Bankbot
                     {
                         data.Command = request.Text;
                         data.Channel.SendMessage(request.Id, "Ingrese el tipo de transacción:\n1 - Ingreso\n2 - Gasto");
+                        break;
+                    }
+                    data.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+                    break;
+
+                case "/filter":
+                    if (data.User != null)
+                    {
+                        data.Command = request.Text;
+                        data.Channel.SendMessage(request.Id, "Seleccione una cuenta para ver el historial:\n" + data.User.ShowAccountList());
                         break;
                     }
                     data.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");

@@ -1,6 +1,11 @@
 namespace Bankbot
 {
-    //REVISAR
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+    /// <summary>
+    /// Handler abstracto.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class AbstractHandler<T>
     {
         protected abstract void handleRequest(IMessage request);

@@ -6,6 +6,12 @@ using static Bankbot.Bank;
 
 namespace Bankbot
 {
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+
+    /// <summary>
+    /// Handler para crear la cuenta.
+    /// </summary>
     public class CreateAccount : AbstractHandler<IMessage>
     {
         public CreateAccount(ICondition<IMessage> condition) : base(condition)
@@ -63,7 +69,7 @@ namespace Bankbot
                 if (double.TryParse(request.Text, out amount) && amount > 0)
                 {
                     data.Temp.Add("amount", amount);
-                    data.Channel.SendMessage(request.Id, "Ingrese el objetivo de la cuenta:");
+                    data.Channel.SendMessage(request.Id, "Ingrese el objetivo máximo de la cuenta:");
                 }
                 else
                 {
@@ -71,29 +77,44 @@ namespace Bankbot
                     data.Channel.SendMessage(request.Id, "Ingrese el saldo inicial de la cuenta:");
                 }
             }
-            else if (!data.Temp.ContainsKey("objective"))
+            else if (!data.Temp.ContainsKey("maxObjective"))
             {
                 double amount;
-                if (double.TryParse(request.Text, out amount) && amount > 0)
+                if (double.TryParse(request.Text, out amount) && amount > 1)
                 {
-                    data.Temp.Add("objective", amount);
+                    data.Temp.Add("maxObjective", amount);
+                    data.Channel.SendMessage(request.Id, "Ingrese el objetivo mínimo de la cuenta:");
                 }
                 else
                 {
                     data.Channel.SendMessage(request.Id, "Debe ingresar un valor válido.");
-                    data.Channel.SendMessage(request.Id, "Ingrese el objetivo de la cuenta:");
+                    data.Channel.SendMessage(request.Id, "Ingrese el objetivo máximo de la cuenta:");
+                }
+            }
+            else if (!data.Temp.ContainsKey("minObjective"))
+            {
+                double amount;
+                if (double.TryParse(request.Text, out amount) && amount > 0 && amount < data.GetDictionaryValue<double>("maxObjective"))
+                {
+                    data.Temp.Add("minObjective", amount);
+                }
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "Debe ingresar un valor válido.");
+                    data.Channel.SendMessage(request.Id, "Ingrese el objetivo mínimo de la cuenta:");
                 }
             }
 
-            if (data.Temp.ContainsKey("type") && data.Temp.ContainsKey("name") && data.Temp.ContainsKey("currency") && data.Temp.ContainsKey("amount") && data.Temp.ContainsKey("objective"))
+            if (data.Temp.ContainsKey("type") && data.Temp.ContainsKey("name") && data.Temp.ContainsKey("currency") && data.Temp.ContainsKey("amount") && data.Temp.ContainsKey("maxObjective") && data.Temp.ContainsKey("minObjective"))
             {
                 var type = data.GetDictionaryValue<AccountType>("type");
                 var name = data.GetDictionaryValue<string>("name");
                 var currency = data.GetDictionaryValue<Currency>("currency");
                 var amount = data.GetDictionaryValue<double>("amount");
-                var objective = data.GetDictionaryValue<double>("objective");
+                var maxObjective = data.GetDictionaryValue<double>("maxObjective");
+                var minObjective = data.GetDictionaryValue<double>("minObjective");
 
-                var account = data.User.AddAccount(type, name, currency, amount, objective);
+                var account = data.User.AddAccount(type, name, currency, amount, new Objective(maxObjective, minObjective));
 
                 if (account != null)
                 {

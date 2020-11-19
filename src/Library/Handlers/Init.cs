@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace Bankbot
 {
-    //Implementacion
+    /*Cumple con ## SRP ## 
+    Cumple con ## EXPERT ##*/
+    /// <summary>
+    /// Handler de bienvenida.
+    /// </summary>
     public class Init : AbstractHandler<IMessage>
     {
         public Init(InitCondition condition) : base(condition)

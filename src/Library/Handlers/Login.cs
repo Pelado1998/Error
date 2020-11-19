@@ -4,6 +4,14 @@ namespace Bankbot
 {
     public class Login : AbstractHandler<IMessage>
     {
+        /*Cumple con ## SRP ## 
+        Cumple con ## EXPERT ##*/
+
+        /// <summary>
+        /// Handler para loguearte con un usuario existente.
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <returns></returns>
         public Login(LoginCondition condition) : base(condition)
         {
         }
@@ -17,7 +25,7 @@ namespace Bankbot
                 data.Temp.Add("username", request.Text);
                 data.Channel.SendMessage(request.Id, "Ingrese una contraseña:");
             }
-            else if (data.Temp.ContainsKey("username") && !data.Temp.ContainsKey("password"))
+            else if (!data.Temp.ContainsKey("password"))
             {
                 data.Temp.Add("password", request.Text);
             }

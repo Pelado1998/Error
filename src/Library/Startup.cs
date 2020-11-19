@@ -5,7 +5,7 @@ namespace Bankbot
         public static AbstractHandler<IMessage> HandlerConfig()
         {
             AbstractHandler<IMessage> init = new Init(new InitCondition());
-            AbstractHandler<IMessage> abort = new Abort(new AbortCondition());
+            AbstractHandler<IMessage> abort = new Exit(new ExitCondition());
             AbstractHandler<IMessage> dispatcher = new Dispatcher(new DispatcherCondition());
             AbstractHandler<IMessage> convertion = new Convertion(new ConvertionCondition());
             AbstractHandler<IMessage> login = new Login(new LoginCondition());
@@ -14,6 +14,7 @@ namespace Bankbot
             AbstractHandler<IMessage> deleteUser = new DeleteUser(new DeleteUserCondition());
             AbstractHandler<IMessage> createAccount = new CreateAccount(new CreateAccountCondition());
             AbstractHandler<IMessage> deleteAccount = new DeleteAccount(new DeleteAccountCondition());
+            AbstractHandler<IMessage> filter = new FilterHandler(new FilterCondition());
             AbstractHandler<IMessage> def = new Default(new DefaultCondition());
 
             init.Succesor = dispatcher;
@@ -25,7 +26,8 @@ namespace Bankbot
             transaction.Succesor = deleteUser;
             deleteUser.Succesor = createAccount;
             createAccount.Succesor = deleteAccount;
-            deleteAccount.Succesor = def;
+            deleteAccount.Succesor = filter;
+            filter.Succesor = def;
 
             return init;
         }

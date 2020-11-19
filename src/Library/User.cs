@@ -5,12 +5,10 @@ using System.Security.Cryptography;
 
 namespace Bankbot
 {
-    /// <summary>
-    /// Esta clase cumple con los principios GRAPS, ya que es experta en información sobre los usuarios, se encarga de 
-    /// crear instancias de la clase Account para luego almacenarlos. Por esta razón cumple con los patrones Expert
-    /// y Creator dentro de estos principios.
-    /// Por otro lado cumple con el patrón OCP al ser una clase abierta a la extensión y cerrada a la modificación.
-    /// </summary>
+    /*Esta clase cumple con los principios GRAPS, ya que es experta en información sobre los usuarios, se encarga de 
+    crear instancias de la clase Account para luego almacenarlos. Por esta razón cumple con los patrones Expert
+    y Creator dentro de estos principios.
+    Por otro lado cumple con el patrón OCP al ser una clase abierta a la extensión y cerrada a la modificación.*/
     public class User
     {
         public string Username { get; set; }
@@ -32,7 +30,7 @@ namespace Bankbot
         /// Agregar un objeto Account a la la lista List<Account>
         /// </summary>
         /// <param name="account"></param>
-        public Account AddAccount(AccountType type, string name, Currency currency, double amount, double objective)
+        public Account AddAccount(AccountType type, string name, Currency currency, double balance, Objective objective)
         {
             if (this.Accounts == null)
             {
@@ -45,7 +43,7 @@ namespace Bankbot
                     return null;
                 }
             }
-            var newAccount = new Account(name, type, currency, amount, objective);
+            var newAccount = new Account(name, type, currency, balance, objective);
             this.Accounts.Add(newAccount);
             return newAccount;
         }
@@ -101,7 +99,8 @@ namespace Bankbot
             StringBuilder accountList = new StringBuilder();
             foreach (var account in Accounts)
             {
-                accountList.Append((Accounts.IndexOf(account) + 1).ToString() + " - " + account.Name + "\n");
+                string index = (Accounts.IndexOf(account) + 1).ToString();
+                accountList.Append(index + " - " + account.Name + "\n");
             }
             return accountList.ToString();
         }
@@ -110,16 +109,15 @@ namespace Bankbot
             StringBuilder outcomeList = new StringBuilder();
             foreach (var outcome in OutcomeList)
             {
-                outcomeList.Append(outcome + "\n");
+                string index = (OutcomeList.IndexOf(outcome) + 1).ToString();
+                outcomeList.Append(index + " - " + outcome + "\n");
             }
             return outcomeList.ToString();
         }
 
         //Password Code
 
-        /// <summary>
-        /// Clase que utilizando la funcion de derivacion clave PBKDF2 genera una contraseña cifrada y es capaz de descifrarla
-        /// </summary>
+        /*Clase que utilizando la funcion de derivacion clave PBKDF2 genera una contraseña cifrada y es capaz de descifrarla.*/
         private const int SaltByteSize = 24;
         private const int HashByteSize = 20;
         private const int Pbkdf2Iterations = 1000;
@@ -171,7 +169,8 @@ namespace Bankbot
         }
 
         /// <summary>
-        /// Compara ambas contraseñas provistas
+        /// Compara ambas contraseñas provistas.<!--
+        /// -->
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>

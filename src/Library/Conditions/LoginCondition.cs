@@ -1,5 +1,10 @@
 namespace Bankbot
 {
+    /*Cumple con EXPERT y SRP*/
+
+    /// <summary>
+    /// Condición para loguearse.
+    /// </summary>
     public class LoginCondition : ICondition<IMessage>
     {
         public bool IsSatisfied(IMessage request)

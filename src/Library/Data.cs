@@ -9,7 +9,7 @@ namespace Bankbot
         HandlingCommand
     }
     /// <summary>
-    /// 
+    /// Clase correspondiente al usuario que está hablandole al bot en determinado momento.
     /// </summary>
     public class Data
     {
@@ -18,15 +18,19 @@ namespace Bankbot
         public User User { get; set; }
         public Dictionary<string, object> Temp { get; set; }
         public IChannel Channel { get; set; }
-        public string Id { get; set;}
-        public Data(string Id)
+        public List<IFilter> Filters { get; set; }
+
+        /// <summary>
+        /// Crea objetos correspondientes a cada usuario.
+        /// </summary>
+        public Data()
         {
             this.State = State.Init;
             this.Command = string.Empty;
             this.User = null;
             this.Temp = new Dictionary<string, object>();
             this.Channel = null;
-            this.Id = Id;
+            this.Filters = new List<IFilter>();
         }
 
         public T GetDictionaryValue<T>(string key)

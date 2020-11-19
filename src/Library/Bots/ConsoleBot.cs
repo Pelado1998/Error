@@ -1,8 +1,10 @@
 namespace Bankbot
 {
-    public class ConsoleBot : IChannel
+    /// <summary>
+    /// Implementa el bot por consola.
+    /// </summary>
+    public class ConsoleBot : AbstractBot
     {
-        private AbstractHandler<IMessage> Handler;
         private static ConsoleBot instance;
         public static ConsoleBot Instance
         {
@@ -13,34 +15,22 @@ namespace Bankbot
                 return instance;
             }
         }
-        private ConsoleBot()
+        private ConsoleBot() : base()
         { }
-        public void Start()
+        public override void Start()
         {
-            this.StartUp();
             System.Console.WriteLine("Para salir escriba \"Exit\"");
             while (true)
             {
                 string text = System.Console.ReadLine().ToString();
                 if (text == "Exit") return;
+                SetChannel("UNIQUE_CONSOLE", this);
                 BotMessage message = new BotMessage("UNIQUE_CONSOLE", text);
                 HandleMessage(message);
             }
         }
 
-
-        public void StartUp()
-        {
-            Handler = StartupConfig.HandlerConfig();
-        }
-        public void HandleMessage(IMessage message)
-        {
-            var data = Session.Instance.GetChat(message.Id);
-            Session.Instance.SetChannel(message.Id, ConsoleBot.Instance);
-
-            Handler.Handler(message);
-        }
-        public void SendMessage(string id, string message)
+        public override void SendMessage(string id, string message)
         {
             System.Console.WriteLine(message);
         }
