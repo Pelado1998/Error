@@ -12,9 +12,9 @@ namespace Bankbot
     /// <summary>
     /// Handler para crear la cuenta.
     /// </summary>
-    public class CreateAccount : AbstractHandler<IMessage>
+    public class CreateAccountHandler : AbstractHandler<IMessage>
     {
-        public CreateAccount(ICondition<IMessage> condition) : base(condition)
+        public CreateAccountHandler(ICondition<IMessage> condition) : base(condition)
         {
         }
 

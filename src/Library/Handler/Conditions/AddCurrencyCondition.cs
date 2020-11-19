@@ -1,6 +1,6 @@
 namespace Bankbot
 {
-    public class AddCurrency : ICondition<IMessage>
+    public class AddCurrencyCondition : ICondition<IMessage>
     {
         public bool IsSatisfied(IMessage request)
         {

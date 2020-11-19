@@ -7,9 +7,9 @@ namespace Bankbot
     /// <summary>
     /// Handler para realizar una transacción.
     /// </summary>
-    public class MakeTransaction : AbstractHandler<IMessage>
+    public class TransactionHandler : AbstractHandler<IMessage>
     {
-        public MakeTransaction(TransactionCondition condition) : base(condition)
+        public TransactionHandler(TransactionCondition condition) : base(condition)
         {
         }
 

@@ -8,9 +8,9 @@ namespace Bankbot
     /// <summary>
     /// Handler de bienvenida.
     /// </summary>
-    public class Init : AbstractHandler<IMessage>
+    public class InitHandler : AbstractHandler<IMessage>
     {
-        public Init(InitCondition condition) : base(condition)
+        public InitHandler(InitCondition condition) : base(condition)
         {
         }
 

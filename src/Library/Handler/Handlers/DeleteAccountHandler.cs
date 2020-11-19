@@ -9,9 +9,9 @@ namespace Bankbot
     /// <summary>
     /// Handler para borrar las cuentas.
     /// </summary>
-    public class DeleteAccount : AbstractHandler<IMessage>
+    public class DeleteAccountHandler : AbstractHandler<IMessage>
     {
-        public DeleteAccount(DeleteAccountCondition condition) : base(condition)
+        public DeleteAccountHandler(DeleteAccountCondition condition) : base(condition)
         {
         }
 

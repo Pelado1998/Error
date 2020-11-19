@@ -4,7 +4,7 @@ namespace Bankbot
 {
     public class AddCurrencyHandler : AbstractHandler<IMessage>
     {
-        public AddCurrencyHandler(AddCurrency condition) : base(condition)
+        public AddCurrencyHandler(AddCurrencyCondition condition) : base(condition)
         {
         }
 

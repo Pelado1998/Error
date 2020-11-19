@@ -39,7 +39,7 @@ namespace Bankbot
 
             // Bot.StopReceiving();
         }
-        private async void OnMessage(object sender, MessageEventArgs messageEventArgs)
+        private void OnMessage(object sender, MessageEventArgs messageEventArgs)
         {
             Message message = messageEventArgs.Message;
             string chatId = message.Chat.Id.ToString();

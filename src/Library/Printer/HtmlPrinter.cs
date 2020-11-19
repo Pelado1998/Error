@@ -13,9 +13,10 @@ namespace Bankbot
         {
         }
 
-        public string Print(List<Transaction> list, string path)
+        public string Print(List<Transaction> list, string fileName)
         {
-            HtmlDocument doc = new HtmlDocument(path + ".html", "Historial");
+            var path = $@".\..\..\Summary\{fileName}.html";
+            HtmlDocument doc = new HtmlDocument(path, "Historial");
             doc.AddContent(new Span("Historial"));
             doc.AddContent(new Table(
 
@@ -28,7 +29,7 @@ namespace Bankbot
                     new FooterCell("")
                 })
             ));
-            return path + ".html";
+            return path;
         }
         private HeaderRow RenderHeader(List<Transaction> list)
         {
