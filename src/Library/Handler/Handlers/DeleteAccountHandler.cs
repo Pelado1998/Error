@@ -22,7 +22,7 @@ namespace Bankbot
             if (!data.Temp.ContainsKey("account"))
             {
                 int index;
-                if (Int32.TryParse(request.Text, out index) && index <= data.User.Accounts.Count)
+                if (Int32.TryParse(request.Text, out index) && index > 0 && index <= data.User.Accounts.Count)
                 {
                     data.Temp.Add("account", data.User.Accounts[index - 1]);
                     data.Channel.SendMessage(request.Id, "Ingrese su contraseña para eliminar esta cuenta:");
@@ -39,7 +39,7 @@ namespace Bankbot
                 if (data.User.Login(request.Text))
                 {
                     data.Channel.SendMessage(request.Id, "¿Esta seguro que desea realizar esta operación? Vuelva a ingresar su contraseña para confirmar.");
-                    data.Temp.Add("confirmation", "");
+                    data.Temp.Add("password", "");
                 }
                 else
                 {

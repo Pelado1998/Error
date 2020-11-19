@@ -23,7 +23,7 @@ namespace Bankbot
             if (!data.Temp.ContainsKey("account"))
             {
                 int index;
-                if (Int32.TryParse(request.Text, out index) && index <= data.User.Accounts.Count)
+                if (Int32.TryParse(request.Text, out index) && index > 0 && index <= data.User.Accounts.Count)
                 {
                     data.Temp.Add("account", data.User.Accounts[index - 1]);
                     data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro, para aplicar los filtros selecciones Buscar:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
@@ -39,7 +39,7 @@ namespace Bankbot
             if (!data.Temp.ContainsKey("type") && !data.Temp.ContainsKey("item") && !data.Temp.ContainsKey("date"))
             {
                 int index;
-                if (Int32.TryParse(request.Text, out index) && index <= 4)
+                if (Int32.TryParse(request.Text, out index) && index > 0 && index <= 4)
                 {
                     var account = data.GetDictionaryValue<Account>("account");
 
@@ -70,6 +70,11 @@ namespace Bankbot
                             data.Temp.Add("date", string.Empty);
                             data.Channel.SendMessage(request.Id, "Seleccione una opción:\n1 - A partir de una fecha\n2 - En un rango de fechas");
                             return;
+
+                        default:
+                            data.Channel.SendMessage(request.Id, "Debe ingresar un valor igual al índice indicado.");
+                            data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro, para aplicar los filtros selecciones Buscar:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
+                            break;
                     }
                 }
             }
@@ -95,7 +100,7 @@ namespace Bankbot
             {
                 int index;
                 string item;
-                if (Int32.TryParse(request.Text, out index) && index <= data.User.OutcomeList.Count)
+                if (Int32.TryParse(request.Text, out index) && index > 0 && index <= data.User.OutcomeList.Count)
                 {
                     item = data.User.OutcomeList[index - 1];
                 }

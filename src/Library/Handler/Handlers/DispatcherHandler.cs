@@ -70,7 +70,7 @@ namespace Bankbot
                     data.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
                     break;
 
-                case "/convert":
+                case "/convertion":
 
                     data.Command = request.Text;
                     data.Channel.SendMessage(request.Id, "Seleccione la moneda desde la que desea convertir:\n" + Bank.Instance.ShowCurrencyList());

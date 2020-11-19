@@ -34,13 +34,24 @@ namespace Bankbot
             {
                 string username = data.GetDictionaryValue<string>("username");
                 string password = data.GetDictionaryValue<string>("password");
+                var user = Session.Instance.GetUser(username, password);
 
-                data.User = Session.Instance.GetUser(username, password);
+                bool connected = false;
 
-                if (data.User != null)
+                foreach (var item in Session.Instance.DataMap)
                 {
+                    if (item.Value.User != null && item.Value.User == user) connected = true;
+                }
+
+                if (!connected && user != null)
+                {
+                    data.User = user;
                     data.Channel.SendMessage(request.Id, "Se ha conectado correctamente.");
                     data.Channel.SendMessage(request.Id, "Para continuar puedes ingresar los siguientes comandos:\n" + AllCommands.Instance.CommandList((request.Id)));
+                }
+                else if (connected)
+                {
+                    data.Channel.SendMessage(request.Id, "Este usuario ya se encuentra conectado.");
                 }
                 else
                 {

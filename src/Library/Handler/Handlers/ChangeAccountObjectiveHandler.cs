@@ -15,7 +15,7 @@ namespace Bankbot
             if (!data.Temp.ContainsKey("account"))
             {
                 int index;
-                if (Int32.TryParse(request.Text, out index) && index <= data.User.Accounts.Count)
+                if (Int32.TryParse(request.Text, out index) && index > 0 && index <= data.User.Accounts.Count)
                 {
                     data.Temp.Add("account", data.User.Accounts[index - 1]);
                     data.Channel.SendMessage(request.Id, "Ingrese un nuevo objetivo máximo:");

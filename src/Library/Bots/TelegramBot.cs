@@ -9,10 +9,10 @@ namespace Bankbot
     {
         private ITelegramBotClient Bot;
         //BankBot
-        // private const string Token = "1365916215:AAEE-yM7Jnz4XFZE6ExdDezyLXU-i5zqGnw";
+        private const string Token = "1365916215:AAEE-yM7Jnz4XFZE6ExdDezyLXU-i5zqGnw";
 
         //BankBot Testing
-        private const string Token = "1499140541:AAF_y-gfrPJZAPl4mBiNkawCRXFyt6TCcgE";
+        // private const string Token = "1499140541:AAF_y-gfrPJZAPl4mBiNkawCRXFyt6TCcgE";
         private static TelegramBot instance;
         public static TelegramBot Instance
         {
