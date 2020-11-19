@@ -48,8 +48,7 @@ namespace Bankbot
                 {
                     data.Channel.SendMessage(request.Id, "Ha ocurrido un error.");
                 }
-                data.Temp.Clear();
-                data.State = State.Dispatcher;
+                data.ClearOperation();
             }
         }
     }

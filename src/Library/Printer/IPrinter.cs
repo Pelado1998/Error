@@ -4,6 +4,6 @@ namespace Bankbot
 {
     public interface IPrinter
     {
-        void Print(List<Transaction> list);
+        string Print(List<Transaction> list, string path);
     }
 }

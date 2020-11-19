@@ -30,6 +30,7 @@ namespace Bankbot
                 "/CreateAccount",
                 "/DeleteAccount",
                 "/Transaction",
+                "/Filter",
                 "/Commands"
             };
         }
@@ -91,6 +92,10 @@ namespace Bankbot
             hasAccountsList.Add("/CreateUser");
             hasAccountsList.Add("/DeleteAccount");
             hasAccountsList.Add("/Transaction");
+            hasAccountsList.Add("/Filter");
+            hasAccountsList.Add("/AddItem");
+            hasAccountsList.Add("/ChangeObjective");
+            hasAccountsList.Add("/AddCurrency");
             return hasAccountsList;
         }
 

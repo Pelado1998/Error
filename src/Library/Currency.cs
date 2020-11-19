@@ -8,12 +8,13 @@ namespace Bankbot
     {
         public string CodeISO { get; set; }
         public string Symbol { get; set; }
-        public static object Empty { get; internal set; }
+        public double ConvertionRate { get; set; }
 
-        public Currency(string codeISO, string symbol)
+        public Currency(string codeISO, string symbol, double rate)
         {
             this.CodeISO = codeISO;
             this.Symbol = symbol;
+            this.ConvertionRate = rate;
         }
     }
 }
