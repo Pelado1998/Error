@@ -75,10 +75,11 @@ namespace Bankbot
             this.Balance += amount;
         }
 
-        /// <summary>
-        /// Mostrar el tipo de cuenta.
-        /// </summary>
-        /// <returns></returns>
+        public void ChangeObjective(double newMax, double newMin)
+        {
+            this.Objective.Max = newMax;
+            this.Objective.Min = newMin;
+        }
 
         public static string ShowAccountType()
         {

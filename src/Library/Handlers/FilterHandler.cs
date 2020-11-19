@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Bankbot
 {
@@ -27,13 +26,14 @@ namespace Bankbot
                 if (Int32.TryParse(request.Text, out index) && index <= data.User.Accounts.Count)
                 {
                     data.Temp.Add("account", data.User.Accounts[index - 1]);
-                    data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
+                    data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro, para aplicar los filtros selecciones Buscar:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
                 }
                 else
                 {
                     data.Channel.SendMessage(request.Id, "Debe ingresar un valor igual al índice indicado.");
                     data.Channel.SendMessage(request.Id, "Seleccione una cuenta para ver el historial:\n" + data.User.ShowAccountList());
                 }
+                return;
             }
 
             if (!data.Temp.ContainsKey("type") && !data.Temp.ContainsKey("item") && !data.Temp.ContainsKey("date"))
@@ -48,11 +48,9 @@ namespace Bankbot
                         // buscar
                         case 1:
                             data.Channel.SendMessage(request.Id, "Filtrando...");
-                            Search.Instance.ApplyFilter(request.Id, account.History);
-                            data.Temp.Clear();
-                            data.Command = string.Empty;
-                            data.Filters.Clear();
-                            data.State = State.Dispatcher;
+                            var filePath = Search.Instance.ApplyFilter(request.Id, account.History);
+                            data.Channel.SendFile(request.Id, filePath);
+                            data.ClearOperation();
                             return;
 
                         // tipo
@@ -84,7 +82,7 @@ namespace Bankbot
                     data.Filters.Add(new TransactionTypeFilter(type));
                     System.Console.WriteLine(data.Filters.Count);
                     data.Temp.Remove("type");
-                    data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
+                    data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro, para aplicar los filtros selecciones Buscar:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
                 }
                 else
                 {
@@ -108,7 +106,7 @@ namespace Bankbot
 
                 data.Filters.Add(new TransactionItemFilter(item));
                 data.Temp.Remove("item");
-                data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
+                data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro, para aplicar los filtros selecciones Buscar:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
             }
 
             else if (data.Temp.ContainsKey("date"))
@@ -162,7 +160,7 @@ namespace Bankbot
                     {
                         data.Filters.Add(new TransactionDateFilter(date));
                         data.Temp.Remove("date");
-                        data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
+                        data.Channel.SendMessage(request.Id, "Seleccione que tipo de filtro, para aplicar los filtros selecciones Buscar:\n1 - Buscar\n2 - Tipo\n3 - Rubro\n4 - Fecha");
                     }
                     else if (data.GetDictionaryValue<string>("date") == "range")
                     {

@@ -34,6 +34,10 @@ namespace Bankbot
         {
             System.Console.WriteLine(message);
         }
+        public override void SendFile(string id, string path)
+        {
+            System.Console.WriteLine("Para acceder a su resumen de cuenta acceda a el archivo encontrado en: " + path);
+        }
     }
 }
 

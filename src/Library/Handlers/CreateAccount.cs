@@ -126,8 +126,7 @@ namespace Bankbot
                     data.Channel.SendMessage(request.Id, "Ha ocurrido un problema.");
                 }
 
-                data.Temp.Clear();
-                data.State = State.Dispatcher;
+                data.ClearOperation();
             }
         }
     }

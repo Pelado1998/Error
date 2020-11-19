@@ -115,6 +115,17 @@ namespace Bankbot
             return outcomeList.ToString();
         }
 
+        public bool ContainsItem(string newItem)
+        {
+            string exists = string.Empty;
+            foreach (var item in OutcomeList)
+            {
+                if (item.ToLower() == newItem) exists = item;
+            }
+            return exists == newItem;
+        }
+
+
         //Password Code
 
         /*Clase que utilizando la funcion de derivacion clave PBKDF2 genera una contraseña cifrada y es capaz de descifrarla.*/

@@ -73,8 +73,7 @@ namespace Bankbot
                 var newAmount = Bank.Instance.Convert(amount, from, to);
                 data.Channel.SendMessage(request.Id, $"{from.CodeISO} {amount} equivalen a {to.CodeISO} {newAmount}");
 
-                data.Temp.Clear();
-                data.State = State.Dispatcher;
+                data.ClearOperation();
             }
         }
     }

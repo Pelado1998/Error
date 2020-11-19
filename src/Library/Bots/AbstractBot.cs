@@ -22,5 +22,8 @@ namespace Bankbot
             Session.Instance.SetChannel(id, channel);
         }
         public abstract void SendMessage(string id, string message);
+        public abstract void SendFile(string id, string message);
+
+
     }
 }
