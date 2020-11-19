@@ -117,6 +117,17 @@ namespace Bankbot
             return outcomeList.ToString();
         }
 
+        public bool ContainsItem(string newItem)
+        {
+            string exists = string.Empty;
+            foreach (var item in OutcomeList)
+            {
+                if (item.ToLower() == newItem) exists = item;
+            }
+            return exists == newItem;
+        }
+
+
         //Password Code
 
         /// <summary>

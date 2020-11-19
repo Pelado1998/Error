@@ -51,6 +51,13 @@ namespace Bankbot
             this.Balance += amount;
         }
 
+        public void ChangeObjective(double newMax, double newMin)
+        {
+            this.Objective.Max = newMax;
+            this.Objective.Min = newMin;
+        }
+
+
         public static string ShowAccountType()
         {
             StringBuilder enumToText = new StringBuilder();

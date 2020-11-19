@@ -26,6 +26,12 @@ namespace Bankbot
             this.Filters = new List<IFilter>();
         }
 
+        public void ClearOperation()
+        {
+            this.State = State.Dispatcher;
+            this.Temp.Clear();
+            this.Command = string.Empty;
+        }
         public T GetDictionaryValue<T>(string key)
         {
             return (T)Temp[key];

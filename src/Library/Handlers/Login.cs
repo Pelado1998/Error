@@ -39,8 +39,7 @@ namespace Bankbot
                     data.Channel.SendMessage(request.Id, "Credenciales incorrectas, vuelva a intentarlo.");
                 }
 
-                data.Temp.Clear();
-                data.State = State.Dispatcher;
+                data.ClearOperation();
             }
         }
     }

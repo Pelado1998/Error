@@ -38,8 +38,7 @@ namespace Bankbot
                 else
                 {
                     data.Channel.SendMessage(request.Id, "Credenciales incorrectas. Ingrese /deleteaccount para volver a realizar esta operación.");
-                    data.Temp.Clear();
-                    data.State = State.Dispatcher;
+                    data.ClearOperation();
                 }
             }
 
@@ -58,8 +57,7 @@ namespace Bankbot
                         data.Channel.SendMessage(request.Id, "Credenciales incorrectas. Ingrese /deleteaccount para volver a realizar esta operación.");
                     }
 
-                    data.Temp.Clear();
-                    data.State = State.Dispatcher;
+                    data.ClearOperation();
                 }
             }
         }

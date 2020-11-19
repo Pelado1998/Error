@@ -106,6 +106,36 @@ namespace Bankbot
                     }
                     data.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
                     break;
+
+                case "/additem":
+                    if (data.User != null)
+                    {
+                        data.Command = request.Text;
+                        data.Channel.SendMessage(request.Id, "Ingrese un nuevo rubro:");
+                        break;
+                    }
+                    data.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+                    break;
+
+                case "/changeobjective":
+                    if (data.User != null)
+                    {
+                        data.Command = request.Text;
+                        data.Channel.SendMessage(request.Id, "Seleccione una cuenta para cambiar el objetivo:\n" + data.User.ShowAccountList());
+                        break;
+                    }
+                    data.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+                    break;
+
+                case "/addcurrency":
+                    if (data.User != null)
+                    {
+                        data.Command = request.Text;
+                        data.Channel.SendMessage(request.Id, "Ingrese el código ISO de la nueva moneda:");
+                        break;
+                    }
+                    data.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+                    break;
             }
         }
     }
