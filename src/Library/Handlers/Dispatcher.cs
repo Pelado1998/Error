@@ -136,6 +136,16 @@ namespace Bankbot
                     }
                     data.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
                     break;
+
+                case "/balance":
+                    if (data.User != null)
+                    {
+                        data.Command = request.Text;
+                        data.Channel.SendMessage(request.Id, "Seleccione una cuenta para recibir el balance:\n" + data.User.ShowAccountList());
+                        break;
+                    }
+                    data.Channel.SendMessage(request.Id, "Debes estar conectado para realizar esta operación.");
+                    break;
             }
         }
     }

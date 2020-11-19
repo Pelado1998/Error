@@ -91,6 +91,7 @@ namespace Bankbot
             hasAccountsList.Add("/Convertion");
             hasAccountsList.Add("/CreateUser");
             hasAccountsList.Add("/DeleteAccount");
+            hasAccountsList.Add("/Balance");
             hasAccountsList.Add("/Transaction");
             hasAccountsList.Add("/Filter");
             hasAccountsList.Add("/AddItem");

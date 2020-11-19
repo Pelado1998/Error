@@ -18,6 +18,7 @@ namespace Bankbot
             AbstractHandler<IMessage> addItem = new AddItemHandler(new AddItemCondition());
             AbstractHandler<IMessage> changeObjective = new ChangeAccountObjectiveHandler(new ChangeAccountObjective());
             AbstractHandler<IMessage> addCurrency = new AddCurrencyHandler(new AddCurrency());
+            AbstractHandler<IMessage> balance = new BalanceHandler(new BalanceCondition());
             AbstractHandler<IMessage> def = new Default(new DefaultCondition());
 
             init.Succesor = dispatcher;
@@ -33,7 +34,8 @@ namespace Bankbot
             filter.Succesor = addItem;
             addItem.Succesor = changeObjective;
             changeObjective.Succesor = addCurrency;
-            addCurrency.Succesor = def;
+            addCurrency.Succesor = balance;
+            balance.Succesor = def;
 
             return init;
         }
