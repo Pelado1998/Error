@@ -15,25 +15,28 @@ namespace Bankbot
         }
 
         private Search() { }
-        public void ApplyFilter(string id, List<Transaction> list)
+        public string ApplyFilter(string id, List<Transaction> list)
         {
             var data = Session.Instance.GetChat(id);
             IPipe lastPipe = null;
             data.Filters.Reverse();
 
-            foreach (var item in data.Filters)
-            {
-                IPipe nextPipe = lastPipe == null ? new PipeNull() : lastPipe;
-                IPipe pipe = new FilterPipe(item, nextPipe);
-                lastPipe = pipe;
-            }
 
             if (data.Filters.Count == 0)
             {
                 lastPipe = new FilterPipe(new FilterNull(), new PipeNull());
             }
+            else
+            {
+                foreach (var item in data.Filters)
+                {
+                    IPipe nextPipe = lastPipe == null ? new PipeNull() : lastPipe;
+                    IPipe pipe = new FilterPipe(item, nextPipe);
+                    lastPipe = pipe;
+                }
+            }
 
-            Session.Instance.Printer.Print(lastPipe.Send(list));
+            return Session.Instance.Printer.Print(lastPipe.Send(list), data.User.Username);
         }
     }
 }

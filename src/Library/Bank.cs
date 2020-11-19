@@ -26,21 +26,15 @@ namespace Bankbot
 
         private Bank()
         {
-            this.CurrencyList = new List<Currency>() { new Currency("UYU", "U$"), new Currency("USS", "US$"), new Currency("ARG", "AR$") };
+            this.CurrencyList = new List<Currency>() { new Currency("UYU", "U$", 0.023), new Currency("USS", "US$", 1), new Currency("ARG", "AR$", 0.012) };
         }
-        public void AddCurrency(string codeISO, string symbol)
+        public void AddCurrency(string codeISO, string symbol, double rate)
         {
-            foreach (var currency in CurrencyList)
+            if (!CurrencyExists(codeISO, symbol))
             {
-                if (currency.CodeISO == codeISO || currency.Symbol == symbol)
-                {
-
-                    System.Console.WriteLine("Esta moneda ya existe");
-                    return;
-                }
+                Currency newCurrency = new Currency(codeISO, symbol, rate);
+                CurrencyList.Add(newCurrency);
             }
-            Currency newCurrency = new Currency(codeISO, symbol);
-            CurrencyList.Add(newCurrency);
         }
         public void RemoveCurrency(string codeISO, string symbol)
         {
@@ -51,45 +45,27 @@ namespace Bankbot
                     CurrencyList.Remove(currency);
                     return;
                 }
-                System.Console.WriteLine("Esta moneda no existe");
             }
         }
         public double Convert(double amount, Currency from, Currency to)
         {
-            switch (to.CodeISO)
+            if (from.CodeISO != "USS")
             {
-                case "USS":
-                    switch (from.CodeISO)
-                    {
-                        case "UYU":
-                            return amount * 42.74;
-                        case "ARG":
-                            return amount * 79.38;
-                    }
-                    break;
-                case "UYU":
-                    switch (from.CodeISO)
-                    {
-                        case "USS":
-                            return amount * 0.023;
-                        case "ARG":
-                            return amount * 1.86;
-                    }
-                    break;
-                case "ARG":
-                    switch (from.CodeISO)
-                    {
-                        case "UYU":
-                            return amount * 0.54;
-                        case "USS":
-                            return amount * 0.013;
-                    }
-                    break;
-                default:
-                    return amount;
+                amount = amount * from.ConvertionRate;
             }
-            return amount;
+
+            return amount / to.ConvertionRate;
         }
+
+        public bool CurrencyExists(string iso, string symbol)
+        {
+            foreach (var item in CurrencyList)
+            {
+                if (item.CodeISO == iso && item.Symbol == symbol) return true;
+            }
+            return false;
+        }
+
         public string ShowCurrencyList()
         {
             StringBuilder currencies = new StringBuilder();

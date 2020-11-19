@@ -75,9 +75,12 @@ namespace Bankbot
                         data.Channel.SendMessage(request.Id, "Seleccione el rubro del gasto:\n" + data.User.ShowItemList());
                     }
                 }
+                else
+                {
+                    data.Channel.SendMessage(request.Id, "Debe ingresar un valor numérico mayor a 0.");
+                    data.Channel.SendMessage(request.Id, "Ingrese el monto de la transacción:");
+                }
 
-                data.Channel.SendMessage(request.Id, "Debe ingresar un valor numérico mayor a 0.");
-                data.Channel.SendMessage(request.Id, "Ingrese el monto de la transacción:");
 
             }
             else if (!data.Temp.ContainsKey("description"))
@@ -126,8 +129,7 @@ namespace Bankbot
                     data.Channel.SendMessage(request.Id, "Ha superado su objetivo máximo. Empiece a gastar.");
                 }
 
-                data.Temp.Clear();
-                data.State = State.Dispatcher;
+                data.ClearOperation();
                 return;
             }
         }

@@ -9,9 +9,9 @@ namespace Bankbot
         {
         }
 
-        public void Print(List<Transaction> list)
+        public string Print(List<Transaction> list, string path)
         {
-            HtmlDocument doc = new HtmlDocument("test.html", "Historial");
+            HtmlDocument doc = new HtmlDocument(path + ".html", "Historial");
             doc.AddContent(new Span("Historial"));
             doc.AddContent(new Table(
 
@@ -24,6 +24,7 @@ namespace Bankbot
                     new FooterCell("")
                 })
             ));
+            return path + ".html";
         }
         private HeaderRow RenderHeader(List<Transaction> list)
         {

@@ -15,6 +15,10 @@ namespace Bankbot
             AbstractHandler<IMessage> createAccount = new CreateAccount(new CreateAccountCondition());
             AbstractHandler<IMessage> deleteAccount = new DeleteAccount(new DeleteAccountCondition());
             AbstractHandler<IMessage> filter = new FilterHandler(new FilterCondition());
+            AbstractHandler<IMessage> addItem = new AddItemHandler(new AddItemCondition());
+            AbstractHandler<IMessage> changeObjective = new ChangeAccountObjectiveHandler(new ChangeAccountObjective());
+            AbstractHandler<IMessage> addCurrency = new AddCurrencyHandler(new AddCurrency());
+            AbstractHandler<IMessage> balance = new BalanceHandler(new BalanceCondition());
             AbstractHandler<IMessage> def = new Default(new DefaultCondition());
 
             init.Succesor = dispatcher;
@@ -27,7 +31,11 @@ namespace Bankbot
             deleteUser.Succesor = createAccount;
             createAccount.Succesor = deleteAccount;
             deleteAccount.Succesor = filter;
-            filter.Succesor = def;
+            filter.Succesor = addItem;
+            addItem.Succesor = changeObjective;
+            changeObjective.Succesor = addCurrency;
+            addCurrency.Succesor = balance;
+            balance.Succesor = def;
 
             return init;
         }

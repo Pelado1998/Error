@@ -1,7 +1,7 @@
-using System;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.InputFiles;
 
 namespace Bankbot
 {
@@ -53,6 +53,13 @@ namespace Bankbot
             //Exception si no se puede pasar a long == id de otro bot
             var chatId = long.Parse(id);
             Bot.SendTextMessageAsync(chatId, message);
+        }
+
+        public override async void SendFile(string id, string path)
+        {
+            var chatId = long.Parse(id);
+            var fs = System.IO.File.OpenRead(path);
+            await Bot.SendDocumentAsync(chatId, new InputOnlineFile(fs, path));
         }
     }
 }

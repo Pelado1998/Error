@@ -14,7 +14,6 @@ namespace Bankbot
         {
             var data = Session.Instance.GetChat(request.Id);
             data.Channel.SendMessage(request.Id, "No te entendi, vuelve a intentarlo.");
-            data.State = State.Dispatcher;
         }
     }
 }
