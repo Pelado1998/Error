@@ -1,155 +1,850 @@
 [
-  {
-    "name": "User",
-    "superclasses": "",
-    "subclasses": "",
-    "type": 1,
-    "responsibilities": [
-      "Conoce el Nombre de Usuario",
-      "Conoce la contraseña",
-      "Conoce el Id",
-      "Conoce las cuentas",
-      "Conoce la lista de rubros de Ingresos",
-      "Conoce la lista de rubros de Gastos",
-      "Conoce el Id del chat",
-      "Conoce las variables necesarias para encriptar y desencriptar la contraseña",
-      "Crear el usuario",
-      "Cambiar nombre del usuario",
-      "Cambiar contraseña del usuario",
-      "Mostrar cuentas del usuario",
-      "Añadir una cuenta al usuario",
-      "Remover una cuenta del usuario",
-      "Agregar rubros",
-      "Borrar rubros",
-      "Mostrar rubros",
-      "Encriptar contraseña"
-    ],
-    "collaborators": [
-      "Account"
-    ]
-  },
-  {
-    "name": "Transaction",
-    "superclasses": "",
-    "subclasses": "",
-    "type": 1,
-    "responsibilities": [
-      "Conoce la cuenta",
-      "Conoce la divisa",
-      "Conoce la fecha",
-      "Conoce el rubro",
-      "Tiene o no una descripción"
-    ],
-    "collaborators": [
-      "Currency"
-    ]
-  },
-  {
-    "name": "Currency",
-    "superclasses": "",
-    "subclasses": "",
-    "type": 1,
-    "responsibilities": [
-      "Conoce el símbolo de la divisa",
-      "Conoce el código ISO de la divisa"
-    ],
-    "collaborators": [
-      "Account",
-      "Bank"
-    ]
-  },
-  {
-    "name": "Bank",
-    "superclasses": "",
-    "subclasses": "",
-    "type": 1,
-    "responsibilities": [
-      "Conoce la lista de divisas",
-      "Puede agregar divisas",
-      "Puede eliminar divisas",
-      "Puede convertir entre divisas",
-      ""
-    ],
-    "collaborators": [
-      "Currency"
-    ]
-  },
-  {
-    "name": "Account",
-    "superclasses": "",
-    "subclasses": "",
-    "type": 1,
-    "responsibilities": [
-      "Conoce el nombre de la cuenta",
-      "Conoce el historial de transacciones de la cuenta",
-      "Conoce el tipo de cuenta",
-      "Conoce la divisa de la cuenta",
-      "Conoce el monto total de la cuenta",
-      "Conoce el objetivo de la cuenta",
-      "Puede cambiar el objetivo de la cuenta",
-      "Puede mostrar el historial de transacciones de la cuenta",
-      "Puede realizar una transacción"
-    ],
-    "collaborators": [
-      "Currency",
-      "IObservable"
-    ]
-  },
-  {
-    "name": "IObservable",
-    "superclasses": "",
-    "subclasses": "",
-    "type": 3,
-    "responsibilities": [
-      "Conoce la cantidad",
-      "Conoce el objetivo"
-    ],
-    "collaborators": [
-      ""
-    ]
-  },
-  {
-    "name": "IAlert",
-    "superclasses": "",
-    "subclasses": "",
-    "type": 3,
-    "responsibilities": [
-      "Conoce un observable",
-      "Puede mandar una alerta"
-    ],
-    "collaborators": [
-      ""
-    ]
-  },
-  {
-    "name": "BotHandler",
-    "superclasses": "",
-    "subclasses": "",
-    "type": 1,
-    "responsibilities": [
-      "Conoce la lista de usuarios",
-      "Conoce el bot",
-      "Realiza la conversación con el usuario",
-      "Puede ejecutar comandos recibidos"
-    ],
-    "collaborators": [
-      "IAlert",
-      "User",
-      "TelegramBot"
-    ]
-  },
-  {
-    "name": "TelegramBot",
-    "superclasses": "",
-    "subclasses": "",
-    "type": 1,
-    "responsibilities": [
-      "Conoce el Token de Telegram",
-      "Puede mandar mensajes",
-      "Puede recibir comandos"
-    ],
-    "collaborators": [
-      ""
-    ]
-  }
-]
+    {
+      "name": "User",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce el Nombre de Usuario",
+        "Conoce la contraseña",
+        "Conoce el Id",
+        "Conoce las cuentas",
+        "Conoce la lista de rubros de Ingresos",
+        "Conoce la lista de rubros de Gastos",
+        "Conoce el Id del chat",
+        "Conoce las variables necesarias para encriptar y desencriptar la contraseña",
+        "Crear el usuario",
+        "Cambiar nombre del usuario",
+        "Cambiar contraseña del usuario",
+        "Mostrar cuentas del usuario",
+        "Añadir una cuenta al usuario",
+        "Remover una cuenta del usuario",
+        "Agregar rubros",
+        "Borrar rubros",
+        "Mostrar rubros",
+        "Encriptar contraseña"
+      ],
+      "collaborators": [
+        "Account"
+      ]
+    },
+    {
+      "name": "Transaction",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce la cuenta",
+        "Conoce la divisa",
+        "Conoce la fecha",
+        "Conoce el rubro",
+        "Tiene o no una descripción"
+      ],
+      "collaborators": [
+        "Currency"
+      ]
+    },
+    {
+      "name": "Currency",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce el símbolo de la divisa",
+        "Conoce el código ISO de la divisa"
+      ],
+      "collaborators": [
+        "Account",
+        "Bank"
+      ]
+    },
+    {
+      "name": "Bank",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce la lista de divisas",
+        "Puede agregar divisas",
+        "Puede eliminar divisas",
+        "Puede convertir entre divisas",
+        ""
+      ],
+      "collaborators": [
+        "Currency"
+      ]
+    },
+    {
+      "name": "Account",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce el nombre de la cuenta",
+        "Conoce el historial de transacciones de la cuenta",
+        "Conoce el tipo de cuenta",
+        "Conoce la divisa de la cuenta",
+        "Conoce el monto total de la cuenta",
+        "Conoce el objetivo de la cuenta",
+        "Puede cambiar el objetivo de la cuenta",
+        "Puede mostrar el historial de transacciones de la cuenta",
+        "Puede realizar una transacción"
+      ],
+      "collaborators": [
+        "Currency",
+        ""
+      ]
+    },
+    {
+      "name": "Session",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce una lista de usuarios",
+        "Conoce la data",
+        "Conoce el por donde se imprime",
+        "Puede agregar usuarios",
+        "Puede remover o borrar usuarios",
+        "Puede chequear si el usuario existe en la lista",
+        "Puede setear un canal"
+      ],
+      "collaborators": [
+        "Data",
+        "User"
+      ]
+    },
+    {
+      "name": "Data",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 3,
+      "responsibilities": [
+        "Conoce quien le esta hablando(usuario)",
+        "Conoce el Id y el texto que le manda"
+      ],
+      "collaborators": [
+        "Commands",
+        "User",
+        "Channel",
+        "Filters"
+      ]
+    },
+    {
+      "name": "Objective",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce el objetivo máximo",
+        "Conoce el objetivo mínimo"
+      ],
+      "collaborators": [
+        "Account"
+      ]
+    },
+    {
+      "name": "AllCommands",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce todos los comandos posibles "
+      ],
+      "collaborators": [
+        "Session"
+      ]
+    },
+    {
+      "name": "StartupConfig",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce todos los Handlers ",
+        "Indica el orden de los handlers",
+        ""
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "Search",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Buscar las transacciones mediante los filtros aplicados",
+        "Conocer la lista de transacciones con sus fechas",
+        "Conocer los Pipes y los Filters",
+        ""
+      ],
+      "collaborators": [
+        "Pipes",
+        "Filters"
+      ]
+    },
+    {
+      "name": "AbstractBot",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce una lista de usuarios",
+        "Conoce el bot de Telegram",
+        "Conoce el bot de Consola",
+        "Realiza la conversación con el usuario",
+        "Puede ejecutar comandos recibidos"
+      ],
+      "collaborators": [
+        "IChannel",
+        "TelegramBot",
+        "ConsoleBot"
+      ]
+    },
+    {
+      "name": "TelegramBot",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce el Token de Telegram",
+        "Puede mandar mensajes",
+        "Puede recibir comandos"
+      ],
+      "collaborators": [
+        "AbstractBot"
+      ]
+    },
+    {
+      "name": "ConsoleBot",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Puede mandar mensajes por consola",
+        "Puede recibir comandos por consola"
+      ],
+      "collaborators": [
+        "AbstractBot"
+      ]
+    },
+    {
+      "name": "IChannel",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 3,
+      "responsibilities": [
+        "Iniciar el bot",
+        "Mandar mensajes",
+        ""
+      ],
+      "collaborators": [
+        "AbstractBot"
+      ]
+    },
+    {
+      "name": "AbstractHandler",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 2,
+      "responsibilities": [
+        "Conoce un Handler",
+        "Indica dependiendo de ese Handler y el comando cual será el siguiente en ejecutar"
+      ],
+      "collaborators": [
+        "Exit",
+        "Convertion",
+        "CreateUser",
+        "CreateAccount",
+        "Default",
+        "DeleteUser",
+        "DeleteAccount",
+        "Dispatcher",
+        "FilterHandler",
+        "Init",
+        "Login",
+        "MakeTransaction"
+      ]
+    },
+    {
+      "name": "Exit",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para cancelar una operación"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "Convert",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para convertir divisas"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "CreateUser",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para crear un nuevo usuario"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "CreateAccount",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para crear una nueva cuenta"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "Default",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando por defecto en caso de que no se cumplan los demás"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "DeleteUser",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para borrar un usuario"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "DeleteAccount",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para borrar una cuenta"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "Dispatcher",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para manejar las excepciones de los demás Handlers"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "FilterHandler",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para aplicar filtros en las búsquedas"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "Init",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para iniciar la conversacion"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "Login",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para logearse"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "MakeTransaction",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Comando para realizar una transacción"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "ChangeObjective",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Cambiar el objetivo de las cuentas"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "Balance",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Balance de las cuentas"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "CommandsCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        ""
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "AddItem",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Añadir un item a la lista"
+      ],
+      "collaborators": [
+        "AbstractHandler"
+      ]
+    },
+    {
+      "name": "BotMessage",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Recibir los comandos por el usuario",
+        ""
+      ],
+      "collaborators": [
+        "IMessage"
+      ]
+    },
+    {
+      "name": "IMessage",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce el Id del usuario que le habla",
+        "Conoce el comando o mensaje que le manda el usuario"
+      ],
+      "collaborators": [
+        "BotMessage"
+      ]
+    },
+    {
+      "name": "IPipe",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 3,
+      "responsibilities": [
+        "Conoce la lista de transacciones",
+        "Metodo para enviar la lista a otra lista "
+      ],
+      "collaborators": [
+        "FilterPipe",
+        "PipeNull"
+      ]
+    },
+    {
+      "name": "FilterPipe",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce un Filter",
+        "Conoce el siguiente Filter"
+      ],
+      "collaborators": [
+        "IPipe"
+      ]
+    },
+    {
+      "name": "PipeNull",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Saber si el siguiente es null"
+      ],
+      "collaborators": [
+        "IPipe"
+      ]
+    },
+    {
+      "name": "IPrinter",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 3,
+      "responsibilities": [
+        "Conoce la lista de transacciones ",
+        "Conoce las fechas de las mismas ",
+        "Conoce los tipos de divisas "
+      ],
+      "collaborators": [
+        "HtmlPrinter"
+      ]
+    },
+    {
+      "name": "HtmlPrinter",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Imprimir la lista de transacciones con sus fechas y demás en un archivo Html",
+        ""
+      ],
+      "collaborators": [
+        "IPrinter"
+      ]
+    },
+    {
+      "name": "ICondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 3,
+      "responsibilities": [
+        "Chequear la condición que se cumple"
+      ],
+      "collaborators": [
+        "ExitCondition",
+        "CommandsCondition",
+        "ConvertionCondition",
+        "CreateAccountCondition",
+        "CreateUserCondition",
+        "DefaultCondition",
+        "DeleteAccountCondition",
+        "DeleteUserCondition",
+        "DispatcherCondition",
+        "FilterCondition",
+        "InitCondition",
+        "LoginCondition",
+        "TransactionCondition"
+      ]
+    },
+    {
+      "name": "ExitCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que se cumpla la condición de salida"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "CommandCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que se cumpla la condición de comandos"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "ConvertCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que se cumpla la condición de convertir divisas"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "CreateUserCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que se cumpla la condición de crear un nuevo usuario"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "CreateAccountCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que se cumpla la condición de crear una nueva cuenta"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "DefaultCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que no se cumplan todas las demás condiciones"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "DeleteUserCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que se cumpla la condición de borrar un usuario"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "DeleteAccountCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que se cumpla la condición de borrar una cuenta"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "DispatcherCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Se cumple cuando no se cumplen las demás"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "FilterCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que se cumpla la condición de filtrar la búsqueda"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "InitCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Dar la bienvenida al usuario"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "LoginCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que se cumpla la condición de loguearse con un usuario ya existente"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "TransactionCondition",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Verificar que se cumpla la condición de realizar una transacción entre cuentas"
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "Balance",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        ""
+      ],
+      "collaborators": [
+        "ICondition"
+      ]
+    },
+    {
+      "name": "IMessage",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 3,
+      "responsibilities": [
+        "Conoce el Id del usuario",
+        "Conoce el mensaje que se le envía"
+      ],
+      "collaborators": [
+        "BotMessage"
+      ]
+    },
+    {
+      "name": "BotMessage",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce Id de usuario",
+        "Conoce el mensaje",
+        "Envía el mensaje"
+      ],
+      "collaborators": [
+        "IMessage"
+      ]
+    },
+    {
+      "name": "IFilter",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 3,
+      "responsibilities": [
+        "Aplica filtros a una lista de transacciones"
+      ],
+      "collaborators": [
+        "FilterNull",
+        "TransactionDateFilter",
+        "TransactionDateFromToFilter",
+        "TransactionItemFilter",
+        "TransactionTypeFilter"
+      ]
+    },
+    {
+      "name": "FilterNull",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Aplicar un null para filtros"
+      ],
+      "collaborators": [
+        "IFilter"
+      ]
+    },
+    {
+      "name": "TransactionDateFilter",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce la fecha de la transacción "
+      ],
+      "collaborators": [
+        "IFilter"
+      ]
+    },
+    {
+      "name": "TransactionDateFromToFilter",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce la fecha de una transacción entre cuentas"
+      ],
+      "collaborators": [
+        "IFilter"
+      ]
+    },
+    {
+      "name": "TransactionItemFilter",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce el Item de la transacción"
+      ],
+      "collaborators": [
+        "IFilter"
+      ]
+    },
+    {
+      "name": "TransactionTypeFilter",
+      "superclasses": "",
+      "subclasses": "",
+      "type": 1,
+      "responsibilities": [
+        "Conoce si la transacción es un gasto o un ingreso"
+      ],
+      "collaborators": [
+        "IFilter"
+      ]
+    }
+  ]
