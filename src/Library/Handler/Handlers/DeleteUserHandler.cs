@@ -9,9 +9,9 @@ namespace Bankbot
     /// <summary>
     /// Handler para borrar el usuario.
     /// </summary>
-    public class DeleteUser : AbstractHandler<IMessage>
+    public class DeleteUserHandler : AbstractHandler<IMessage>
     {
-        public DeleteUser(DeleteUserCondition condition) : base(condition)
+        public DeleteUserHandler(DeleteUserCondition condition) : base(condition)
         {
         }
 

@@ -21,17 +21,21 @@ namespace Bankbot
         {
             this.CommandsList = new List<string>()
             {
-                "/Abort",
-                "/Login",
-                "/Convert",
-                "/CreateUser",
-                "/Logout",
-                "/DeleteUser",
-                "/CreateAccount",
-                "/DeleteAccount",
-                "/Transaction",
-                "/Filter",
-                "/Commands"
+                "/abort",
+                "/login",
+                "/convert",
+                "/createuser",
+                "/logout",
+                "/deleteuser",
+                "/createaccount",
+                "/deleteaccount",
+                "/transaction",
+                "/filter",
+                "/commands",
+                "/balance",
+                "/additem",
+                "/addcurrency",
+                "/changeobjective"
             };
         }
         public string CommandList(string id)
@@ -102,7 +106,7 @@ namespace Bankbot
 
         public bool CommandExist(string command)
         {
-            return instance.CommandsList.Contains(command);
+            return instance.CommandsList.Contains(command.ToLower());
         }
     }
 }

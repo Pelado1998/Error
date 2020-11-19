@@ -9,9 +9,9 @@ namespace Bankbot
     /// <summary>
     /// Handler para convertir un tipo de moneda.
     /// </summary>
-    public class Convertion : AbstractHandler<IMessage>
+    public class ConvertionHandler : AbstractHandler<IMessage>
     {
-        public Convertion(ConvertionCondition condition) : base(condition)
+        public ConvertionHandler(ConvertionCondition condition) : base(condition)
         {
         }
 

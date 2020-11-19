@@ -1,12 +1,12 @@
 namespace Bankbot
 {
     /*Cumple con EXPERT y SRP*/
-    public class ExitCondition : ICondition<IMessage>
+    public class DispatcherCondition : ICondition<IMessage>
     {
         public bool IsSatisfied(IMessage request)
         {
             var data = Session.Instance.GetChat(request.Id);
-            return data.State == State.HandlingCommand && data.Command.ToLower() == "/exit";
+            return data.State == State.Dispatcher && AllCommands.Instance.CommandExist(request.Text);
         }
     }
 }

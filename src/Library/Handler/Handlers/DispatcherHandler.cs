@@ -6,9 +6,9 @@ namespace Bankbot
     /// <summary>
     /// Handler de comandos generales.
     /// </summary>
-    public class Dispatcher : AbstractHandler<IMessage>
+    public class DispatcherHandler : AbstractHandler<IMessage>
     {
-        public Dispatcher(DispatcherCondition condition) : base(condition)
+        public DispatcherHandler(DispatcherCondition condition) : base(condition)
         {
         }
 
@@ -60,7 +60,6 @@ namespace Bankbot
                     break;
 
                 case "/createaccount":
-
                     if (data.User != null)
                     {
                         data.Command = request.Text;

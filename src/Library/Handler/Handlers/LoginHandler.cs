@@ -2,7 +2,7 @@ using System;
 
 namespace Bankbot
 {
-    public class Login : AbstractHandler<IMessage>
+    public class LoginHandler : AbstractHandler<IMessage>
     {
         /*Cumple con ## SRP ## 
         Cumple con ## EXPERT ##*/
@@ -12,7 +12,7 @@ namespace Bankbot
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        public Login(LoginCondition condition) : base(condition)
+        public LoginHandler(LoginCondition condition) : base(condition)
         {
         }
 

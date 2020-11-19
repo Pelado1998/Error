@@ -8,9 +8,9 @@ namespace Bankbot
     /// <summary>
     /// Handler para cancelar una opción o salir.
     /// </summary>
-    public class Exit : AbstractHandler<IMessage>
+    public class AbortHandler : AbstractHandler<IMessage>
     {
-        public Exit(ExitCondition condition) : base(condition)
+        public AbortHandler(AbortCondition condition) : base(condition)
         {
         }
 
@@ -18,7 +18,6 @@ namespace Bankbot
         {
             var data = Session.Instance.GetChat(request.Id);
             data.ClearOperation();
-
             data.Channel.SendMessage(request.Id, "Operación cancelada.");
         }
     }

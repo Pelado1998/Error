@@ -1,6 +1,6 @@
 namespace Bankbot
 {
-    public class ChangeAccountObjective : ICondition<IMessage>
+    public class ChangeAccountObjectiveCondition : ICondition<IMessage>
     {
         public bool IsSatisfied(IMessage request)
         {

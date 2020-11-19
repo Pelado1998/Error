@@ -4,7 +4,7 @@ namespace Bankbot
 {
     public class ChangeAccountObjectiveHandler : AbstractHandler<IMessage>
     {
-        public ChangeAccountObjectiveHandler(ChangeAccountObjective condition) : base(condition)
+        public ChangeAccountObjectiveHandler(ChangeAccountObjectiveCondition condition) : base(condition)
         {
         }
 
