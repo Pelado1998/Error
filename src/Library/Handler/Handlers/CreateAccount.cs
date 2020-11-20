@@ -26,14 +26,14 @@ namespace Bankbot
             if (!data.Temp.ContainsKey("type"))
             {
                 int index;
-                if (Int32.TryParse(request.Text, out index) && index <= Enum.GetNames(typeof(AccountType)).Length)
+                if (Int32.TryParse(request.Text, out index) && index > 0 && index > 0 && index <= Enum.GetNames(typeof(AccountType)).Length)
                 {
                     data.Temp.Add("type", (AccountType)index - 1);
                     data.Channel.SendMessage(request.Id, "Ingrese un nombre de cuenta:");
                 }
                 else
                 {
-                    data.Channel.SendMessage(request.Id, "Debe ingresar el índece correspondiente.");
+                    data.Channel.SendMessage(request.Id, "Debe ingresar el índice correspondiente.");
                     data.Channel.SendMessage(request.Id, "Ingrese el tipo de cuenta:\n" + Account.ShowAccountType());
                 }
             }
@@ -52,7 +52,7 @@ namespace Bankbot
             else if (!data.Temp.ContainsKey("currency"))
             {
                 int index;
-                if (Int32.TryParse(request.Text, out index) && index <= Bank.Instance.CurrencyList.Count)
+                if (Int32.TryParse(request.Text, out index) && index > 0 && index <= Bank.Instance.CurrencyList.Count)
                 {
                     data.Temp.Add("currency", Bank.Instance.CurrencyList[index - 1]);
                     data.Channel.SendMessage(request.Id, "Ingrese el saldo inicial de la cuenta:");

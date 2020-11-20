@@ -23,7 +23,7 @@ namespace Bankbot
             {
                 "/abort",
                 "/login",
-                "/convert",
+                "/convertion",
                 "/createuser",
                 "/logout",
                 "/deleteuser",

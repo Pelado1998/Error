@@ -21,9 +21,9 @@ namespace Bankbot
             AbstractHandler<IMessage> balance = new BalanceHandler(new BalanceCondition());
             AbstractHandler<IMessage> def = new DefaultHandler(new DefaultCondition());
 
-            init.Succesor = dispatcher;
-            dispatcher.Succesor = abort;
-            abort.Succesor = convertion;
+            init.Succesor = abort;
+            abort.Succesor = dispatcher;
+            dispatcher.Succesor = convertion;
             convertion.Succesor = login;
             login.Succesor = createUser;
             createUser.Succesor = transaction;

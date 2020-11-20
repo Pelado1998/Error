@@ -6,7 +6,7 @@ namespace Bankbot
         public bool IsSatisfied(IMessage request)
         {
             var data = Session.Instance.GetChat(request.Id);
-            return data.State == State.HandlingCommand && request.Text.ToLower() == "/abort";
+            return data.State != State.Dispatcher && request.Text.ToLower() == "/abort";
         }
     }
 }

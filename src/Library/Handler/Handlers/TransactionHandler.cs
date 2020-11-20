@@ -20,7 +20,7 @@ namespace Bankbot
             if (!data.Temp.ContainsKey("type"))
             {
                 int index;
-                if (Int32.TryParse(request.Text, out index) && (index == 1 || index == 2))
+                if (Int32.TryParse(request.Text, out index) && index > 0 && (index == 1 || index == 2))
                 {
                     data.Temp.Add("type", index);
                     data.Channel.SendMessage(request.Id, "Ingrese la cuenta en la cual desea realizar la transacción:\n" + data.User.ShowAccountList());
@@ -34,7 +34,7 @@ namespace Bankbot
             else if (!data.Temp.ContainsKey("account"))
             {
                 int index;
-                if (Int32.TryParse(request.Text, out index) && index <= data.User.Accounts.Count)
+                if (Int32.TryParse(request.Text, out index) && index > 0 && index <= data.User.Accounts.Count)
                 {
                     data.Temp.Add("account", data.User.Accounts[index - 1]);
                     data.Channel.SendMessage(request.Id, "Ingrese la moneda en la cual desea realizar la transacción:\n" + Bank.Instance.ShowCurrencyList());
@@ -50,7 +50,7 @@ namespace Bankbot
             else if (!data.Temp.ContainsKey("currency"))
             {
                 int index;
-                if (Int32.TryParse(request.Text, out index) && index < Bank.Instance.CurrencyList.Count)
+                if (Int32.TryParse(request.Text, out index) && index > 0 && index < Bank.Instance.CurrencyList.Count)
                 {
                     data.Temp.Add("currency", Bank.Instance.CurrencyList[index - 1]);
                     data.Channel.SendMessage(request.Id, "Ingrese el monto de la transacción:");
@@ -93,7 +93,7 @@ namespace Bankbot
                 if (data.GetDictionaryValue<int>("type") == 2)
                 {
                     int index;
-                    if (Int32.TryParse(request.Text, out index) && index <= data.User.OutcomeList.Count)
+                    if (Int32.TryParse(request.Text, out index) && index > 0 && index <= data.User.OutcomeList.Count)
                     {
                         data.Temp.Add("description", data.User.OutcomeList[index - 1]);
                     }

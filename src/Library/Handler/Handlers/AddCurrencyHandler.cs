@@ -32,7 +32,7 @@ namespace Bankbot
                 else
                 {
                     data.Channel.SendMessage(request.Id, "Debe ingresar un valor numérico mayor a 0");
-                    data.Channel.SendMessage(request.Id, "Ingrese la taza de cambio basada en doalr:");
+                    data.Channel.SendMessage(request.Id, "Ingrese la taza de cambio basada en dolar:");
                 }
             }
 

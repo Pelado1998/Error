@@ -120,7 +120,7 @@ namespace Bankbot
             string exists = string.Empty;
             foreach (var item in OutcomeList)
             {
-                if (item.ToLower() == newItem) exists = item;
+                if (item.ToLower() == newItem.ToLower()) exists = item;
             }
             return exists == newItem;
         }

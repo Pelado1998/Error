@@ -17,8 +17,16 @@ namespace Bankbot
         protected override void handleRequest(IMessage request)
         {
             var data = Session.Instance.GetChat(request.Id);
-            data.ClearOperation();
-            data.Channel.SendMessage(request.Id, "Operación cancelada.");
+
+            if (data.Command != string.Empty)
+            {
+                data.Channel.SendMessage(request.Id, "Operación cancelada.");
+                data.ClearOperation();
+            }
+            else
+            {
+                data.Channel.SendMessage(request.Id, "No puedo cancelar una operación que no existe.");
+            }
         }
     }
 }
