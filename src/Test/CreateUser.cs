@@ -11,9 +11,7 @@ namespace Test.Createuser
         [SetUp]
         public void Setup()
         {
-            List<User> userList = new List<User>();
             _user = new User("prueba", "prueba");
-            userList.Add(_user);
         }
 
         [Test]
@@ -23,12 +21,17 @@ namespace Test.Createuser
             Assert.IsTrue(Session.Instance.AllUsers.Contains(Session.Instance.GetUser("user", "user")));
         }
 
-        // [Test]
-        // public void CreateUser_Exists()
-        // {
-        //     var result = _user != null;
-        //     Assert.IsTrue(result);
-        // }
+        [Test]
+        public void CreateUser_Exists()
+        {
+            Session.Instance.AddUser("user", "user");
+            int count = 0;
+            foreach (var item in Session.Instance.AllUsers)
+            {
+                if (item.Username == "user") count++;
+            }
+            Assert.IsFalse(count == 2);
+        }
 
     }
 }

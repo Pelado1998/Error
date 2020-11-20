@@ -4,28 +4,26 @@ using Bankbot;
 namespace Test.Login
 {
     [TestFixture]
-    public class CreateUser_Complete
+    public class Login
     {
         private User _user;
         [SetUp]
         public void Setup()
         {
-            _user = new User("prueba", "prueba");
+            _user = new User("user", "pass");
         }
 
         [Test]
-        public void CreateUser_ReturnTrue()
+        public void Login_Complete()
         {
-            var result = _user != null;
-            Assert.IsTrue(result);
+            Assert.IsTrue(_user.Login("pass"));
         }
 
         [Test]
-        public void CreateUser_ReturnFalse()
+        public void Login_Fail()
         {
-            var result = _user != null;
-            Assert.IsTrue(result);
+            Assert.IsFalse(_user.Login("pss"));
         }
-
+        
     }
 }

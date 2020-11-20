@@ -20,7 +20,7 @@ namespace Bankbot
             else if (!data.Temp.ContainsKey("symbol"))
             {
                 data.Temp.Add("symbol", request.Text);
-                data.Channel.SendMessage(request.Id, "Ingrese la taza de cambio basada en doalr:");
+                data.Channel.SendMessage(request.Id, "Ingrese la taza de cambio basada en dolar:");
             }
             else if (!data.Temp.ContainsKey("rate"))
             {
