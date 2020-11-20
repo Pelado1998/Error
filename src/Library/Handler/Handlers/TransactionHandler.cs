@@ -50,7 +50,7 @@ namespace Bankbot
             else if (!data.Temp.ContainsKey("currency"))
             {
                 int index;
-                if (Int32.TryParse(request.Text, out index) && index > 0 && index < Bank.Instance.CurrencyList.Count)
+                if (Int32.TryParse(request.Text, out index) && index > 0 && index <= Bank.Instance.CurrencyList.Count)
                 {
                     data.Temp.Add("currency", Bank.Instance.CurrencyList[index - 1]);
                     data.Channel.SendMessage(request.Id, "Ingrese el monto de la transacción:");

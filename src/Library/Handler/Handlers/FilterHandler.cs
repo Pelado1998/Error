@@ -158,6 +158,7 @@ namespace Bankbot
                         catch (ArgumentOutOfRangeException)
                         {
                             data.Channel.SendMessage(request.Id, "Debe ingresar una fecha en el formato dd/mm/aaaa:");
+                            return;
                         }
                     }
 

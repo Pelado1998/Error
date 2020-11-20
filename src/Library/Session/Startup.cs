@@ -2,6 +2,12 @@ namespace Bankbot
 {
     public class StartupConfig
     {
+
+        public static void Start()
+        {
+            TelegramBot.Instance.Start();
+            ConsoleBot.Instance.Start();
+        }
         public static AbstractHandler<IMessage> HandlerConfig()
         {
             AbstractHandler<IMessage> init = new InitHandler(new InitCondition());
