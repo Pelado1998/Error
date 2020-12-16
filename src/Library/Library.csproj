@@ -1,12 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-  <ProjectReference Include="..\HtmlAPI\HtmlLibrary.csproj" />
-    <PackageReference Include="Telegram.Bot" Version="15.5.1" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
 </Project>
